@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "tsc && cp src/index.html dist/" 
+    "build": "rm -rf dist && tsc && mkdir -p dist && cp -a src/index.html src/assets src/CNAME dist/ || true"
   },
   "keywords": [],
   "author": "",
