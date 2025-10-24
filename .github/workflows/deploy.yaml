@@ -1,12 +1,13 @@
-name: Build e Deploy utilizando TypeScript para GitHub Pages pela pasta principal
+name: Build e Deploy utilizando TypeScript para GitHub Pages (via GitHub Actions)
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 permissions:
-  contents: write
+  contents: read
   pages: write
+  id-token: write
 
 jobs:
   build-and-publish:
@@ -15,9 +16,6 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -35,25 +33,17 @@ jobs:
           ls -la ./dist
           test -d ./dist
 
-      - name: Verificar arquivos antes do deploy
+      - name: Garantir CNAME em dist (se existir)
         run: |
-          git fetch origin
-          git ls-tree -r origin/main --name-only | grep '^src/' || echo "sem src"
-          git ls-tree -r origin/main --name-only | grep '^dist/' || echo "sem dist"
+          if [ -f src/CNAME ]; then cp src/CNAME dist/CNAME; fi
 
-      - name: Copiar build para a raiz do repositório
-        run: |
-          cp -a dist/. .
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v3
 
-      - name: Garantir CNAME na raiz
-        run: |
-          if [ -f src/CNAME ]; then cp src/CNAME CNAME; fi
+      - name: Upload artifact de Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./dist
 
-      - name: Comitar e Pushar via Bot
-        run: |
-          # commitar e push
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "ci: publicar site (atualiza pasta raiz) [skip ci]" || echo "sem alterações para commitar"
-          git push origin HEAD:main
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
