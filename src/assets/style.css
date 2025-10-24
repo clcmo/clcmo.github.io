@@ -1,0 +1,88 @@
+:root{
+  --bg1: #6a11cb;
+  --bg2: #2575fc;
+  --card: rgba(255,255,255,0.08);
+  --glass: rgba(255,255,255,0.06);
+  --accent: #ff7a59;
+  --text: #f7f7fb;
+  --muted: rgba(247,247,251,0.8);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+}
+
+/* hero card */
+.hero{width:100%; max-width:980px}
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.03));
+  border-radius:20px;
+  padding:2.5rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(6px);
+}
+.avatar{
+  width:120px;
+  height:120px;
+  object-fit:cover;
+  border-radius:50%;
+  border:4px solid rgba(255,255,255,0.08);
+  margin-bottom:1rem;
+  background: linear-gradient(135deg,#fff2,#0001);
+}
+.title{
+  font-size:1.9rem;
+  margin:0 0 .25rem 0;
+  font-weight:700;
+}
+.subtitle{
+  margin:0 0 1.2rem 0;
+  color:var(--muted);
+  font-size:1rem;
+}
+
+/* actions */
+.actions{display:flex; gap:0.75rem; margin-top:0.5rem; flex-wrap:wrap; justify-content:center}
+.btn{
+  display:inline-block;
+  padding:0.65rem 1rem;
+  border-radius:999px;
+  text-decoration:none;
+  font-weight:600;
+  color:var(--text);
+  border:1px solid transparent;
+  transition:transform .14s ease, box-shadow .14s ease;
+}
+.btn:hover{transform:translateY(-3px)}
+.btn.primary{
+  background: linear-gradient(90deg,var(--accent), #ffb27f);
+  box-shadow: 0 6px 18px rgba(255,123,89,0.18);
+}
+.btn.ghost{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--muted);
+}
+
+/* responsive */
+@media (min-width:900px){
+  .card{flex-direction:row; gap:2rem; text-align:left; align-items:center; padding:3rem}
+  .avatar{width:140px;height:140px;margin:0}
+  .title{font-size:2.2rem}
+  .subtitle{font-size:1.05rem}
+}
