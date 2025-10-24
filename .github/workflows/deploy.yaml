@@ -1,4 +1,4 @@
-name: Build e Deploy utilizando TypeScript para GitHub Pages via main/docs
+name: Build e Deploy utilizando TypeScript para GitHub Pages via main/site
 
 on:
   push:
@@ -35,13 +35,13 @@ jobs:
           ls -la ./dist
           test -d ./dist
 
-      - name: Copiar build para docs/ e commitar
+      - name: Copiar build para site/ e commitar
         run: |
-          rm -rf docs
-          mkdir -p docs
-          cp -a dist/. docs/
+          rm -rf site
+          mkdir -p site
+          cp -a dist/. site/
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs
-          git commit -m "ci: publicar site (atualiza docs) [skip ci]" || echo "sem alterações para commitar"
+          git add site
+          git commit -m "ci: publicar site (atualiza site) [skip ci]" || echo "sem alterações para commitar"
           git push origin HEAD:main
