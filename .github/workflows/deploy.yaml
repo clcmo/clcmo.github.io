@@ -1,6 +1,5 @@
 name: Build e Deploy utilizando TypeScript e GitHub Actions
 
-# ...existing code...
 on:
   push:
     branches: [main]
