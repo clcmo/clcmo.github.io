@@ -1,44 +1,47 @@
-name: Build e Deploy utilizando TypeScript e GitHub Actions
+name: Build e Deploy utilizando TypeScript para GitHub Pages via main/docs
 
 on:
   push:
     branches: [main]
 
-# Permissões necessárias para push e Pages
 permissions:
   contents: write
   pages: write
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout do código
         uses: actions/checkout@v5
-      
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-      
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Build TypeScript
-        run: npx tsc
 
-      - name: Verify build output
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Verificar dist
         run: |
           ls -la ./dist
           test -d ./dist
 
-      - name: Run Tests
-        run: npm test   # se houver testes
-      
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: main
-          publish_dir: ./dist
+      - name: Copiar build para docs/ e commitar
+        run: |
+          rm -rf docs
+          mkdir -p docs
+          cp -a dist/. docs/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          git commit -m "ci: publicar site (atualiza docs) [skip ci]" || echo "sem alterações para commitar"
+          git push origin HEAD:main
