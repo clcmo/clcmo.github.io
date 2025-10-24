@@ -1,8 +1,14 @@
 name: Build e Deploy utilizando TypeScript e GitHub Actions
 
+# ...existing code...
 on:
   push:
     branches: [main]
+
+# Permissões necessárias para push e Pages
+permissions:
+  contents: write
+  pages: write
 
 jobs:
   build:
@@ -22,15 +28,17 @@ jobs:
       
       - name: Build TypeScript
         run: npx tsc
-      
+
+      - name: Verify build output
+        run: |
+          ls -la ./dist
+          test -d ./dist
+
       - name: Run Tests
         run: npm test   # se houver testes
       
-      # Exemplo simples de deploy para GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-
-
