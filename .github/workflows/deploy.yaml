@@ -1,4 +1,4 @@
-name: Build e Deploy utilizando TypeScript para GitHub Pages via main/docs
+name: Build e Deploy utilizando TypeScript para GitHub Pages pela pasta principal
 
 on:
   push:
@@ -35,36 +35,25 @@ jobs:
           ls -la ./dist
           test -d ./dist
 
-      - name: Verificar docs antes do deploy
+      - name: Verificar arquivos antes do deploy
         run: |
           git fetch origin
-          git ls-tree -r origin/main --name-only | grep '^docs/' || echo "sem docs"
-          git show origin/main:docs/index.html || echo "docs/index.html não encontrada"
-          git log origin/main -- docs -n 5 --oneline
+          git ls-tree -r origin/main --name-only | grep '^src/' || echo "sem src"
+          git ls-tree -r origin/main --name-only | grep '^dist/' || echo "sem dist"
 
-      - name: Preservar arquivos importantes de docs e src (README.md, SECURITY.md, CNAME)
+      - name: Copiar build para a raiz do repositório
         run: |
-            mkdir -p /tmp/preserve_docs
-            for f in README.md SECURITY.md CNAME; do
-              if [ -f docs/$f ]; then cp docs/$f /tmp/preserve_docs/; fi
-              if [ -f src/$f ]; then cp src/$f /tmp/preserve_docs/; fi
-            done
+          cp -a dist/. .
 
-      - name: Substituir docs pelo conteúdo do build
+      - name: Garantir CNAME na raiz
         run: |
-          rm -rf docs
-          mkdir -p docs
-          cp -a dist/. docs/
-
-          # restaurar arquivos preservados (se houver)
-          cp -a /tmp/preserve_docs/. docs/ || true
-          rm -rf /tmp/preserve_docs
+          if [ -f src/CNAME ]; then cp src/CNAME CNAME; fi
 
       - name: Comitar e Pushar via Bot
         run: |
           # commitar e push
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs
-          git commit -m "ci: publicar site (atualiza docs) [skip ci]" || echo "sem alterações para commitar"
+          git add -A
+          git commit -m "ci: publicar site (atualiza pasta raiz) [skip ci]" || echo "sem alterações para commitar"
           git push origin HEAD:main
