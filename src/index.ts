@@ -101,7 +101,6 @@ document.querySelectorAll<HTMLAnchorElement>('.btn').forEach(btn => {
 
   document.querySelectorAll<HTMLAnchorElement>('.contact-link').forEach((a) => {
     if (!a.querySelector('.fa')) {
-      // escolher ícone por texto do link (simples heurística)
       const text = (a.textContent || '').toLowerCase();
       const i = document.createElement('i');
       if (text.includes('gravatar')) i.className = 'fa-brands fa-gravatar';
@@ -113,29 +112,44 @@ document.querySelectorAll<HTMLAnchorElement>('.btn').forEach(btn => {
     }
   });
 
-  // criar botão de alternância de tema dentro do card-content (se ainda não existir)
-  const cardContent = document.querySelector('.card-content');
-  if (cardContent && !document.querySelector('.theme-toggle')) {
+  // criar botão de alternância de tema no topo do card (sol / lua)
+  const card = document.querySelector('.card');
+  if (card && !document.querySelector('.theme-toggle')) {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'theme-toggle';
     btn.setAttribute('aria-pressed', 'false');
-    btn.innerHTML = `<i class="fa-regular fa-circle-half-stroke" aria-hidden="true"></i><span class="sr-only">Alternar tema</span><span class="label">Tema</span>`;
+    btn.setAttribute('aria-label', 'Alternar tema');
+
+    const icon = document.createElement('i');
+    icon.setAttribute('aria-hidden', 'true');
+
+    // definir estado inicial pelo atributo data-theme ou preferência salva
+    const saved = localStorage.getItem('site-theme');
+    const initialLight = saved === 'light' || (!saved && document.documentElement.getAttribute('data-theme') === 'light');
+    document.documentElement.setAttribute('data-theme', initialLight ? 'light' : '');
+
+    icon.className = initialLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    btn.appendChild(icon);
+
     btn.addEventListener('click', () => {
       const root = document.documentElement;
       const isLight = root.getAttribute('data-theme') === 'light';
-      root.setAttribute('data-theme', isLight ? '': 'light');
-      btn.setAttribute('aria-pressed', String(!isLight));
+      // alterna
+      root.setAttribute('data-theme', isLight ? '' : 'light');
       localStorage.setItem('site-theme', isLight ? 'dark' : 'light');
+      btn.setAttribute('aria-pressed', String(!isLight));
+      // atualiza ícone
+      icon.className = isLight ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
     });
-    // inserir no topo das ações, ou no final do card-content
-    const actions = cardContent.querySelector('.actions');
-    if (actions) actions.insertAdjacentElement('afterend', btn);
-    else cardContent.appendChild(btn);
+
+    // posiciona no topo do card
+    card.appendChild(btn);
   }
 
-  // restaurar preferência salva
+  // restaurar preferência salva (ou mantém o que já foi setado acima)
   const pref = localStorage.getItem('site-theme');
   if (pref === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  if (pref === 'dark') document.documentElement.removeAttribute('data-theme');
 })();
 

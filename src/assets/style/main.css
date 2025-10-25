@@ -1,6 +1,7 @@
 @import url('./fonts.css');
 @import url('./variables.css');
 @import url('./responsive.css');
+@import url('./acessibility.css');
 
 html,
 body {
@@ -36,6 +37,7 @@ body {
 
 /* === Card layout: imagem à esquerda, título ao lado, descrição e botões embaixo === */
 .card {
+  position: relative;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.03));
   border-radius: 20px;
   padding: 1.5rem;
@@ -49,6 +51,32 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(6px);
 }
+
+/* botão de alternância de tema: topo direito do card */
+.theme-toggle{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--text);
+  padding: 0.45rem 0.6rem;
+  border-radius: 999px;
+  display:inline-flex;
+  gap:.5rem;
+  align-items:center;
+  cursor:pointer;
+  font-weight:600;
+  z-index: 5;
+}
+.theme-toggle i { font-size: 1.05rem; }
+
+/* foco acessível */
+.theme-toggle:focus-visible{
+  outline: 3px solid rgba(255,255,255,0.08);
+  outline-offset: 2px;
+}
+
 
 /* wrapper do conteúdo textual */
 .card-content {
@@ -196,10 +224,6 @@ body {
   /* ocupa em linha, quebra se não couber */
   min-width: 220px;
   max-width: 340px;
-}
-
-/* cada link aparece como um cartão clicável */
-.project-link {
   display: block;
   padding: 1rem 1.25rem;
   border-radius: 12px;
@@ -212,6 +236,23 @@ body {
   position: relative;
   overflow: hidden;
 }
+
+/* ícones antes de títulos de projetos e links: margem consistente */
+.project-link .fa,
+.contact-link .fa,
+.project-link i,
+.contact-link i {
+  margin-right: 0.75rem;
+  width: 1.1em;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  opacity: 0.95;
+}
+
+/* se quiser o ícone maior no cartão do projeto */
+.project-link .fa { font-size: 1.05rem; }
+
 
 /* título dentro do link (se quiser colocar <strong> ou <span>) */
 .project-link>* {
