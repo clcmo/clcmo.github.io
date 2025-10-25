@@ -45,15 +45,23 @@ body{
   border: 1px solid rgba(255,255,255,0.06);
   backdrop-filter: blur(6px);
 }
+
 .avatar{
-  width:120px;
-  height:120px;
+  width:20%;
+  height:20%;
   object-fit:cover;
   border-radius:50%;
-  border:4px solid rgba(255,255,255,0.08);
+  /* borda visível em 3 lados, esquerda transparente => forma de "C" */
+  border:10px solid rgba(255,255,255,0.12);
+  border-left-color: transparent;
+  /* garante que a imagem não cubra a borda arredondada */
+  background-clip: padding-box;
   margin-bottom:1rem;
   background: linear-gradient(135deg,#fff2,#0001);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  display:block;
 }
+
 .title{
   font-size:1.9rem;
   margin:0 0 .25rem 0;
@@ -67,6 +75,7 @@ body{
 
 /* actions */
 .actions{display:flex; gap:0.75rem; margin-top:0.5rem; flex-wrap:wrap; justify-content:center}
+
 .btn{
   display:inline-block;
   padding:0.65rem 1rem;
@@ -91,7 +100,7 @@ body{
 /* responsive */
 @media (min-width:900px){
   .card{flex-direction:row; gap:2rem; text-align:left; align-items:center; padding:3rem}
-  .avatar{width:140px;height:140px;margin:0}
+  .avatar{width:20%;height:20%}
   .title{font-size:2.2rem}
   .subtitle{font-size:1.05rem}
 }
