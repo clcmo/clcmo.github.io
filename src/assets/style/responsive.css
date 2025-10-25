@@ -1,0 +1,14 @@
+/* responsive */
+@media (min-width:900px){
+  .card{flex-direction:row; gap:2rem; text-align:left; align-items:center; padding:3rem}
+  .avatar{
+    height: 140px;
+    aspect-ratio: 1/1;
+    --c: 85;
+  }
+  .title{font-size:2.2rem}
+  .subtitle{font-size:1.05rem}
+  .projects-list{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

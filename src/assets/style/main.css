@@ -1,23 +1,7 @@
-@font-face {
-  font-family: "Catchy Mager";
-  src: url("./fonts/CatchyMager-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('./fonts.css');
+@import url('./variables.css');
+@import url('./responsive.css');
 
-
-:root{
-  --bg1: #000000;
-  --bg2: #95aeae;
-  --card: rgba(255,255,255,0.08);
-  --glass: rgba(255,255,255,0.06);
-  --accent: #504d49;
-  --text: #f7f7fb;
-  --muted: rgba(247,247,251,0.8);
-}
-
-*{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
@@ -25,14 +9,24 @@ body{
   background: linear-gradient(135deg,var(--bg1),var(--bg2));
   color:var(--text);
   -webkit-font-smoothing:antialiased;
+
+  /* alterar o layout para empilhar seções (header acima, projetos abaixo) */
   display:flex;
+  flex-direction:column;
   align-items:center;
-  justify-content:center;
+  justify-content:flex-start;
+  min-height:100vh;
   padding:2rem;
 }
 
-/* hero card */
-.hero{width:100%; max-width:980px}
+/* garante que o hero fique no topo com espaçamento apropriado */
+.hero{
+  width:100%;
+  max-width:980px;
+  margin-top: 1rem;
+}
+
+/* reduz o espaçamento superior quando houver somente o hero centralizado */
 .card{
   background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.03));
   border-radius:20px;
@@ -44,6 +38,11 @@ body{
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
   border: 1px solid rgba(255,255,255,0.06);
   backdrop-filter: blur(6px);
+}
+
+/* mantém a seção de projetos posicionada abaixo do hero */
+.hero + .projetos-section {
+  margin-top: 2rem;
 }
 
 .avatar{
@@ -87,6 +86,7 @@ body{
   margin:0 0 .25rem 0;
   font-weight:700;
 }
+
 .subtitle{
   margin:0 0 1.2rem 0;
   color:var(--muted);
@@ -106,7 +106,9 @@ body{
   border:1px solid transparent;
   transition:transform .14s ease, box-shadow .14s ease;
 }
+
 .btn:hover{transform:translateY(-3px)}
+
 .btn.primary{
   background: linear-gradient(90deg, var(--accent), #ffb27f);
   color: var(--text);
@@ -123,6 +125,7 @@ body{
   overflow: hidden;              /* garante cantos limpos se usar pseudo-elements */
   position: relative;
 }
+
 .btn.primary::after{
   /* pequeno overlay para suavizar a transição e evitar "franjas" em alguns navegadores */
   content: "";
@@ -132,7 +135,9 @@ body{
   pointer-events: none;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
 }
+
 .btn.primary:active{ transform: translateY(0); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
 .btn.primary:focus{ outline: 2px solid rgba(255,255,255,0.06); outline-offset: 2px; }
 
 .btn.ghost{
@@ -211,28 +216,4 @@ body{
   margin-top: .25rem;
   font-size: .92rem;
   color: var(--muted, rgba(247,247,251,0.75));
-}
-
-/* responsive */
-@media (min-width:900px){
-  .card{flex-direction:row; gap:2rem; text-align:left; align-items:center; padding:3rem}
-  .avatar{
-    height: 140px;
-    aspect-ratio: 1/1;
-    --c: 85;
-  }
-  .title{font-size:2.2rem}
-  .subtitle{font-size:1.05rem}
-  .projects-list{
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* espaçamento entre hero e seção */
-.hero + .projetos-section { margin-top: 1.25rem; }
-
-/* ajuste para acessibilidade: foco por teclado */
-.project-link:focus-visible{
-  outline: 3px solid rgba(255,255,255,0.06);
-  outline-offset: 4px;
 }
