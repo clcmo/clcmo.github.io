@@ -108,9 +108,33 @@ body{
 }
 .btn:hover{transform:translateY(-3px)}
 .btn.primary{
-  background: linear-gradient(90deg,var(--accent), #ffb27f);
+  background: linear-gradient(90deg, var(--accent), #ffb27f);
+  color: var(--text);
+  border: none;                  /* evita borda que mostre fundo por baixo */
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  display: inline-block;
+  text-decoration: none;
   box-shadow: 0 6px 18px rgba(255,123,89,0.18);
+  transition: transform .14s ease, box-shadow .14s ease;
+  -webkit-background-clip: padding-box; /* evita que o gradiente pinte sob a borda */
+  background-clip: padding-box;
+  overflow: hidden;              /* garante cantos limpos se usar pseudo-elements */
+  position: relative;
 }
+.btn.primary::after{
+  /* pequeno overlay para suavizar a transição e evitar "franjas" em alguns navegadores */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+.btn.primary:active{ transform: translateY(0); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.btn.primary:focus{ outline: 2px solid rgba(255,255,255,0.06); outline-offset: 2px; }
+
 .btn.ghost{
   background:transparent;
   border:1px solid rgba(255,255,255,0.08);
