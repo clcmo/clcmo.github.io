@@ -87,3 +87,55 @@ document.querySelectorAll<HTMLAnchorElement>('.btn').forEach(btn => {
     </div>
   `;
 })();
+
+// adiciona ícones aos links de projetos e contatos e cria toggle de tema
+(function enhanceUI() {
+  // adiciona ícones padrão se existirem elementos
+  document.querySelectorAll<HTMLAnchorElement>('.project-link').forEach((a) => {
+    if (!a.querySelector('.fa')) {
+      const i = document.createElement('i');
+      i.className = 'fa-solid fa-folder-open';
+      a.prepend(i);
+    }
+  });
+
+  document.querySelectorAll<HTMLAnchorElement>('.contact-link').forEach((a) => {
+    if (!a.querySelector('.fa')) {
+      // escolher ícone por texto do link (simples heurística)
+      const text = (a.textContent || '').toLowerCase();
+      const i = document.createElement('i');
+      if (text.includes('gravatar')) i.className = 'fa-brands fa-gravatar';
+      else if (text.includes('email')) i.className = 'fa-solid fa-envelope';
+      else if (text.includes('linkedin')) i.className = 'fa-brands fa-linkedin';
+      else if (text.includes('github')) i.className = 'fa-brands fa-github';
+      else i.className = 'fa-solid fa-link';
+      a.prepend(i);
+    }
+  });
+
+  // criar botão de alternância de tema dentro do card-content (se ainda não existir)
+  const cardContent = document.querySelector('.card-content');
+  if (cardContent && !document.querySelector('.theme-toggle')) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'theme-toggle';
+    btn.setAttribute('aria-pressed', 'false');
+    btn.innerHTML = `<i class="fa-regular fa-circle-half-stroke" aria-hidden="true"></i><span class="sr-only">Alternar tema</span><span class="label">Tema</span>`;
+    btn.addEventListener('click', () => {
+      const root = document.documentElement;
+      const isLight = root.getAttribute('data-theme') === 'light';
+      root.setAttribute('data-theme', isLight ? '': 'light');
+      btn.setAttribute('aria-pressed', String(!isLight));
+      localStorage.setItem('site-theme', isLight ? 'dark' : 'light');
+    });
+    // inserir no topo das ações, ou no final do card-content
+    const actions = cardContent.querySelector('.actions');
+    if (actions) actions.insertAdjacentElement('afterend', btn);
+    else cardContent.appendChild(btn);
+  }
+
+  // restaurar preferência salva
+  const pref = localStorage.getItem('site-theme');
+  if (pref === 'light') document.documentElement.setAttribute('data-theme', 'light');
+})();
+

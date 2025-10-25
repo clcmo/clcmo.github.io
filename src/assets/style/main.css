@@ -259,10 +259,11 @@ body {
 }
 
 .contact-title {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   margin: 0 0 1rem 0;
   font-weight: 700;
   color: var(--text);
+  margin-top: 1.9rem;
 }
 
 .contact-list {
@@ -303,7 +304,7 @@ body {
 }
 
 .contato-section .credits a {
-  color: var(--accent);
+  color: var(--text);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
