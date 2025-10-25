@@ -29,10 +29,10 @@ jobs:
         - name: Testar o código compilado
           run: npm test
       
-        - name: Verificar cobertura de testes
-          run: npx nyc report --reporter=text-lcov | npx coveralls
+        #- name: Verificar cobertura de testes
+        #  run: npx nyc report --reporter=text-lcov | npx coveralls
 
-        - name: Enviar cobertura para Coveralls
-          uses: coverallsapp/github-action@v2.1.2
-          with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
+        #- name: Enviar cobertura para Coveralls
+        #  uses: coverallsapp/github-action@v2.1.2
+        #  with:
+        #    github-token: ${{ secrets.GITHUB_TOKEN }}
