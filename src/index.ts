@@ -76,4 +76,14 @@ document.querySelectorAll<HTMLAnchorElement>('.btn').forEach(btn => {
   section.querySelectorAll<HTMLAnchorElement>('.contact-link').forEach(a => {
     a.addEventListener('keydown', ev => { if (ev.key === 'Enter') a.click(); });
   });
+
+  section.innerHTML = `
+    <div class="container">
+      <h2 class="contact-title">Contato</h2>
+      <ul class="contact-list">
+        ${contacts.map(c => `<li><a class="contact-link" href="${c.href}" target="_blank" rel="noopener noreferrer">${c.name}</a></li>`).join('')}
+      </ul>
+      <p class="credits">Desenvolvido por <a href="https://dev.camilaloliveira.me" target="_blank" rel="noopener noreferrer">Camila L. Oliveira</a></p>
+    </div>
+  `;
 })();

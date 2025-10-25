@@ -11,6 +11,10 @@ body {
   margin: 0;
   font-family: "Catchy Mager", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   background: linear-gradient(135deg, var(--bg1), var(--bg2));
+  background-attachment: fixed;
+  /* <-- torna o background fixo */
+  background-size: cover;
+  background-position: center;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
 
@@ -239,16 +243,20 @@ body {
 
 /* Contato */
 .contato-section {
-  padding: 2rem 1rem;
+  padding: 2.5rem 1rem;
   display: flex;
   justify-content: center;
   color: var(--text);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.35));
+  /* fundo mais escuro */
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .contato-section .container {
   width: 100%;
   max-width: 980px;
   text-align: center;
+  position: relative;
 }
 
 .contact-title {
@@ -285,4 +293,24 @@ body {
   transform: translateY(-4px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
   outline: none;
+}
+
+/* créditos da desenvolvedora */
+.contato-section .credits {
+  margin-top: 1.25rem;
+  font-size: 0.90rem;
+  color: rgba(255, 255, 255, 0.72);
+  opacity: 0.95;
+}
+
+.contato-section .credits a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* garante contraste para os botões/links dentro da seção */
+.contato-section .contact-link,
+.contato-section .contact-title {
+  color: var(--text);
 }
