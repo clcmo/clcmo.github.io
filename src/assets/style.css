@@ -47,19 +47,39 @@ body{
 }
 
 .avatar{
-  width:20%;
-  height:20%;
-  object-fit:cover;
-  border-radius:50%;
-  /* borda visível em 3 lados, esquerda transparente => forma de "C" */
-  border:10px solid rgba(255,255,255,0.12);
-  border-left-color: transparent;
-  /* garante que a imagem não cubra a borda arredondada */
-  background-clip: padding-box;
-  margin-bottom:1rem;
-  background: linear-gradient(135deg,#fff2,#0001);
+  /* controla a curvatura (valor percentual sem unidade; >50 é recomendado) */
+  --c: 85;
+
+  /* tamanho base (ajuste conforme desejar) */
+  height: 250px;
+  aspect-ratio: 2 / 3;
+  width: auto;
+  display: block;
+  object-fit: cover;
+
+  background: var(--glass);
+
+  /* máscara que cria o recorte em forma de "C" na borda direita */
+  -webkit-mask: radial-gradient(
+    100% calc(var(--c) * 1%) 
+    at calc(100% + 100% * cos(asin(50 / var(--c)))),
+    #0000 calc(100% - 1px),
+    #000
+  );
+  mask: radial-gradient(
+    100% calc(var(--c) * 1%) 
+    at calc(100% + 100% * cos(asin(50 / var(--c)))),
+    #0000 calc(100% - 1px),
+    #000
+  );
+
+  /* recorte elíptico alinhado à direita para reforçar a forma */
+  clip-path: ellipse(100% calc(var(--c) * 1%) at right);
+
+  /* sombra e acabamento */
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-  display:block;
+  margin-bottom: 1rem;
+
 }
 
 .title{
