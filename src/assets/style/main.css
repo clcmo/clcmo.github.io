@@ -24,7 +24,7 @@ body {
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 0;
 }
 
 /* garante que o hero fique no topo com espaçamento apropriado */
@@ -239,15 +239,13 @@ body {
   color: var(--muted, rgba(247, 247, 251, 0.75));
 }
 
-/* ...existing code... */
-
 /* Contato */
 .contato-section {
-  padding: 2.5rem 1rem;
+  padding: 0.5rem 4.5rem 2.5rem 4.5rem;
   display: flex;
   justify-content: center;
   color: var(--text);
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.35));
+  background: rgba(0, 0, 0, 0.65);
   /* fundo mais escuro */
   border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
