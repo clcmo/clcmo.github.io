@@ -17,13 +17,13 @@ document.querySelectorAll<HTMLAnchorElement>('.btn').forEach(btn => {
 });
 
 (function createProjectsSection() {
-    // se já existir (por exemplo em HTML), não duplicar
-    if (document.getElementById('projetos')) return;
+  // se já existir (por exemplo em HTML), não duplicar
+  if (document.getElementById('projetos')) return;
 
-    const section = document.createElement('section');
-    section.id = 'projetos';
-    section.className = 'projetos-section';
-    section.innerHTML = `
+  const section = document.createElement('section');
+  section.id = 'projetos';
+  section.className = 'projetos-section';
+  section.innerHTML = `
     <div class="container">
       <h2 class="projects-title">Projetos</h2>
       <ul class="projects-list">
@@ -33,14 +33,47 @@ document.querySelectorAll<HTMLAnchorElement>('.btn').forEach(btn => {
       </ul>
     </div>
   `;
-    // inserir após o main hero, se existir; senão no final do body
-    const main = document.querySelector('main') || document.body;
-    main.insertAdjacentElement('afterend', section);
+  // inserir após o main hero, se existir; senão no final do body
+  const main = document.querySelector('main') || document.body;
+  main.insertAdjacentElement('afterend', section);
 
-    // interação mínima: abrir em nova aba já definida pelo target, mas permitir keyboard focus
-    section.querySelectorAll<HTMLAnchorElement>('.project-link').forEach(a => {
-      a.addEventListener('keydown', (ev) => {
-        if (ev.key === 'Enter') a.click();
-      });
+  // interação mínima: abrir em nova aba já definida pelo target, mas permitir keyboard focus
+  section.querySelectorAll<HTMLAnchorElement>('.project-link').forEach(a => {
+    a.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter') a.click();
     });
-  })();
+  });
+})();
+
+// cria sessão "Contato" com links (substitua os hrefs pelos links reais do gravatar)
+(function createContactSection() {
+  if (document.getElementById('contato')) return;
+
+  const contacts = [
+    { name: 'Gravatar', href: 'https://gravatar.com/calecmo' },
+    { name: 'Email', href: 'mailto:seu@email.com' },
+    { name: 'LinkedIn', href: 'https://www.linkedin.com/in/seu-perfil' },
+    { name: 'GitHub', href: 'https://github.com/seu-usuario' }
+  ];
+
+  const section = document.createElement('section');
+  section.id = 'contato';
+  section.className = 'contato-section';
+  section.innerHTML = `
+    <div class="container">
+      <h2 class="contact-title">Contato</h2>
+      <ul class="contact-list">
+        ${contacts.map(c => `<li><a class="contact-link" href="${c.href}" target="_blank" rel="noopener noreferrer">${c.name}</a></li>`).join('')}
+      </ul>
+    </div>
+  `;
+
+  const projetos = document.getElementById('projetos');
+  if (projetos) projetos.insertAdjacentElement('afterend', section);
+  else document.body.appendChild(section);
+
+  // acessibilidade: permitir Enter em foco
+  section.querySelectorAll<HTMLAnchorElement>('.contact-link').forEach(a => {
+    a.addEventListener('keydown', ev => { if (ev.key === 'Enter') a.click(); });
+  });
+})();

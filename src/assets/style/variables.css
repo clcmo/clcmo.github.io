@@ -1,9 +1,9 @@
-:root{
-  --bg1: #000000;
-  --bg2: #95aeae;
-  --card: rgba(255,255,255,0.08);
-  --glass: rgba(255,255,255,0.06);
-  --accent: #504d49;
-  --text: #f7f7fb;
-  --muted: rgba(247,247,251,0.8);
+:root {
+    --bg1: #000000;
+    --bg2: #95aeae;
+    --card: rgba(255, 255, 255, 0.08);
+    --glass: rgba(255, 255, 255, 0.06);
+    --accent: #504d49;
+    --text: #f7f7fb;
+    --muted: rgba(247, 247, 251, 0.8);
 }
