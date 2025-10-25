@@ -26,8 +26,8 @@ jobs:
             - name: Instalar dependências
               run: npm install
 
-            - name: Build
-              run: npm run build
+            - name: Build TypeScript
+              run: npm run build   # Make sure this generates ./dist
 
     deploy:
         runs-on: ubuntu-latest
@@ -36,7 +36,6 @@ jobs:
             - name: Verificar pasta dist
               run: |
                   ls -la ./dist
-                  test -d ./dist
 
             - name: Garantir CNAME em dist (se existir)
               run: |
