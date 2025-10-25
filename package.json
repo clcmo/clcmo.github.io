@@ -1,26 +1,36 @@
 {
   "name": "camiladev",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "type-check": "tsc --noEmit",
     "build": "npm run type-check && rm -rf dist && mkdir -p dist && npx esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --platform=browser --target=es2017 --minify --sourcemap && cp -a src/index.html src/assets src/CNAME dist/ || true",
-    "dev": "npx esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --platform=browser --servedir=dist --sourcemap --watch"
+    "dev": "npx esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --platform=browser --servedir=dist --sourcemap --watch",
+    "semantic-release": "semantic-release"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/github": "^11.0.6",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.9.1",
     "esbuild": "^0.25.11",
     "jest": "^29.7.0",
-    "semantic-release": "^24.2.9",
+    "semantic-release": "^25.0.1",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clcmo/clcmo.github.io.git"
   }
 }
