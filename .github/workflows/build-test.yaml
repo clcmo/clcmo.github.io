@@ -1,0 +1,44 @@
+name: Build de projeto e Testes com TypeScript
+run-name: ${{ github.actor }} está construindo o projeto e executando testes
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+    
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout do código
+          uses: actions/checkout@v3
+
+        - name: Configurar Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: '18'
+
+        - name: Instalar dependências
+          run: npm install
+
+        - name: Compilar TypeScript
+          run: npx tsc
+
+    test:
+        runs-on: ubuntu-latest
+        needs: build
+        
+        steps:
+        - name: Testar o código compilado
+          run: npm test
+      
+        - name: Verificar cobertura de testes
+          run: npx nyc report --reporter=text-lcov | npx coveralls
+
+        - name: Enviar cobertura para Coveralls
+          uses: coverallsapp/github-action@v2.1.2
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}

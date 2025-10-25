@@ -1,0 +1,54 @@
+name: Build e Deploy utilizando TypeScript para GitHub Pages
+run-name: ${{ github.actor }} está construindo e fazendo deploy do site para GitHub Pages
+
+on:
+    push:
+        branches: [main]
+
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout do código
+              uses: actions/checkout@v5
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "20"
+
+            - name: Instalar dependências
+              run: npm install
+
+            - name: Build
+              run: npm run build
+
+    deploy:
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - name: Verificar dist
+              run: |
+                  ls -la ./dist
+                  test -d ./dist
+
+            - name: Garantir CNAME em dist (se existir)
+              run: |
+                  if [ -f src/CNAME ]; then cp src/CNAME dist/CNAME; fi
+
+            - name: Configure GitHub Pages
+              uses: actions/configure-pages@v3
+
+            - name: Upload artifact de Pages
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: ./dist
+
+            - name: Deploy to GitHub Pages
+              uses: actions/deploy-pages@v4
