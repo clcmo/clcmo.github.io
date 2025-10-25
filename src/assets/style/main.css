@@ -2,152 +2,164 @@
 @import url('./variables.css');
 @import url('./responsive.css');
 
-html,body{height:100%}
-body{
-  margin:0;
+html,
+body {
+  height: 100%
+}
+
+body {
+  margin: 0;
   font-family: "Catchy Mager", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: linear-gradient(135deg,var(--bg1),var(--bg2));
-  color:var(--text);
-  -webkit-font-smoothing:antialiased;
+  background: linear-gradient(135deg, var(--bg1), var(--bg2));
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
 
   /* alterar o layout para empilhar seções (header acima, projetos abaixo) */
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  min-height:100vh;
-  padding:2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 2rem;
 }
 
 /* garante que o hero fique no topo com espaçamento apropriado */
-.hero{
-  width:100%;
-  max-width:980px;
+.hero {
+  width: 100%;
+  max-width: 980px;
   margin-top: 1rem;
 }
 
-/* reduz o espaçamento superior quando houver somente o hero centralizado */
-.card{
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.03));
-  border-radius:20px;
-  padding:2.5rem;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.06);
+/* === Card layout: imagem à esquerda, título ao lado, descrição e botões embaixo === */
+.card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.03));
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  /* mobile: empilha */
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(6px);
 }
 
-/* mantém a seção de projetos posicionada abaixo do hero */
-.hero + .projetos-section {
-  margin-top: 2rem;
+/* wrapper do conteúdo textual */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  align-items: center;
 }
 
-.avatar{
-  /* controla a curvatura (valor percentual sem unidade; >50 é recomendado) */
+/* avatar (ajustado para funcionar em row/column) */
+.avatar {
   --c: 85;
-
-  /* tamanho base (ajuste conforme desejar) */
-  height: 250px;
-  aspect-ratio: 2 / 3;
-  width: auto;
-  display: block;
+  width: 140px;
+  height: 140px;
   object-fit: cover;
-
+  border-radius: 50%;
   background: var(--glass);
-
-  /* máscara que cria o recorte em forma de "C" na borda direita */
-  -webkit-mask: radial-gradient(
-    100% calc(var(--c) * 1%) 
-    at calc(100% + 100% * cos(asin(50 / var(--c)))),
-    #0000 calc(100% - 1px),
-    #000
-  );
-  mask: radial-gradient(
-    100% calc(var(--c) * 1%) 
-    at calc(100% + 100% * cos(asin(50 / var(--c)))),
-    #0000 calc(100% - 1px),
-    #000
-  );
-
-  /* recorte elíptico alinhado à direita para reforçar a forma */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  margin: 0;
+  flex: 0 0 auto;
+  /* mantém recorte em "C" (já definido anteriormente) */
+  -webkit-mask: radial-gradient(100% calc(var(--c) * 1%) at calc(100% + 100% * cos(asin(50 / var(--c)))),
+      #0000 calc(100% - 1px),
+      #000);
+  mask: radial-gradient(100% calc(var(--c) * 1%) at calc(100% + 100% * cos(asin(50 / var(--c)))),
+      #0000 calc(100% - 1px),
+      #000);
   clip-path: ellipse(100% calc(var(--c) * 1%) at right);
-
-  /* sombra e acabamento */
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-  margin-bottom: 1rem;
-
 }
 
-.title{
-  font-size:1.9rem;
-  margin:0 0 .25rem 0;
-  font-weight:700;
+/* título e subtítulo */
+.title {
+  font-size: 1.6rem;
+  margin: 0;
+  font-weight: 700;
 }
 
-.subtitle{
-  margin:0 0 1.2rem 0;
-  color:var(--muted);
-  font-size:1rem;
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
 }
 
-/* actions */
-.actions{display:flex; gap:0.75rem; margin-top:0.5rem; flex-wrap:wrap; justify-content:center}
-
-.btn{
-  display:inline-block;
-  padding:0.65rem 1rem;
-  border-radius:999px;
-  text-decoration:none;
-  font-weight:600;
-  color:var(--text);
-  border:1px solid transparent;
-  transition:transform .14s ease, box-shadow .14s ease;
+/* actions: por padrão centralizadas (mobile) */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 0.5rem;
 }
 
-.btn:hover{transform:translateY(-3px)}
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text);
+  border: 1px solid transparent;
+  transition: transform .14s ease, box-shadow .14s ease;
+}
 
-.btn.primary{
+.btn:hover {
+  transform: translateY(-3px)
+}
+
+.btn.primary {
   background: linear-gradient(90deg, var(--accent), #ffb27f);
   color: var(--text);
-  border: none;                  /* evita borda que mostre fundo por baixo */
+  border: none;
+  /* evita borda que mostre fundo por baixo */
   border-radius: 999px;
   padding: 0.65rem 1rem;
   font-weight: 600;
   display: inline-block;
   text-decoration: none;
-  box-shadow: 0 6px 18px rgba(255,123,89,0.18);
+  box-shadow: 0 6px 18px rgba(255, 123, 89, 0.18);
   transition: transform .14s ease, box-shadow .14s ease;
-  -webkit-background-clip: padding-box; /* evita que o gradiente pinte sob a borda */
+  -webkit-background-clip: padding-box;
+  /* evita que o gradiente pinte sob a borda */
   background-clip: padding-box;
-  overflow: hidden;              /* garante cantos limpos se usar pseudo-elements */
+  overflow: hidden;
+  /* garante cantos limpos se usar pseudo-elements */
   position: relative;
 }
 
-.btn.primary::after{
+.btn.primary::after {
   /* pequeno overlay para suavizar a transição e evitar "franjas" em alguns navegadores */
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
 }
 
-.btn.primary:active{ transform: translateY(0); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 
-.btn.primary:focus{ outline: 2px solid rgba(255,255,255,0.06); outline-offset: 2px; }
+.btn.primary:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.06);
+  outline-offset: 2px;
+}
 
-.btn.ghost{
-  background:transparent;
-  border:1px solid rgba(255,255,255,0.08);
-  color:var(--muted);
+.btn.ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--muted);
 }
 
 /* Projetos: seção, lista e links */
-.projetos-section{
+.projetos-section {
   padding: 2.5rem 1rem;
   display: flex;
   justify-content: center;
@@ -156,64 +168,69 @@ body{
   background: transparent;
 }
 
-.projetos-section .container{
+.projetos-section .container {
   width: 100%;
   max-width: 980px;
 }
 
-.projects-title{
-  font-size: 1.25rem;
-  margin: 0 0 1rem 0;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.01em;
-}
-
-/* lista de projetos em grid responsivo */
-.projects-list{
+.projects-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
+  display: flex;
+  /* agora em linha */
   gap: 1rem;
-  grid-template-columns: 1fr;
+  align-items: stretch;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* quebra em telas pequenas */
+}
+
+/* cada cartão de projeto tem largura mínima e cresce */
+.project-link {
+  flex: 0 1 280px;
+  /* ocupa em linha, quebra se não couber */
+  min-width: 220px;
+  max-width: 340px;
 }
 
 /* cada link aparece como um cartão clicável */
-.project-link{
+.project-link {
   display: block;
   padding: 1rem 1.25rem;
   border-radius: 12px;
   text-decoration: none;
   color: var(--text);
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
   transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
   position: relative;
   overflow: hidden;
 }
 
 /* título dentro do link (se quiser colocar <strong> ou <span>) */
-.project-link > * { pointer-events: none; }
+.project-link>* {
+  pointer-events: none;
+}
 
 /* hover / focus */
 .project-link:hover,
-.project-link:focus{
+.project-link:focus {
   transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.36);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.36);
   opacity: 1;
   outline: none;
 }
 
-.project-link:focus{
-  box-shadow: 0 18px 40px rgba(0,0,0,0.36), 0 0 0 4px rgba(255,255,255,0.04);
+.project-link:focus {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.36), 0 0 0 4px rgba(255, 255, 255, 0.04);
 }
 
 /* pequena meta linha ou descrição (se adicionada) */
-.project-link .meta{
-  display:block;
+.project-link .meta {
+  display: block;
   margin-top: .25rem;
   font-size: .92rem;
-  color: var(--muted, rgba(247,247,251,0.75));
+  color: var(--muted, rgba(247, 247, 251, 0.75));
 }

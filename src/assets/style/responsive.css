@@ -1,14 +1,51 @@
 /* responsive */
-@media (min-width:900px){
-  .card{flex-direction:row; gap:2rem; text-align:left; align-items:center; padding:3rem}
-  .avatar{
-    height: 140px;
-    aspect-ratio: 1/1;
-    --c: 85;
-  }
-  .title{font-size:2.2rem}
-  .subtitle{font-size:1.05rem}
-  .projects-list{
-    grid-template-columns: repeat(3, 1fr);
-  }
+@media (min-width:900px) {
+    .card {
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+        padding: 2.5rem;
+    }
+
+    .card-content {
+        align-items: flex-start;
+        padding-left: 1rem;
+        flex: 1 1 auto;
+    }
+
+    /* garantir que o título fique ao lado da imagem (horizontal) */
+    .title {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1.05rem;
+    }
+
+    /* ações sempre abaixo do subtítulo (mantém fluxo normal) */
+    .actions {
+        justify-content: flex-start;
+        margin-top: 1rem;
+    }
+
+    .avatar {
+        height: 140px;
+        aspect-ratio: 1/1;
+        --c: 85;
+    }
+
+    .projects-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .projects-list {
+        justify-content: flex-start;
+    }
+
+    .project-link {
+        flex: 1 1 0;
+        max-width: none;
+    }
 }
