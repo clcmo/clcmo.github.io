@@ -35,7 +35,8 @@ jobs:
         steps:
             - name: Verificar pasta dist
               run: |
-                  ls -la ./dist
+                  ls -la .
+                  test -d .
 
             - name: Garantir CNAME em dist (se existir)
               run: |
@@ -47,7 +48,7 @@ jobs:
             - name: Upload artifact de Pages
               uses: actions/upload-pages-artifact@v3
               with:
-                  path: ./dist
+                  path: ./
 
             - name: Deploy to GitHub Pages
               uses: actions/deploy-pages@v4
