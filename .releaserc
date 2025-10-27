@@ -5,6 +5,12 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     "@semantic-release/github",
-    "@semantic-release/npm"
+    "@semantic-release/npm",
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "git tag $(date +'%Y-%m-%d-%H-%M') && git push origin --tags"
+      }
+    ]
   ]
 }
