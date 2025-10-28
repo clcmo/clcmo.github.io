@@ -1,9 +1,40 @@
 :root {
-    --bg1: #000000;
-    --bg2: #95aeae;
-    --card: rgba(255, 255, 255, 0.08);
-    --glass: rgba(255, 255, 255, 0.06);
-    --accent: #504d49;
-    --text: #f7f7fb;
-    --muted: rgba(247, 247, 251, 0.8);
+  /* Fundo principal e gradiente */
+  --bg1: #000000;
+  --bg2: #6c75ad;
+
+  /* Cartões e elementos com efeito glass */
+  --card: rgba(255, 255, 255, 0.08);
+  --glass: rgba(255, 255, 255, 0.06);
+
+  /* Texto e cores de destaque */
+  --text: #f7f7fb;
+  --muted: rgba(247, 247, 251, 0.8);
+  --accent: #494c50;
+
+  /* Botões e ícones */
+  --button-bg: #4caf50;
+  --button-hover: #45a049;
+  --button-text: #ffffff;
+
+  /* Modal e overlay */
+  --overlay-bg: rgba(0, 0, 0, 0.85);
+}
+
+:root[data-theme="light"] {
+  --bg1: #f6f9ff;
+  --bg2: #c6c8a9;
+
+  --card: rgba(255, 255, 255, 0.95);
+  --glass: rgba(255, 255, 255, 0.8);
+
+  --text: #0b1220;
+  --muted: rgba(11, 18, 32, 0.7);
+  --accent: #ffb259;
+
+  --button-bg: #ffac59;
+  --button-hover: #e9a94a;
+  --button-text: #ffffff;
+
+  --overlay-bg: rgba(255, 255, 255, 0.85);
 }

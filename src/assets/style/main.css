@@ -1,7 +1,14 @@
+/* Importação e configuração de globais */
 @import url('./fonts.css');
 @import url('./variables.css');
 @import url('./responsive.css');
 @import url('./acessibility.css');
+
+/* Importação de seções */
+@import url('./about.css');
+@import url('./project.css');
+@import url('./contact.css');
+@import url('./pix.css');
 
 html,
 body {
@@ -10,10 +17,11 @@ body {
 
 body {
   margin: 0;
-  font-family: "Catchy Mager", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  line-height: 1.6;
   background: linear-gradient(135deg, var(--bg1), var(--bg2));
   background-attachment: fixed;
-  /* <-- torna o background fixo */
   background-size: cover;
   background-position: center;
   color: var(--text);
@@ -28,14 +36,14 @@ body {
   padding: 0;
 }
 
-/* garante que o hero fique no topo com espaçamento apropriado */
+/* Garante que o hero fique no topo com espaçamento apropriado */
 .hero {
   width: 100%;
   max-width: 980px;
   margin-top: 1rem;
 }
 
-/* === Card layout: imagem à esquerda, título ao lado, descrição e botões embaixo === */
+/* Card layout: imagem à esquerda, título ao lado, descrição e botões embaixo */
 .card {
   position: relative;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.03));
@@ -52,33 +60,36 @@ body {
   backdrop-filter: blur(6px);
 }
 
-/* botão de alternância de tema: topo direito do card */
-.theme-toggle{
+/* Botão de alternância de tema: topo direito do card */
+.theme-toggle {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   color: var(--text);
   padding: 0.45rem 0.6rem;
   border-radius: 999px;
-  display:inline-flex;
-  gap:.5rem;
-  align-items:center;
-  cursor:pointer;
-  font-weight:600;
+  display: inline-flex;
+  gap: .5rem;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
   z-index: 5;
 }
-.theme-toggle i { font-size: 1.05rem; }
 
-/* foco acessível */
-.theme-toggle:focus-visible{
-  outline: 3px solid rgba(255,255,255,0.08);
+.theme-toggle i {
+  font-size: 1.05rem;
+}
+
+/* Foco acessível */
+.theme-toggle:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.08);
   outline-offset: 2px;
 }
 
 
-/* wrapper do conteúdo textual */
+/* Wrapper do conteúdo textual */
 .card-content {
   display: flex;
   flex-direction: column;
@@ -87,7 +98,7 @@ body {
   align-items: center;
 }
 
-/* avatar (ajustado para funcionar em row/column) */
+/* Avatar (ajustado para funcionar em row/column) */
 .avatar {
   --c: 85;
   width: 140px;
@@ -108,9 +119,10 @@ body {
   clip-path: ellipse(100% calc(var(--c) * 1%) at right);
 }
 
-/* título e subtítulo */
+/* Título e subtítulo */
 .title {
-  font-size: 1.6rem;
+  font-family: var(--font-heading);
+  font-size: 3em;
   margin: 0;
   font-weight: 700;
 }
@@ -121,7 +133,7 @@ body {
   font-size: 1rem;
 }
 
-/* actions: por padrão centralizadas (mobile) */
+/* Actions: por padrão centralizadas (mobile) */
 .actions {
   display: flex;
   gap: 0.75rem;
@@ -138,10 +150,33 @@ body {
   color: var(--text);
   border: 1px solid transparent;
   transition: transform .14s ease, box-shadow .14s ease;
+
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--muted);
 }
 
 .btn:hover {
-  transform: translateY(-3px)
+  transform: translateY(-3px);
+
+  background: linear-gradient(90deg, var(--accent));
+  color: var(--text);
+  border: none;
+
+  /* evita borda que mostre fundo por baixo */
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  display: inline-block;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(255, 123, 89, 0.18);
+  transition: transform .14s ease, box-shadow .14s ease;
+  -webkit-background-clip: padding-box;
+  /* evita que o gradiente pinte sob a borda */
+  background-clip: padding-box;
+  overflow: hidden;
+  /* garante cantos limpos se usar pseudo-elements */
+  position: relative;
 }
 
 .btn.primary {
@@ -164,7 +199,7 @@ body {
   position: relative;
 }
 
-.btn.primary::after {
+.btn::after {
   /* pequeno overlay para suavizar a transição e evitar "franjas" em alguns navegadores */
   content: "";
   position: absolute;
@@ -174,184 +209,20 @@ body {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
 }
 
-.btn.primary:active {
+.btn:active {
   transform: translateY(0);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.btn.primary:focus {
+.btn:focus {
   outline: 2px solid rgba(255, 255, 255, 0.06);
   outline-offset: 2px;
 }
 
-.btn.ghost {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--muted);
-}
-
-/* Projetos: seção, lista e links */
-.projetos-section {
-  padding: 2.5rem 1rem;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  color: var(--text);
-  background: transparent;
-}
-
-.projetos-section .container {
-  width: 100%;
-  max-width: 980px;
-}
-
-.projects-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  /* agora em linha */
-  gap: 1rem;
-  align-items: stretch;
-  justify-content: center;
-  flex-wrap: wrap;
-  /* quebra em telas pequenas */
-}
-
-/* cada cartão de projeto tem largura mínima e cresce */
-.project-link {
-  flex: 0 1 280px;
-  /* ocupa em linha, quebra se não couber */
-  min-width: 220px;
-  max-width: 340px;
-  display: block;
-  padding: 1rem 1.25rem;
-  border-radius: 12px;
-  text-decoration: none;
-  color: var(--text);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-  transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-/* ícones antes de títulos de projetos e links: margem consistente */
-.project-link .fa,
-.contact-link .fa,
-.project-link i,
-.contact-link i {
-  margin-right: 0.75rem;
-  width: 1.1em;
-  text-align: center;
-  display: inline-block;
-  vertical-align: middle;
-  opacity: 0.95;
-}
-
-/* se quiser o ícone maior no cartão do projeto */
-.project-link .fa { font-size: 1.05rem; }
-
-
-/* título dentro do link (se quiser colocar <strong> ou <span>) */
-.project-link>* {
-  pointer-events: none;
-}
-
-/* hover / focus */
-.project-link:hover,
-.project-link:focus {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.36);
-  opacity: 1;
-  outline: none;
-}
-
-.project-link:focus {
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.36), 0 0 0 4px rgba(255, 255, 255, 0.04);
-}
-
-/* pequena meta linha ou descrição (se adicionada) */
-.project-link .meta {
-  display: block;
-  margin-top: .25rem;
-  font-size: .92rem;
-  color: var(--muted, rgba(247, 247, 251, 0.75));
-}
-
-/* Contato */
-.contato-section {
-  padding: 0.5rem 4.5rem 2.5rem 4.5rem;
-  display: flex;
-  justify-content: center;
-  color: var(--text);
-  background: rgba(0, 0, 0, 0.65);
-  /* fundo mais escuro */
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-  width: 100%;
-}
-
-.contato-section .container {
-  width: 100%;
-  max-width: 980px;
-  text-align: center;
-  position: relative;
-}
-
-.contact-title {
-  font-size: 1.35rem;
-  margin: 0 0 1rem 0;
-  font-weight: 700;
-  color: var(--text);
-  margin-top: 1.9rem;
-}
-
-.contact-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 0.75rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.contact-link {
-  display: inline-block;
-  padding: 0.6rem 0.9rem;
-  border-radius: 10px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform .14s ease, box-shadow .14s ease;
-}
-
-.contact-link:hover,
-.contact-link:focus {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
-  outline: none;
-}
-
 /* créditos da desenvolvedora */
-.contato-section .credits {
-  margin-top: 1.25rem;
-  font-size: 0.90rem;
-  color: rgba(255, 255, 255, 0.72);
-  opacity: 0.95;
-}
-
-.contato-section .credits a {
+.site-footer {
+  background: var(--bg1);
+  width: 100%;
   color: var(--text);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-/* garante contraste para os botões/links dentro da seção */
-.contato-section .contact-link,
-.contato-section .contact-title {
-  color: var(--text);
+  text-align: center;
 }

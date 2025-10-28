@@ -1,0 +1,53 @@
+/* Projetos */
+.project-title {
+    font-family: var(--font-heading);
+    font-size: 2.2em;
+    margin: 0;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.project-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.project-link {
+    display: inline-block;
+    padding: 0.6rem 0.9rem;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform .14s ease, box-shadow .14s ease;
+}
+
+.project-link:hover,
+.project-link:focus {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+    outline: none;
+}
+
+/* garante contraste para os botões/links dentro da seção */
+.project-section .contact-link,
+.project-section .contact-title {
+    color: var(--text);
+}
+
+.project-link .fa, 
+.project-link i {
+    margin-right: 0.75rem;
+    width: 1.1em;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    opacity: 0.95;
+}

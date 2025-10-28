@@ -63,15 +63,5 @@
 }
 .theme-toggle:focus-visible{ outline: 3px solid rgba(255,255,255,0.08); }
 
-/* light theme (opcional) */
-:root[data-theme="light"]{
-  --bg1: #f6f9ff;
-  --bg2: #eef6ff;
-  --text: #0b1220;
-  --muted: rgba(11,18,32,0.7);
-  --card: rgba(255,255,255,0.95);
-  --accent: #ff7a59;
-}
-
 /* garante que o background fixo não atrapalhe leitores de tela */
 main, section { position: relative; z-index: 0; }
