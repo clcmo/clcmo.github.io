@@ -17,9 +17,12 @@ async function updateQRCode(canvas: HTMLCanvasElement, pixKey: string) {
     margin: 2,
     color: {
       dark: themeColors.dark || '#000000',
-      light: themeColors.light || '#FFFFFF' // ⚠️ branco sólido, sem transparência
+      light: themeColors.light || '#FFFFFF'
     },
   })
+
+  // 🔹 Retorna o EMV gerado para uso posterior
+  return emv
 }
 
 function createOverlay(): HTMLDivElement {
@@ -47,15 +50,25 @@ function createPixModal(pixKey: string, iconClass: string): HTMLDivElement {
 
   const qrCanvas = document.createElement('canvas')
   qrCanvas.className = 'pix-qrcode'
-  updateQRCode(qrCanvas, pixKey)
 
-  const copyButton = document.createElement('button')
-  copyButton.className = 'pix-button'
-  copyButton.innerHTML = `<i class="${iconClass}"></i> Copiar chave Pix`
-  copyButton.onclick = () => {
-    navigator.clipboard.writeText(pixKey)
-    alert(`Chave Pix copiada: ${pixKey}`)
-  }
+  // ⚠️ Precisamos aguardar o QR ser gerado para capturar o EMV
+  updateQRCode(qrCanvas, pixKey).then((emv) => {
+    // Cria botão depois do QR pronto
+    const copyButton = document.createElement('button')
+    copyButton.className = 'pix-button'
+    copyButton.innerHTML = `<i class="${iconClass}"></i> Copiar código Pix`
+
+    copyButton.onclick = async () => {
+      await navigator.clipboard.writeText(emv)
+      alert('Código Pix (Copia e Cola) copiado!')
+    }
+
+    const contentWrapper = document.createElement('div')
+    contentWrapper.className = 'pix-content'
+    contentWrapper.append(qrCanvas, copyButton)
+
+    modal.append(closeButton, title, contentWrapper)
+  })
 
   const closeButton = createCloseButton()
   closeButton.onclick = () => {
@@ -63,11 +76,6 @@ function createPixModal(pixKey: string, iconClass: string): HTMLDivElement {
     setTimeout(() => modal.parentElement?.remove(), 300)
   }
 
-  const contentWrapper = document.createElement('div')
-  contentWrapper.className = 'pix-content'
-  contentWrapper.append(qrCanvas, copyButton)
-
-  modal.append(closeButton, title, contentWrapper)
   return modal
 }
 
