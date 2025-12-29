@@ -1,17 +1,17 @@
-name: Atualizar Dependências do Projeto com Dependabot
+name: Atualizar Dependências do Projeto
 run-name: ${{ github.actor }} está atualizando as dependências do projeto
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # Runs daily at 2AM UTC
-  workflow_dispatch:      # Optional: allows manual trigger
+    - cron: '0 2 * * *'
+  workflow_dispatch:
 
 jobs:
   dependency-update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
@@ -20,13 +20,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Check for updates
-        run: npm outdated
-
       - name: Update dependencies
+        run: npm update
+
+      - name: Commit changes
         run: |
-          npm update
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -am "Automated dependency update"
-          git push
+          git checkout -b update-deps || true
+          git commit -am "Automated dependency update" || echo "No changes to commit"
+          git push origin update-deps || true
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: update-deps
+          title: "Automated dependency update"
+          body: "Atualização automática de dependências via workflow"
