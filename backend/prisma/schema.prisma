@@ -6,15 +6,15 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // ou "sqlite" para desenvolvimento local
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Project {
-  id          String   @id @default(cuid())
+  id          String   @id @map("_id") @default(cuid())
   slug        String   @unique
   title       String
-  description String   @db.Text
+  description String
   link        String
   githubUrl   String?
   tags        String[] // Array de tags
@@ -26,28 +26,22 @@ model Project {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@index([slug])
-  @@index([featured])
-  @@map("projects")
 }
 
 model GitHubSync {
-  id        String   @id @default(cuid())
+  id        String   @id @map("_id") @default(cuid())
   lastSync  DateTime @default(now())
   reposCount Int     @default(0)
   status    String   @default("success")
-  message   String?  @db.Text
+  message   String?
 
-  @@map("github_syncs")
 }
 
 model Visitor {
-  id        String   @id @default(cuid())
+  id        String   @id @map("_id") @default(cuid())
   ip        String
-  userAgent String?  @db.Text
+  userAgent String?
   path      String
   createdAt DateTime @default(now())
 
-  @@index([createdAt])
-  @@map("visitors")
 }

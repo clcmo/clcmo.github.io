@@ -7,7 +7,7 @@ const PixDonation: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [showQR, setShowQR] = useState(false);
   
-  const pixKey = process.env.REACT_APP_PIX_KEY || 'seu-pix-aqui@example.com';
+  const pixKey = process.env.REACT_APP_PIX_KEY || 'camila.leite.oliveira@gmail.com';
 
   const handleCopy = async () => {
     try {
