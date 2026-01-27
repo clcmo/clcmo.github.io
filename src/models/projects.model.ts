@@ -29,5 +29,14 @@ export const projects: data[] = [
         tags: ['sustentabilidade', 'reciclagem'],
         image: '',
         faicon: 'fa-solid fa-recycle'
+    },
+    {
+        slug: 'rapida',
+        title: 'Rápida',
+        description: 'Um serviço de gerenciamento escolar rápido e eficiente.',
+        link: 'https://github.com/clcmo/Rapida',
+        tags: ['educação', 'gerenciamento escolar'],
+        image: '',
+        faicon: 'fa-solid fa-school'
     }
 ];
