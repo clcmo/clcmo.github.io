@@ -6,160 +6,188 @@
 [![GitHub issues](https://img.shields.io/github/issues/clcmo/clcmo.github.io?style=for-the-badge)](https://github.com/clcmo/clcmo.github.io/issues)
 [![GitHub donate](https://img.shields.io/github/sponsors/clcmo?color=pink&style=for-the-badge)](https://github.com/sponsors/clcmo)
 
-Site pessoal e portfólio profissional desenvolvido com TypeScript, CSS moderno e deployed no GitHub Pages. Este projeto apresenta meus trabalhos, habilidades e experiência como desenvolvedora Android e Full Stack.
+## 📋 Sobre
+
+Site pessoal e portfólio profissional desenvolvido com TypeScript, CSS moderno, arquitetura MVC e API própria e deployed no GitHub Pages. Este projeto apresenta meus trabalhos, habilidades e experiência como desenvolvedora Android e Full Stack disponíveis no GitHub.
 
 🌐 **[Acesse o site ao vivo](https://dev.camilaloliveira.me/)**
 
-## ✨ Características
+### ✨ Características
 
-- 💼 Design limpo e profissional
-- 📱 Totalmente responsivo
-- ⚡ Performance otimizada
-- 🎨 Interface moderna com CSS customizado
-- 🔄 Integração contínua com GitHub Actions
-- 📊 Testes automatizados com Jest
-- 🚀 Deploy automático no GitHub Pages
+- ⚛️ React 18 + TypeScript
+- 🎨 Modo claro/escuro (mantido do projeto anterior)
+- 💰 Sistema de doação via PIX
+- 🔄 Integração com GitHub API
+- 🗄️ API própria com banco de dados
+- 📱 Responsive Design
+- 🎯 Arquitetura MVC
+- 🚀 Deploy automático via GitHub Actions
 
-## 🛠️ Tecnologias
+## 🏗️ Estrutura do Projeto
 
-- **TypeScript** (56.0%) - Tipagem estática e melhor manutenibilidade
-- **CSS** (42.4%) - Estilização moderna e responsiva
-- **HTML** (1.1%) - Estrutura semântica
-- **JavaScript** (0.5%) - Funcionalidades interativas
+```txt
+clcmo/
+├── frontend/              # React + TypeScript
+│   ├── src/
+│   │   ├── components/    # Componentes React
+│   │   ├── models/        # Models (MVC)
+│   │   ├── controllers/   # Controllers (MVC)
+│   │   ├── views/         # Views/Pages
+│   │   ├── services/      # API Services
+│   │   ├── hooks/         # Custom Hooks
+│   │   ├── contexts/      # React Contexts (Theme, etc)
+│   │   ├── styles/        # SCSS/CSS
+│   │   └── utils/         # Utilities
+│   ├── public/
+│   └── package.json
+│
+├── backend/               # Node.js + Express API
+│   ├── src/
+│   │   ├── controllers/   # API Controllers
+│   │   ├── models/        # Database Models
+│   │   ├── routes/        # API Routes
+│   │   ├── services/      # Business Logic
+│   │   ├── middlewares/   # Middlewares
+│   │   ├── config/        # Configurations
+│   │   └── utils/         # Utilities
+│   ├── prisma/            # Prisma ORM
+│   └── package.json
+│
+├── shared/                # Código compartilhado
+│   └── types/             # TypeScript Types
+│
+└── docs/                  # Documentação
+```
 
-## 📋 Começando
+## 🚀 Tecnologias
 
-Siga estas instruções para obter uma cópia do projeto funcionando em sua máquina local para desenvolvimento e testes.
+### Frontend
+
+- React 18
+- TypeScript
+- SCSS/CSS Modules
+- React Router DOM
+- Axios
+- React Icons
+- Framer Motion (animações)
+
+### Backend
+
+- Node.js
+- Express
+- TypeScript
+- Prisma ORM
+- PostgreSQL / SQLite
+- JWT (autenticação)
+- Cors
+- Dotenv
+
+## 📦 Instalação
 
 ### Pré-requisitos
 
-Certifique-se de ter as seguintes ferramentas instaladas:
+- Node.js >= 18.x
+- npm ou yarn
+- PostgreSQL (ou SQLite para desenvolvimento)
+
+### Setup Frontend
 
 ```bash
-node >= 14.x
-npm >= 6.x
-```
-
-Verifique suas versões:
-```bash
-node --version
-npm --version
-```
-
-### Instalação
-
-1. Clone o repositório:
-```bash
-git clone https://github.com/clcmo/clcmo.github.io.git
-cd clcmo.github.io
-```
-
-2. Instale as dependências:
-```bash
+cd frontend
 npm install
-```
-
-3. Inicie o servidor de desenvolvimento:
-```bash
 npm start
 ```
 
-4. Acesse no navegador:
-```
-http://localhost:3000
-```
-
-### Scripts Disponíveis
+### Setup Backend
 
 ```bash
-# Desenvolvimento
-npm start          # Inicia o servidor de desenvolvimento
-
-# Build
-npm run build      # Gera versão de produção otimizada
-
-# Testes
-npm test           # Executa testes com Jest
-npm run test:watch # Executa testes em modo watch
-
-# Qualidade de Código
-npm run lint       # Verifica problemas no código
-npm run format     # Formata código automaticamente
+cd backend
+npm install
+npm run prisma:migrate
+npm run dev
 ```
 
-## 📂 Estrutura do Projeto
+## 🎨 Tema e Estilo
 
+O projeto mantém:
+
+- ✅ Sistema de tema claro/escuro do projeto clcmo.github.io
+- ✅ Estilo visual do projeto "old"
+- ✅ Funcionalidade PIX
+- ✅ Design responsivo
+
+## 🗄️ API Endpoints
+
+### Projetos
+
+```txt
+GET    /api/projects              # Lista todos os projetos
+GET    /api/projects/:slug        # Busca projeto específico
+POST   /api/projects              # Cria novo projeto
+PUT    /api/projects/:slug        # Atualiza projeto
+DELETE /api/projects/:slug        # Remove projeto
 ```
-clcmo.github.io/
-├── .github/          # Workflows do GitHub Actions
-├── docs/             # Documentação do projeto
-├── src/              # Código fonte
-│   ├── assets/       # Imagens, fontes, etc.
-│   ├── components/   # Componentes reutilizáveis
-│   ├── styles/       # Arquivos CSS
-│   └── utils/        # Funções auxiliares
-├── tests/            # Testes automatizados
-├── CNAME             # Configuração do domínio customizado
-├── package.json      # Dependências e scripts
-└── tsconfig.json     # Configuração TypeScript
+
+### GitHub Integration
+
+```txt
+GET    /api/github/repos          # Busca repositórios do GitHub
+POST   /api/github/sync           # Sincroniza com GitHub
+```
+
+## 🔧 Configuração
+
+### Frontend (.env)
+
+```env
+REACT_APP_API_URL=http://localhost:3001/api
+REACT_APP_GITHUB_USERNAME=clcmo
+REACT_APP_PIX_KEY=seu-pix-key
+```
+
+### Backend (.env)
+
+```env
+PORT=3001
+DATABASE_URL="postgresql://user:password@localhost:5432/portfolio"
+GITHUB_TOKEN=seu_github_token
+JWT_SECRET=seu_secret_aqui
+NODE_ENV=development
 ```
 
 ## 🚀 Deploy
 
-O projeto utiliza GitHub Pages com deploy automático via GitHub Actions. Cada push na branch `main` dispara o workflow de deploy.
-
-### Deploy Manual
-
-Para fazer deploy manualmente:
+### Frontend (GitHub Pages)
 
 ```bash
+cd frontend
 npm run build
 npm run deploy
 ```
 
-## 🤝 Contribuindo
+### Backend (Heroku/Vercel/Railway)
 
-Contribuições são bem-vindas! Siga os passos abaixo:
-
-1. Faça um Fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
-5. Abra um Pull Request
-
-### Convenções de Commit
-
-Este projeto segue [Conventional Commits](https://www.conventionalcommits.org/):
-
-- `feat:` Nova funcionalidade
-- `fix:` Correção de bug
-- `docs:` Mudanças na documentação
-- `style:` Formatação, ponto e vírgula faltando, etc
-- `refactor:` Refatoração de código
-- `test:` Adição ou correção de testes
-- `chore:` Atualização de tarefas de build, configs, etc
+```bash
+cd backend
+# Seguir instruções específicas da plataforma
+```
 
 ## 📝 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENCE) para mais detalhes.
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+## 🤝 Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
 
 ## 👩‍💻 Autora
 
 **Camila L. Oliveira**
 
-- Website: [dev.camilaloliveira.me](https://dev.camilaloliveira.me/)
+- Website: [dev.camilaloliveira.me](https://dev.camilaloliveira.me)
 - GitHub: [@clcmo](https://github.com/clcmo)
-- LinkedIn: [Camila L. Oliveira](https://linkedin.com/in/clcmo)
-- Ko-fi: [Apoie meu trabalho](https://ko-fi.com/clcmo)
-
-## 🌟 Agradecimentos
-
-- Obrigada a todos que contribuíram com este projeto
-- Inspiração de design da comunidade de desenvolvedores
-- GitHub Pages por hospedar este site gratuitamente
+- Blog: [apprendendo.blog](https://apprendendo.blog)
 
 ---
 
-⭐ Se este projeto te ajudou de alguma forma, considere dar uma estrela no repositório!
-
-💖 [Apoie este projeto](https://github.com/sponsors/clcmo)
+Feito com ❤️ e ☕

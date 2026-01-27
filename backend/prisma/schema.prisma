@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // ou "sqlite" para desenvolvimento local
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String   @db.Text
+  link        String
+  githubUrl   String?
+  tags        String[] // Array de tags
+  image       String?
+  faicon      String
+  featured    Boolean  @default(false)
+  stars       Int      @default(0)
+  language    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([featured])
+  @@map("projects")
+}
+
+model GitHubSync {
+  id        String   @id @default(cuid())
+  lastSync  DateTime @default(now())
+  reposCount Int     @default(0)
+  status    String   @default("success")
+  message   String?  @db.Text
+
+  @@map("github_syncs")
+}
+
+model Visitor {
+  id        String   @id @default(cuid())
+  ip        String
+  userAgent String?  @db.Text
+  path      String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("visitors")
+}
