@@ -1,0 +1,222 @@
+// Importar Font Awesome
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  // Tema Escuro (padrão)
+  --primary-color: #00d9ff;
+  --secondary-color: #7b2cbf;
+  --accent-color: #ff006e;
+  
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --card-bg: #1c2128;
+  --header-bg: rgba(13, 17, 23, 0.8);
+  --input-bg: #0d1117;
+  --tag-bg: rgba(110, 118, 129, 0.1);
+  
+  --text-primary: #f0f6fc;
+  --text-secondary: #8b949e;
+  --text-muted: #6e7681;
+  
+  --border-color: #30363d;
+  --border-hover: #484f58;
+  
+  --success-color: #3fb950;
+  --warning-color: #d29922;
+  --error-color: #f85149;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.16);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] {
+  --primary-color: #0969da;
+  --secondary-color: #8250df;
+  --accent-color: #cf222e;
+  
+  --bg-primary: #ffffff;
+  --bg-secondary: #f6f8fa;
+  --card-bg: #ffffff;
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --input-bg: #f6f8fa;
+  --tag-bg: #ddf4ff;
+  
+  --text-primary: #1f2328;
+  --text-secondary: #656d76;
+  --text-muted: #8c959f;
+  
+  --border-color: #d0d7de;
+  --border-hover: #bfc6cd;
+  
+  --success-color: #1a7f37;
+  --warning-color: #9a6700;
+  --error-color: #d1242f;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 
+    'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 6px;
+
+  &:hover {
+    background: var(--border-hover);
+  }
+}
+
+// Selection
+::selection {
+  background: var(--primary-color);
+  color: white;
+}
+
+// Links
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Buttons
+button {
+  font-family: inherit;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Inputs
+input,
+textarea {
+  font-family: inherit;
+  
+  &:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+}
+
+// Container
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
+}
+
+// Grid
+.grid {
+  display: grid;
+  gap: 2rem;
+
+  &--2 {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  &--3 {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  &--4 {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+// Utility classes
+.text-center {
+  text-align: center;
+}
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+.py-1 { padding: 0.5rem 0; }
+.py-2 { padding: 1rem 0; }
+.py-3 { padding: 1.5rem 0; }
+.py-4 { padding: 2rem 0; }
+.py-5 { padding: 3rem 0; }
+
+// Loading animation
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+// Fade in animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
