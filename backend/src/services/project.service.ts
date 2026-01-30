@@ -1,121 +1,57 @@
-import { PrismaClient } from '@prisma/client';
+const env = require('../config/env');
+const TTLCache = require('../utils/cache');
+const { listUserPublicRepos } = require('./github.service');
 
-const prisma = new PrismaClient();
+const cache = new TTLCache(env.CACHE_TTL_SECONDS);
 
-interface ProjectFilters {
-  featured?: boolean;
-  tag?: string;
-  search?: string;
+// Prisma é opcional (sincronização no banco)
+let prisma: any = null;
+if (env.DATABASE_URL) {
+  const { PrismaClient } = require('@prisma/client');
+  prisma = new PrismaClient();
 }
 
-interface CreateProjectData {
-  slug: string;
-  title: string;
-  description: string;
-  link: string;
-  githubUrl?: string;
-  tags: string[];
-  image?: string;
-  faicon: string;
-  featured?: boolean;
-  language?: string;
+export async function getProjects({ refresh = false } = {}) {
+  const cacheKey = `projects:${env.GITHUB_USERNAME}`;
+  if (!refresh) {
+    const cached = cache.get(cacheKey);
+    if (cached) return cached;
+  }
+
+  const repos = await listUserPublicRepos(env.GITHUB_USERNAME, {
+    perPage: env.GITHUB_PER_PAGE,
+    maxPages: env.GITHUB_MAX_PAGES
+  });
+
+  cache.set(cacheKey, repos);
+
+  // sincronização opcional no banco
+  if (prisma && env.ENABLE_DB_SYNC) {
+    await Promise.allSettled(
+      repos.map((r: any) =>
+        prisma.project.upsert({
+          where: { githubId: BigInt(r.githubId) },
+          create: {
+            ...r,
+            githubId: BigInt(r.githubId),
+            syncedAt: new Date()
+          },
+          update: {
+            ...r,
+            githubId: BigInt(r.githubId),
+            syncedAt: new Date()
+          }
+        })
+      )
+    );
+  }
+
+  return repos;
 }
 
-export class ProjectService {
-  async getAllProjects(filters: ProjectFilters = {}) {
-    const where: any = {};
-
-    if (filters.featured) {
-      where.featured = true;
-    }
-
-    if (filters.tag) {
-      where.tags = {
-        has: filters.tag
-      };
-    }
-
-    if (filters.search) {
-      where.OR = [
-        { title: { contains: filters.search, mode: 'insensitive' } },
-        { description: { contains: filters.search, mode: 'insensitive' } },
-        { tags: { hasSome: [filters.search] } }
-      ];
-    }
-
-    return await prisma.project.findMany({
-      where,
-      orderBy: [
-        { featured: 'desc' },
-        { stars: 'desc' },
-        { createdAt: 'desc' }
-      ]
-    });
-  }
-
-  async getProjectBySlug(slug: string) {
-    return await prisma.project.findUnique({
-      where: { slug }
-    });
-  }
-
-  async createProject(data: CreateProjectData) {
-    return await prisma.project.create({
-      data: {
-        ...data,
-        slug: this.generateSlug(data.title)
-      }
-    });
-  }
-
-  async updateProject(slug: string, data: Partial<CreateProjectData>) {
-    return await prisma.project.update({
-      where: { slug },
-      data: {
-        ...data,
-        updatedAt: new Date()
-      }
-    });
-  }
-
-  async deleteProject(slug: string) {
-    return await prisma.project.delete({
-      where: { slug }
-    });
-  }
-
-  async getProjectStats() {
-    const totalProjects = await prisma.project.count();
-    const featuredProjects = await prisma.project.count({
-      where: { featured: true }
-    });
-    
-    const totalStars = await prisma.project.aggregate({
-      _sum: { stars: true }
-    });
-
-    const languageStats = await prisma.project.groupBy({
-      by: ['language'],
-      _count: true,
-      where: {
-        language: { not: null }
-      }
-    });
-
-    return {
-      totalProjects,
-      featuredProjects,
-      totalStars: totalStars._sum.stars || 0,
-      languageStats
-    };
-  }
-
-  private generateSlug(title: string): string {
-    return title
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  }
+export async function getProjectByName(name: string) {
+  const projects = await getProjects();
+  return projects.find((p: any) => p.name.toLowerCase() === String(name).toLowerCase()) || null;
 }
+
+module.exports = { getProjects, getProjectByName };

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,21 +8,38 @@ datasource db {
 }
 
 model Project {
-  id          String   @id @map("_id") @default(cuid())
-  slug        String   @unique
-  title       String
-  description String
-  link        String
-  githubUrl   String?
-  tags        String[] // Array de tags
-  image       String?
-  faicon      String
-  featured    Boolean  @default(false)
-  stars       Int      @default(0)
-  language    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String    @id @map("_id") @default(cuid())
+  githubId   BigInt    @unique
+  name       String
+  fullName   String
+  htmlUrl    String
+  description String? 
+  homepage   String?
+  language   String?
+  topics     String[]
+  stars      Int
+  forks      Int
+  visibility String
+  archived   Boolean   @default(false)
+  license    String?
+  createdAt  DateTime
+  pushedAt   DateTime
+  updatedAt  DateTime
+  syncedAt   DateTime  @default(now())
 
+  @@index([name])
+}
+
+
+model Visitor {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  ip        String
+  userAgent String
+  path      String
+  createdAt DateTime @default(now())
+  
+  @@index([createdAt])
+  @@index([path])
 }
 
 model GitHubSync {
@@ -34,14 +48,4 @@ model GitHubSync {
   reposCount Int     @default(0)
   status    String   @default("success")
   message   String?
-
-}
-
-model Visitor {
-  id        String   @id @map("_id") @default(cuid())
-  ip        String
-  userAgent String?
-  path      String
-  createdAt DateTime @default(now())
-
 }

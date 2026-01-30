@@ -1,85 +1,45 @@
-import { Request, Response } from 'express';
-import { ProjectService } from '../services/project.service';
+import type { Request, Response, NextFunction } from 'express';
+import { getProjects as fetchProjects, getProjectByName } from '../services/project.service';
 
-const projectService = new ProjectService();
+export async function listProjects(req: Request, res: Response, next: NextFunction) {
+  try {
+    const refresh = ['1', 'true', 'yes'].includes(String(req.query.refresh).toLowerCase());
+    const language = (req.query.language as string | undefined) ?? undefined;
+    const sort = (req.query.sort as string | undefined) ?? 'updatedAt'; // 'stars' | 'forks' | 'updatedAt'
+    const direction = ((req.query.direction as string | undefined) ?? 'desc').toLowerCase(); // 'asc' | 'desc'
 
-export class ProjectController {
-  async getAllProjects(req: Request, res: Response) {
-    try {
-      const { featured, tag, search } = req.query;
-      
-      const filters = {
-        featured: featured === 'true',
-        tag: tag as string,
-        search: search as string
-      };
+    let data = await fetchProjects({ refresh }); // <— renomeado para evitar colisão de nome
 
-      const projects = await projectService.getAllProjects(filters);
-      res.json(projects);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch projects' });
+    if (language) {
+      data = data.filter((p: any) => (p.language || '').toLowerCase() === language.toLowerCase());
     }
-  }
 
-  async getProjectBySlug(req: Request, res: Response) {
-    try {
-      const { slug } = req.params;
-      const project = await projectService.getProjectBySlug(slug);
-      
-      if (!project) {
-        return res.status(404).json({ error: 'Project not found' });
-      }
-      
-      res.json(project);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch project' });
-    }
-  }
+    const keyMap: Record<string, 'stars' | 'forks' | 'updatedAt'> = {
+      stars: 'stars',
+      forks: 'forks',
+      updatedAt: 'updatedAt',
+    };
 
-  async createProject(req: Request, res: Response) {
-    try {
-      const projectData = req.body;
-      const project = await projectService.createProject(projectData);
-      res.status(201).json(project);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to create project' });
-    }
-  }
+    const k = keyMap[sort] ?? 'updatedAt';
+    data = data.sort((a: any, b: any) => {
+      const av = (a as any)[k] ?? 0;
+      const bv = (b as any)[k] ?? 0;
+      return direction === 'asc' ? (av > bv ? 1 : -1) : (av < bv ? 1 : -1);
+    });
 
-  async updateProject(req: Request, res: Response) {
-    try {
-      const { slug } = req.params;
-      const projectData = req.body;
-      const project = await projectService.updateProject(slug, projectData);
-      
-      if (!project) {
-        return res.status(404).json({ error: 'Project not found' });
-      }
-      
-      res.json(project);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to update project' });
-    }
-  }
-
-  async deleteProject(req: Request, res: Response) {
-    try {
-      const { slug } = req.params;
-      await projectService.deleteProject(slug);
-      res.status(204).send();
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to delete project' });
-    }
-  }
-
-  async getProjectStats(req: Request, res: Response) {
-    try {
-      const stats = await projectService.getProjectStats();
-      res.json(stats);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch stats' });
-    }
+    res.json({ count: data.length, items: data });
+  } catch (err) {
+    next(err);
   }
 }
 
-export const projectController = new ProjectController();
+export async function getOneProject(req: Request, res: Response, next: NextFunction): Promise<any> {
+  try {
+    const name = Array.isArray(req.params.name) ? req.params.name[0] : req.params.name;
+    const item = await getProjectByName(name);
+    if (!item) return res.status(404).json({ message: 'Projeto não encontrado' });
+    return res.json(item);
+  } catch (err) {
+    next(err);
+  }
+}

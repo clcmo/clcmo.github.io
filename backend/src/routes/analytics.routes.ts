@@ -34,7 +34,7 @@ router.post('/visit', async (req, res) => {
  * @desc    Get analytics statistics
  * @access  Public
  */
-router.get('/stats', async (req, res) => {
+router.get('/stats', async (_req, res) => {
   try {
     const totalVisits = await prisma.visitor.count();
     
@@ -57,7 +57,7 @@ router.get('/stats', async (req, res) => {
     res.json({
       totalVisits,
       recentVisits,
-      topPages: topPages.map(page => ({
+      topPages: topPages.map((page: any) => ({
         path: page.path,
         visits: page._count
       }))
