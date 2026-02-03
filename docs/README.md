@@ -15,9 +15,9 @@ Site pessoal e portfólio profissional desenvolvido com TypeScript, CSS moderno,
 ### ✨ Características
 
 - ⚛️ React 18 + TypeScript
-- 🎨 Modo claro/escuro (mantido do projeto anterior)
-- 💰 Sistema de doação via PIX
-- 🔄 Integração com GitHub API
+- 🎨 Modo claro/escuro (brevemente de volta)
+- 💰 Sistema de doação via PIX (brevemente de volta)
+- 🔄 Integração com GitHub API (via Railway e Prisma)
 - 🗄️ API própria com banco de dados
 - 📱 Responsive Design
 - 🎯 Arquitetura MVC
