@@ -16,11 +16,17 @@ function TopNav() {
       <Pressable onPress={() => router.replace('/')}>
         <Text style={globalStyles.navLink}>Sobre</Text>
       </Pressable>
+      <Pressable onPress={() => router.replace('https://apprendendo.blog')}>
+        <Text style={globalStyles.navLink}>Blog</Text>
+      </Pressable>
       <Pressable onPress={() => router.replace('/projects')}>
         <Text style={globalStyles.navLink}>Projetos</Text>
       </Pressable>
       <Pressable onPress={() => router.replace('/contact')}>
         <Text style={globalStyles.navLink}>Contato</Text>
+      </Pressable>
+      <Pressable onPress={() => router.replace('/donate')}>
+        <Text style={globalStyles.navLink}>Apoie</Text>
       </Pressable>
     </View>
   );
@@ -69,7 +75,7 @@ export default function Layout() {
       {/* Seu Stack */}
       <Stack
         screenOptions={{
-          headerStyle: { backgroundColor: 'rgba(36, 41, 46, 0.5)' }, // 50% transparência
+          headerStyle: { backgroundColor: 'rgba(1, 14, 28, 0.5)' }, // 50% transparência
           headerTintColor: '#fff',
           headerTitle: 'Camila L. Oliveira'.toLocaleUpperCase(),
           headerRight: () => (
