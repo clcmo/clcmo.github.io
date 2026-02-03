@@ -1,14 +1,23 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { MongoClient } from 'mongodb';
+import env from '../config/env';
 
 const router = Router();
-const prisma = new PrismaClient();
 
-// ⚠️ Rotas específicas PRIMEIRO
+/**
+ * @route   GET /api/projects/test/connection
+ * @desc    Test database connection
+ * @access  Public
+ */
 router.get('/test/connection', async (_req, res) => {
+  let client: MongoClient | null = null;
   try {
-    await prisma.$connect();
-    const count = await prisma.project.count();
+    client = new MongoClient(env.DATABASE_URL);
+    await client.connect();
+    const db = client.db();
+    const collection = db.collection('Project');
+    const count = await collection.countDocuments();
+    
     res.json({ 
       status: 'connected',
       projectCount: count,
@@ -20,28 +29,68 @@ router.get('/test/connection', async (_req, res) => {
       status: 'error',
       message: error instanceof Error ? error.message : 'Unknown error'
     });
+  } finally {
+    if (client) await client.close();
   }
 });
 
-// Rotas genéricas DEPOIS
+/**
+ * @route   GET /api/projects
+ * @desc    Get all projects
+ * @access  Public
+ */
 router.get('/', async (_req, res) => {
+  let client: MongoClient | null = null;
   try {
-    const projects = await prisma.project.findMany({
-      orderBy: { stars: 'desc' }
-    });
+    client = new MongoClient(env.DATABASE_URL);
+    await client.connect();
+    const db = client.db();
+    const collection = db.collection('Project');
+    
+    const projects = await collection
+      .find({})
+      .sort({ stars: -1 })
+      .toArray();
 
-    const serializedProjects = projects.map(project => ({
-      ...project,
-      githubId: project.githubId.toString()
-    }));
-
-    res.json(serializedProjects);
+    res.json(projects);
   } catch (error) {
     console.error('Error fetching projects:', error);
     res.status(500).json({ error: 'Failed to fetch projects' });
+  } finally {
+    if (client) await client.close();
   }
 });
 
+/**
+ * @route   GET /api/projects/:id
+ * @desc    Get project by ID
+ * @access  Public
+ */
+router.get('/:id', async (req, res) => {
+  let client: MongoClient | null = null;
+  try {
+    const { id } = req.params;
+    
+    client = new MongoClient(env.DATABASE_URL);
+    await client.connect();
+    const db = client.db();
+    const collection = db.collection('Project');
+    
+    const project = await collection.findOne({ _id: id });
+
+    if (!project) {
+      res.status(404).json({ error: 'Project not found' });
+      return;
+    }
+
+    res.json(project);
+  } catch (error) {
+    console.error('Error fetching project:', error);
+    res.status(500).json({ error: 'Failed to fetch project' });
+  } finally {
+    if (client) await client.close();
+  }
+});
 
 /**
  * @route   POST /api/projects/sync
@@ -50,7 +99,6 @@ router.get('/', async (_req, res) => {
  */
 router.post('/sync', async (_req, res) => {
   try {
-    // Importa a função de sync
     const syncModule = await import('../scripts/syncGitHub');
     const { syncGitHubProjects } = syncModule;
     
@@ -60,6 +108,7 @@ router.post('/sync', async (_req, res) => {
     res.json({ 
       message: 'Sync completed successfully',
       projectsSynced: result.count,
+      totalFound: result.totalFound,
       status: result.status
     });
   } catch (error) {
@@ -68,31 +117,6 @@ router.post('/sync', async (_req, res) => {
       error: 'Failed to sync projects',
       message: error instanceof Error ? error.message : 'Unknown error'
     });
-  }
-});
-
-router.get('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    
-    const project = await prisma.project.findUnique({
-      where: { id }
-    });
-
-    if (!project) {
-      res.status(404).json({ error: 'Project not found' });
-      return;
-    }
-
-    const serializedProject = {
-      ...project,
-      githubId: project.githubId.toString()
-    };
-
-    res.json(serializedProject);
-  } catch (error) {
-    console.error('Error fetching project:', error);
-    res.status(500).json({ error: 'Failed to fetch project' });
   }
 });
 
