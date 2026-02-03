@@ -1,5 +1,5 @@
-name: Build e Deploy utilizando TypeScript para GitHub Pages
-run-name: ${{ github.actor }} está construindo e fazendo deploy do site para GitHub Pages
+name: Build e Deploy (Expo Router Web) para GitHub Pages
+run-name: ${{ github.actor }} está construindo e fazendo deploy para GitHub Pages
 
 on:
   push:
@@ -10,41 +10,46 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Instalar dependências do frontend
         working-directory: ./frontend
-        run: npm install
+        run: npm ci
 
-      - name: Build do projeto
+      - name: Export Web (Expo Router)
         working-directory: ./frontend
-        run: npm run build
+        run: npx expo export -p web
         env:
-          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL || 'https://your-api-url.com/api' }}
-          REACT_APP_GITHUB_USERNAME: clcmo
-          REACT_APP_PIX_KEY: ${{ secrets.REACT_APP_PIX_KEY || 'seu-pix@example.com' }}
+          # ✅ URL da sua API (hospedada fora do Pages)
+          EXPO_PUBLIC_API_URL: ${{ secrets.EXPO_PUBLIC_API_URL }}
+          EXPO_PUBLIC_GITHUB_USERNAME: clcmo
 
-      - name: Verificar conteúdo do build
-        run: ls -la frontend/build
+      - name: Verificar conteúdo do dist
+        run: ls -la frontend/dist
 
       - name: Configurar GitHub Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact de Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: frontend/build
+          path: frontend/dist
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,7 +57,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy para GitHub Pages
         id: deployment
