@@ -4,18 +4,32 @@ import { PrismaClient } from '@prisma/client';
 const router = Router();
 const prisma = new PrismaClient();
 
-/**
- * @route   GET /api/projects
- * @desc    Get all projects
- * @access  Public
- */
+// ⚠️ Rotas específicas PRIMEIRO
+router.get('/test/connection', async (_req, res) => {
+  try {
+    await prisma.$connect();
+    const count = await prisma.project.count();
+    res.json({ 
+      status: 'connected',
+      projectCount: count,
+      message: 'Database connection OK'
+    });
+  } catch (error) {
+    console.error('Database connection error:', error);
+    res.status(500).json({ 
+      status: 'error',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Rotas genéricas DEPOIS
 router.get('/', async (_req, res) => {
   try {
     const projects = await prisma.project.findMany({
       orderBy: { stars: 'desc' }
     });
 
-    // Converte BigInt para String
     const serializedProjects = projects.map(project => ({
       ...project,
       githubId: project.githubId.toString()
@@ -28,11 +42,6 @@ router.get('/', async (_req, res) => {
   }
 });
 
-/**
- * @route   GET /api/projects/:id
- * @desc    Get project by ID
- * @access  Public
- */
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -46,7 +55,6 @@ router.get('/:id', async (req, res) => {
       return;
     }
 
-    // Converte BigInt para String
     const serializedProject = {
       ...project,
       githubId: project.githubId.toString()
