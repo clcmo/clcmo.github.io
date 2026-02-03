@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Pressable, Alert, StyleSheet, Share, Clipboard } from 'react-native';
+import { View, Text, ScrollView, Pressable, Alert, Share, Clipboard } from 'react-native';
 import { MaterialIcons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
 

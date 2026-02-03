@@ -1,8 +1,9 @@
 import React from 'react';
 import { Stack, router } from 'expo-router';
 import Head from "expo-router/head";
-import { Pressable, View, Text } from 'react-native';
+import { Pressable, View, Text, SafeAreaView } from 'react-native';
 import { globalStyles } from '@/styles/global';
+import { SiteFooter } from '@/components/site-footer';
 
 const SITE_URL = 'https://dev.camilaloliveira.me';
 const DEFAULT_TITLE = 'Camila L. Oliveira | Full Stack + Professora';
@@ -73,18 +74,26 @@ export default function Layout() {
       </Head>
 
       {/* Seu Stack */}
-      <Stack
-        screenOptions={{
-          headerStyle: { backgroundColor: 'rgba(1, 14, 28, 0.5)' }, // 50% transparência
-          headerTintColor: '#fff',
-          headerTitle: 'Camila L. Oliveira'.toLocaleUpperCase(),
-          headerRight: () => (
-            <View style={globalStyles.headerRightContainer}>
-              <TopNav />
-            </View>
-          ),
-        }}
-      />
+      <SafeAreaView style={globalStyles.container}>
+        <View style={globalStyles.wrapper}>
+          {/* Header/Stack */}
+          <Stack
+            screenOptions={{
+              headerStyle: { backgroundColor: 'rgba(1, 14, 28, 0.5)' },
+              headerTintColor: '#fff',
+              headerTitle: 'Camila L. Oliveira'.toLocaleUpperCase(),
+              headerRight: () => (
+                <View style={globalStyles.headerRightContainer}>
+                  <TopNav />
+                </View>
+              ),
+            }}
+          />
+
+          {/* Footer fixo no final */}
+          <SiteFooter />
+        </View>
+      </SafeAreaView>
     </>
   );
 }

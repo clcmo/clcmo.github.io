@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Pressable, Linking, ActivityIndicator, Platform, ImageBackground } from 'react-native';
+import { View, Text, ScrollView, Pressable, ActivityIndicator, Platform, ImageBackground } from 'react-native';
 import { router } from 'expo-router';
 
 import { projectsApi, analyticsApi } from '@/services/api';

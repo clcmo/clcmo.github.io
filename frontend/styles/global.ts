@@ -28,6 +28,11 @@ export const globalStyles = StyleSheet.create({
         flex: 1,
     },
 
+    wrapper: {
+        flex: 1,
+        flexDirection: 'column',
+    },
+
     /**
      * OBS:
      * Você usa: <ScrollView contentContainerStyle={globalStyles.content}>
@@ -787,5 +792,146 @@ export const donateStyles = StyleSheet.create({
         color: '#8892b0',
         textAlign: 'center',
         lineHeight: 22,
+    },
+});
+
+export const blogStyles = StyleSheet.create({
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    iconHeader: {
+        marginRight: 16,
+        width: 60,
+        height: 60,
+        backgroundColor: '#0a192f',
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 2,
+        borderColor: '#64ffda',
+    },
+    loadingContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 60,
+    },
+    loadingText: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#8892b0',
+    },
+    errorContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 60,
+    },
+    errorText: {
+        fontSize: 16,
+        color: '#ff6b6b',
+        textAlign: 'center',
+        marginTop: 16,
+        marginBottom: 24,
+    },
+    retryButton: {
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        borderColor: '#64ffda',
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 4,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    retryButtonText: {
+        color: '#64ffda',
+        fontSize: 14,
+        fontWeight: '600',
+    },
+    postsContainer: {
+        marginTop: 32,
+        gap: 24,
+    },
+    postCard: {
+        backgroundColor: '#112240',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#233554',
+        overflow: 'hidden',
+    },
+    postImage: {
+        width: '100%',
+        height: 200,
+        backgroundColor: '#1d2d50',
+    },
+    postContent: {
+        padding: 20,
+    },
+    categoryContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 12,
+        gap: 6,
+    },
+    postCategory: {
+        fontSize: 12,
+        color: '#64ffda',
+        fontWeight: '600',
+        textTransform: 'uppercase',
+        letterSpacing: 1,
+    },
+    postTitle: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: '#ccd6f6',
+        marginBottom: 12,
+    },
+    postExcerpt: {
+        fontSize: 14,
+        color: '#8892b0',
+        lineHeight: 22,
+        marginBottom: 16,
+    },
+    postFooter: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        marginBottom: 12,
+    },
+    postDate: {
+        fontSize: 12,
+        color: '#8892b0',
+        fontStyle: 'italic',
+    },
+    readMore: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        marginTop: 8,
+    },
+    readMoreText: {
+        fontSize: 14,
+        color: '#64ffda',
+        fontWeight: '600',
+    },
+    viewAllContainer: {
+        marginTop: 48,
+        alignItems: 'center',
+    },
+    viewAllButton: {
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        borderColor: '#64ffda',
+        paddingVertical: 16,
+        paddingHorizontal: 32,
+        borderRadius: 4,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    viewAllButtonText: {
+        color: '#64ffda',
+        fontSize: 16,
+        fontWeight: '600',
     },
 });

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TextInput, Pressable } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, ScrollView, Pressable } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import { analyticsApi } from '@/services/api';
