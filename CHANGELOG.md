@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/clcmo/clcmo.github.io/compare/v2.0.0...v2.1.0) (2026-02-03)
+
+
+### Features
+
+* update menu ([90c53fc](https://github.com/clcmo/clcmo.github.io/commit/90c53fce54e4625cbd276f2d365162dd1e1c6081))
+
 # [2.0.0](https://github.com/clcmo/clcmo.github.io/compare/v1.4.7...v2.0.0) (2026-02-03)
 
 
