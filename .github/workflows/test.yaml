@@ -11,64 +11,60 @@ jobs:
   test-frontend:
     name: Frontend - Build e Testes
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js (com cache)
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
 
-      - name: Instalar dependências do frontend
-        working-directory: ./frontend
+      - name: Instalar dependências (raiz)
         run: npm ci
 
       - name: Verificar tipos TypeScript
         working-directory: ./frontend
         run: npx tsc --noEmit
 
-      - name: Build do projeto
+      - name: Build/Export web
         working-directory: ./frontend
         run: npx expo export -p web
         env:
-          EXPO_PUBLIC_API_URL: https://api.camilaloliveira.me
+          EXPO_PUBLIC_API_URL: ${{ secrets.EXPO_PUBLIC_API_URL }}
           EXPO_PUBLIC_GITHUB_USERNAME: clcmo
+          NODE_ENV: production
 
       - name: Executar testes (se existirem)
         working-directory: ./frontend
         run: npm test --if-present
-        continue-on-error: true
 
   test-backend:
     name: Backend - Build e Testes
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js (com cache)
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
 
-      - name: Instalar dependências do backend
-        working-directory: ./backend
+      - name: Instalar dependências (raiz)
         run: npm ci
 
       - name: Gerar Prisma Client
         working-directory: ./backend
         run: npx prisma generate
 
-      - name: Compilar TypeScript
+      - name: Compilar (se existir script)
         working-directory: ./backend
-        run: npm run build
+        run: npm run build --if-present
 
       - name: Verificar tipos TypeScript
         working-directory: ./backend
@@ -77,35 +73,28 @@ jobs:
       - name: Executar testes (se existirem)
         working-directory: ./backend
         run: npm test --if-present
-        continue-on-error: true
 
   lint:
     name: Lint e Code Quality
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js (com cache)
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
 
-      - name: Instalar dependências do frontend
-        working-directory: ./frontend
+      - name: Instalar dependências (raiz)
         run: npm ci
 
       - name: Lint frontend (se existir)
         working-directory: ./frontend
         run: npm run lint --if-present
-        continue-on-error: true
-
-      - name: Instalar dependências do backend
-        working-directory: ./backend
-        run: npm ci
 
       - name: Lint backend (se existir)
         working-directory: ./backend
         run: npm run lint --if-present
-        continue-on-error: true
