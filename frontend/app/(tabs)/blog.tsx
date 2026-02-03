@@ -82,7 +82,7 @@ export default function BlogScreen() {
             </View>
 
             <Text style={globalStyles.sectionTitle}>
-              <Text style={globalStyles.numberPrefix}>02. </Text>Blog
+              <Text style={globalStyles.numberPrefix}>01. </Text>Blog
             </Text>
           </View>
 

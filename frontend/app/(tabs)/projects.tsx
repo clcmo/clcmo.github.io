@@ -64,8 +64,10 @@ export default function ProjectsScreen() {
         }
         ListHeaderComponent={
           <View style={projectCardStyles.headerRow}>
-            <Text style={projectCardStyles.title}>Meus Projetos</Text>
-            <Text style={projectCardStyles.subtitle}>{projects.length} repositórios</Text>
+            <Text style={globalStyles.sectionTitle}>
+                  <Text style={globalStyles.numberPrefix}>02. </Text>Projetos
+                </Text>
+            <Text style={globalStyles.contactDescription}>São {projects.length} repositórios</Text>
           </View>
         }
       />
