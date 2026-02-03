@@ -1,15 +1,21 @@
-import { PrismaClient } from '@prisma/client';
+import { MongoClient } from 'mongodb';
 import { Octokit } from '@octokit/rest';
 import env from '../config/env';
 
-const prisma = new PrismaClient();
-
 export async function syncGitHubProjects() {
+  let client: MongoClient | null = null;
+  
   try {
     console.log('🔄 Iniciando sincronização com GitHub...');
     
     const username = env.GITHUB_USERNAME;
     console.log('👤 Username:', username);
+    
+    // Conecta ao MongoDB diretamente
+    client = new MongoClient(env.DATABASE_URL);
+    await client.connect();
+    const db = client.db();
+    const collection = db.collection('Project');
     
     const octokit = new Octokit({
       auth: env.GITHUB_TOKEN || undefined
@@ -35,12 +41,8 @@ export async function syncGitHubProjects() {
       }
 
       try {
-        // Procura se já existe
-        const existing = await prisma.project.findUnique({
-          where: { githubId: BigInt(repo.id) }
-        });
-
         const projectData = {
+          githubId: repo.id.toString(), // MongoDB usa string para IDs grandes
           name: repo.name,
           fullName: repo.full_name,
           htmlUrl: repo.html_url,
@@ -59,21 +61,12 @@ export async function syncGitHubProjects() {
           syncedAt: new Date()
         };
 
-        if (existing) {
-          // Atualiza
-          await prisma.project.update({
-            where: { githubId: BigInt(repo.id) },
-            data: projectData
-          });
-        } else {
-          // Cria novo
-          await prisma.project.create({
-            data: {
-              githubId: BigInt(repo.id),
-              ...projectData
-            }
-          });
-        }
+        // Usa updateOne com upsert (não requer replica set)
+        await collection.updateOne(
+          { githubId: repo.id.toString() },
+          { $set: projectData },
+          { upsert: true }
+        );
         
         count++;
         console.log(`✓ ${repo.name} salvo com sucesso`);
@@ -88,6 +81,10 @@ export async function syncGitHubProjects() {
   } catch (error) {
     console.error('❌ Erro na sincronização:', error);
     throw error;
+  } finally {
+    if (client) {
+      await client.close();
+    }
   }
 }
 
