@@ -148,7 +148,7 @@ export default function BlogScreen() {
 
               <View style={blogStyles.viewAllContainer}>
                 <Pressable style={blogStyles.viewAllButton} onPress={openBlog}>
-                  <FontAwesome5 name="blog" size={20} color="#64ffda" style={{ marginRight: 12 }} />
+                  <FontAwesome5 name="wordpress" size={20} color="#64ffda" style={{ marginRight: 12 }} />
                   <Text style={blogStyles.viewAllButtonText}>Ver Todos os Posts</Text>
                   <MaterialIcons name="arrow-forward" size={20} color="#64ffda" style={{ marginLeft: 8 }} />
                 </Pressable>
