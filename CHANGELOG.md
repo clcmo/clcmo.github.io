@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/clcmo/clcmo.github.io/compare/v2.1.0...v2.2.0) (2026-02-03)
+
+
+### Features
+
+* criacao de pix, blog e api do wordpress ([774b90d](https://github.com/clcmo/clcmo.github.io/commit/774b90dff15be3ad8b71d66d57e3baefe4aa14f0))
+
 # [2.1.0](https://github.com/clcmo/clcmo.github.io/compare/v2.0.0...v2.1.0) (2026-02-03)
 
 
