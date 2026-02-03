@@ -55,17 +55,22 @@ export default function ContactScreen() {
           </Text>
 
           <View style={contactStyles.contactGrid}>
-            {contactMethods.map((method, index) => (
-              <Pressable
-                key={index}
-                style={contactStyles.contactCard}
-                onPress={method.action}
-              >
-                <Text style={contactStyles.contactIcon}>{method.iconName}</Text>
-                <Text style={contactStyles.contactLabel}>{method.label}</Text>
-                <Text style={contactStyles.contactValue}>{method.value}</Text>
-              </Pressable>
-            ))}
+            {contactMethods.map((method, index) => {
+              const { IconComponent, iconName } = method;
+              return (
+                <Pressable
+                  key={index}
+                  style={contactStyles.contactCard}
+                  onPress={method.action}
+                >
+                  <View style={contactStyles.iconContainer}>
+                    <IconComponent name={iconName} size={40} color="#64ffda" />
+                  </View>
+                  <Text style={contactStyles.contactLabel}>{method.label}</Text>
+                  <Text style={contactStyles.contactValue}>{method.value}</Text>
+                </Pressable>
+              );
+            })}
           </View>
 
           <View style={contactStyles.emailSection}>
