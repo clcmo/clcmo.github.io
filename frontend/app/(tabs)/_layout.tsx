@@ -87,8 +87,8 @@ export default function Layout() {
       </Head>
 
       {/* Seu Stack */}
-      <SafeAreaView style={globalStyles.container}>
-        <View style={globalStyles.wrapper}>
+      <SafeAreaView style={globalStyles.shell}>
+        <View style={globalStyles.shellContent}>
           {/* Header/Stack */}
           <Stack
             screenOptions={{

@@ -1,18 +1,18 @@
+// '@/styles/global.ts'
 import { Platform, StyleSheet } from 'react-native';
 import { colors, spacing, typography } from '@/theme';
 
 /**
- * =====================================
- * GLOBAL STYLES — com fonte Lexend
- * =====================================
+ * GLOBAL STYLES (Design System)
+ * - Tipografia: Lexend
+ * - Tokens: colors / spacing / typography
  */
 
 export const globalStyles = StyleSheet.create({
-    // ===== Base =====
+    // ===== Base / Layout =====
     screen: {
         flex: 1,
         backgroundColor: colors.bg,
-        fontFamily: 'Lexend_400Regular', // fonte global
     },
 
     container: {
@@ -24,13 +24,13 @@ export const globalStyles = StyleSheet.create({
         flex: 1,
     },
 
-    scrollView: {
-        flex: 1,
-    },
-
-    wrapper: {
-        flex: 1,
-        flexDirection: 'column',
+    /**
+     * Usado em ScrollView contentContainerStyle
+     * (flexGrow para permitir centralização/rodapé)
+     */
+    page: {
+        flexGrow: 1,
+        backgroundColor: colors.bg,
     },
 
     content: {
@@ -43,38 +43,30 @@ export const globalStyles = StyleSheet.create({
 
     center: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: colors.bg,
     },
 
-    // ===== Feedback =====
-    errorText: {
-        fontFamily: 'Lexend_400Regular',
-        fontSize: typography.size.md,
-        color: colors.danger,
-    },
-
-    // ===== Navbar =====
-    nav: {
-        flexDirection: 'row',
-        gap: 20,
-    },
-
-    navLink: {
-        fontFamily: 'Lexend_400Regular',
-        color: colors.text,
-        fontSize: typography.size.sm,
-    },
-
-    // ===== Hero =====
-    hero: {
-        minHeight: Platform.OS === 'web' ? 600 : 420,
-        justifyContent: 'center',
-        paddingVertical: 60,
+    // ===== Tipografia base =====
+    section: {
+        marginTop: spacing.xxxl,
         width: '100%',
         maxWidth: 1100,
         alignSelf: 'center',
+    },
+
+    sectionTitle: {
+        fontFamily: 'Lexend_700Bold',
+        fontSize: typography.size.xxl,
+        color: colors.text,
+        marginBottom: spacing.xl,
+    },
+
+    numberPrefix: {
+        fontFamily: 'Lexend_700Bold',
+        fontSize: typography.size.lg,
+        color: colors.primary,
     },
 
     greeting: {
@@ -82,6 +74,38 @@ export const globalStyles = StyleSheet.create({
         fontSize: typography.size.md,
         color: colors.primary,
         marginBottom: spacing.sm,
+    },
+
+    paragraph: {
+        fontFamily: 'Lexend_400Regular',
+        fontSize: typography.size.md,
+        color: colors.textMuted,
+        lineHeight: typography.lineHeight.md,
+    },
+
+    // ===== Hero =====
+    heroBg: {
+        width: '100%',
+        minHeight: Platform.OS === 'web' ? 600 : 420,
+        justifyContent: 'center',
+    },
+
+    heroBgImage: {
+        opacity: 0.25,
+    },
+
+    heroOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'rgba(10, 25, 47, 0.65)',
+    },
+
+    heroInner: {
+        width: '100%',
+        maxWidth: 1100,
+        alignSelf: 'center',
+        paddingHorizontal: spacing.lg,
+        paddingVertical: spacing.xxxl,
     },
 
     heroName: {
@@ -107,44 +131,27 @@ export const globalStyles = StyleSheet.create({
         marginBottom: spacing.xxl,
     },
 
-    // ===== Botões =====
+    // ===== Botões (padrão outline) =====
     buttonOutline: {
         borderWidth: 1,
         borderColor: colors.primary,
         paddingVertical: spacing.md,
         paddingHorizontal: spacing.xxl,
-        borderRadius: 4,
+        borderRadius: 6,
         alignSelf: 'flex-start',
     },
 
     buttonOutlineText: {
         fontFamily: 'Lexend_700Bold',
-        color: colors.primary,
         fontSize: typography.size.md,
-    },
-
-    // ===== Seções =====
-    section: {
-        marginTop: 80,
-        width: '100%',
-        maxWidth: 1100,
-        alignSelf: 'center',
-    },
-
-    sectionTitle: {
-        fontFamily: 'Lexend_700Bold',
-        fontSize: typography.size.xxl,
-        color: colors.text,
-        marginBottom: spacing.xxl,
-    },
-
-    numberPrefix: {
-        fontFamily: 'Lexend_700Bold',
         color: colors.primary,
-        fontSize: typography.size.lg,
     },
 
     // ===== About =====
+    aboutContent: {
+        gap: spacing.lg,
+    },
+
     aboutText: {
         fontFamily: 'Lexend_400Regular',
         fontSize: typography.size.md,
@@ -153,14 +160,33 @@ export const globalStyles = StyleSheet.create({
         maxWidth: 650,
     },
 
+    techList: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: spacing.md,
+        marginTop: spacing.md,
+    },
+
     techItem: {
         fontFamily: 'Lexend_400Regular',
-        color: colors.textMuted,
         fontSize: typography.size.sm,
+        color: colors.textMuted,
         width: Platform.OS === 'web' ? '30%' : '45%',
     },
 
-    // ===== Form / Contact =====
+    // ===== Projects CTA =====
+    viewMoreButton: {
+        marginTop: spacing.xxl,
+        alignSelf: 'flex-start',
+    },
+
+    viewMoreText: {
+        fontFamily: 'Lexend_400Regular',
+        fontSize: typography.size.md,
+        color: colors.primary,
+    },
+
+    // ===== Contact =====
     contactDescription: {
         fontFamily: 'Lexend_400Regular',
         fontSize: typography.size.md,
@@ -170,40 +196,41 @@ export const globalStyles = StyleSheet.create({
         maxWidth: 650,
     },
 
-    input: {
-        fontFamily: 'Lexend_400Regular',
-        backgroundColor: colors.surface,
+    submitButton: {
         borderWidth: 1,
-        borderColor: colors.border,
-        borderRadius: 4,
-        padding: spacing.md,
-        color: colors.text,
-        fontSize: typography.size.md,
+        borderColor: colors.primary,
+        paddingVertical: spacing.md,
+        paddingHorizontal: spacing.xxl,
+        borderRadius: 6,
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        backgroundColor: 'transparent',
     },
 
     submitButtonText: {
         fontFamily: 'Lexend_700Bold',
-        color: colors.primary,
         fontSize: typography.size.md,
-    },
-
-    // ===== Footer =====
-    footerText: {
-        fontFamily: 'Lexend_400Regular',
-        color: colors.textMuted,
-        fontSize: typography.size.xs,
-    },
-
-    footerTitle: {
-        fontFamily: 'Lexend_700Bold',
-        fontSize: typography.size.xl,
         color: colors.primary,
     },
 
-    socialLink: {
+    // ===== States =====
+    errorText: {
         fontFamily: 'Lexend_400Regular',
-        color: colors.textMuted,
+        fontSize: typography.size.md,
+        color: colors.danger,
+        textAlign: 'center',
+    },
+
+    // ===== Header/Nav (se precisar) =====
+    nav: {
+        flexDirection: 'row',
+        gap: spacing.lg,
+    },
+
+    navLink: {
+        fontFamily: 'Lexend_400Regular',
         fontSize: typography.size.sm,
+        color: colors.text,
     },
 
     headerRightContainer: {
@@ -212,4 +239,31 @@ export const globalStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+
+    // ===== Aliases (opcional: compatibilidade antiga) =====
+    // Se você ainda usa em alguma tela antiga, pode manter:
+    ctaButton: {
+        borderWidth: 1,
+        borderColor: colors.primary,
+        paddingVertical: spacing.md,
+        paddingHorizontal: spacing.xxl,
+        borderRadius: 6,
+        alignSelf: 'flex-start',
+    },
+    ctaButtonText: {
+        fontFamily: 'Lexend_700Bold',
+        fontSize: typography.size.md,
+        color: colors.primary,
+    },
+
+
+    shell: {
+        flex: 1,
+        backgroundColor: colors.bg,
+    },
+
+    shellContent: {
+        flex: 1,
+    },
+
 });
