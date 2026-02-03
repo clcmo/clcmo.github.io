@@ -78,7 +78,7 @@ export default function BlogScreen() {
         <View style={globalStyles.section}>
           <View style={blogStyles.headerContainer}>
             <View style={blogStyles.iconHeader}>
-              <FontAwesome5 name="blog" size={32} color="#64ffda" />
+              <FontAwesome5 name="rss" size={32} color="#64ffda" />
             </View>
 
             <Text style={globalStyles.sectionTitle}>

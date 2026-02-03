@@ -1,5 +1,4 @@
 // services/wordpressApi.ts
-// Integração específica para WordPress REST API
 
 export interface WordPressPost {
   id: number;
@@ -7,28 +6,28 @@ export interface WordPressPost {
   modified: string;
   slug: string;
   link: string;
-  title: {
-    rendered: string;
-  };
-  content: {
-    rendered: string;
-  };
-  excerpt: {
-    rendered: string;
-  };
+  title: { rendered: string };
+  content: { rendered: string };
+  excerpt: { rendered: string };
   featured_media: number;
   categories: number[];
   tags: number[];
   _embedded?: {
     'wp:featuredmedia'?: Array<{
-      source_url: string;
-      alt_text: string;
+      source_url?: string;
+      media_details?: {
+        sizes?: Record<string, { source_url: string }>;
+      };
+      alt_text?: string;
     }>;
-    'wp:term'?: Array<Array<{
-      id: number;
-      name: string;
-      slug: string;
-    }>>;
+    'wp:term'?: Array<
+      Array<{
+        id: number;
+        name: string;
+        slug: string;
+        taxonomy?: string;
+      }>
+    >;
   };
 }
 
@@ -45,156 +44,112 @@ export interface BlogPost {
 }
 
 class WordPressApi {
-  private baseUrl = 'https://apprendendo.blog/wp-json/wp/v2';
+  // ✅ base correto (sem /posts)
+  private site = 'apprendendo.blog';
+  private baseUrl = `https://public-api.wordpress.com/wp/v2/sites/${this.site}`;
 
-  /**
-   * Busca posts do WordPress
-   * @param perPage - Número de posts por página (padrão: 10)
-   * @param page - Número da página (padrão: 1)
-   */
-  async getPosts(perPage: number = 10, page: number = 1): Promise<BlogPost[]> {
-    try {
-      // _embed inclui dados de mídia e categorias na resposta
-      const response = await fetch(
-        `${this.baseUrl}/posts?per_page=${perPage}&page=${page}&_embed`
-      );
+  private async request<T>(path: string): Promise<T> {
+    const url = `${this.baseUrl}${path}`;
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      // Se tiver cache/CDN, às vezes ajuda:
+      // cache: 'no-store',
+    });
 
-      const posts: WordPressPost[] = await response.json();
-      return posts.map(post => this.transformPost(post));
-    } catch (error) {
-      console.error('Erro ao buscar posts do WordPress:', error);
-      throw error;
+    if (!response.ok) {
+      const text = await response.text().catch(() => '');
+      throw new Error(`HTTP ${response.status} ${response.statusText} - ${text}`);
     }
+
+    return response.json() as Promise<T>;
   }
 
   /**
-   * Busca um post específico por ID
+   * Busca posts
+   */
+  async getPosts(perPage = 10, page = 1): Promise<BlogPost[]> {
+    const posts = await this.request<WordPressPost[]>(
+      `/posts?per_page=${perPage}&page=${page}&_embed`
+    );
+
+    return posts.map((post) => this.transformPost(post));
+  }
+
+  /**
+   * Busca um post por ID
    */
   async getPost(id: string): Promise<BlogPost | null> {
     try {
-      const response = await fetch(`${this.baseUrl}/posts/${id}?_embed`);
-
-      if (!response.ok) {
-        return null;
-      }
-
-      const post: WordPressPost = await response.json();
+      const post = await this.request<WordPressPost>(`/posts/${id}?_embed`);
       return this.transformPost(post);
-    } catch (error) {
-      console.error('Erro ao buscar post:', error);
+    } catch {
       return null;
     }
   }
 
   /**
-   * Busca posts por categoria
+   * Busca posts por categoria (id)
    */
-  async getPostsByCategory(categoryId: number, perPage: number = 10): Promise<BlogPost[]> {
-    try {
-      const response = await fetch(
-        `${this.baseUrl}/posts?categories=${categoryId}&per_page=${perPage}&_embed`
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const posts: WordPressPost[] = await response.json();
-      return posts.map(post => this.transformPost(post));
-    } catch (error) {
-      console.error('Erro ao buscar posts por categoria:', error);
-      return [];
-    }
+  async getPostsByCategory(categoryId: number, perPage = 10): Promise<BlogPost[]> {
+    const posts = await this.request<WordPressPost[]>(
+      `/posts?categories=${categoryId}&per_page=${perPage}&_embed`
+    );
+    return posts.map((post) => this.transformPost(post));
   }
 
   /**
    * Busca categorias
    */
   async getCategories(): Promise<Array<{ id: number; name: string; slug: string }>> {
-    try {
-      const response = await fetch(`${this.baseUrl}/categories?per_page=100`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Erro ao buscar categorias:', error);
-      return [];
-    }
+    return this.request(`/categories?per_page=100`);
   }
 
   /**
-   * Busca posts por tag
+   * Busca posts por tag (id)
    */
-  async getPostsByTag(tagId: number, perPage: number = 10): Promise<BlogPost[]> {
-    try {
-      const response = await fetch(
-        `${this.baseUrl}/posts?tags=${tagId}&per_page=${perPage}&_embed`
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const posts: WordPressPost[] = await response.json();
-      return posts.map(post => this.transformPost(post));
-    } catch (error) {
-      console.error('Erro ao buscar posts por tag:', error);
-      return [];
-    }
+  async getPostsByTag(tagId: number, perPage = 10): Promise<BlogPost[]> {
+    const posts = await this.request<WordPressPost[]>(
+      `/posts?tags=${tagId}&per_page=${perPage}&_embed`
+    );
+    return posts.map((post) => this.transformPost(post));
   }
 
   /**
-   * Busca posts (search)
+   * Search
    */
-  async searchPosts(query: string, perPage: number = 10): Promise<BlogPost[]> {
-    try {
-      const response = await fetch(
-        `${this.baseUrl}/posts?search=${encodeURIComponent(query)}&per_page=${perPage}&_embed`
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const posts: WordPressPost[] = await response.json();
-      return posts.map(post => this.transformPost(post));
-    } catch (error) {
-      console.error('Erro ao buscar posts:', error);
-      return [];
-    }
+  async searchPosts(query: string, perPage = 10): Promise<BlogPost[]> {
+    const posts = await this.request<WordPressPost[]>(
+      `/posts?search=${encodeURIComponent(query)}&per_page=${perPage}&_embed`
+    );
+    return posts.map((post) => this.transformPost(post));
   }
 
   /**
-   * Transforma um post do WordPress para o formato BlogPost
+   * Transforma WordPressPost -> BlogPost
    */
   private transformPost(post: WordPressPost): BlogPost {
-    // Extrai a imagem destacada
-    const imageUrl = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+    // ✅ imagem destacada: tenta source_url e tamanhos
+    const fm = post._embedded?.['wp:featuredmedia']?.[0];
+    const imageUrl =
+      fm?.media_details?.sizes?.medium?.source_url ||
+      fm?.media_details?.sizes?.full?.source_url ||
+      fm?.source_url;
 
-    // Extrai a primeira categoria
+    // ✅ categoria: normalmente vem em wp:term[0]
     const category = post._embedded?.['wp:term']?.[0]?.[0]?.name;
 
-    // Extrai as tags
-    const tags = post._embedded?.['wp:term']?.[1]?.map(tag => tag.name) || [];
+    // ✅ tags: normalmente em wp:term[1]
+    const tags = post._embedded?.['wp:term']?.[1]?.map((t) => t.name) ?? [];
 
-    // Remove HTML do excerpt
-    const excerpt = post.excerpt.rendered
-      .replace(/<[^>]*>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .trim();
+    const excerpt = this.stripHtml(post.excerpt?.rendered ?? '');
 
     return {
-      id: post.id.toString(),
-      title: post.title.rendered,
-      excerpt: excerpt.length > 200 ? excerpt.substring(0, 200) + '...' : excerpt,
-      content: post.content.rendered,
+      id: String(post.id),
+      title: post.title?.rendered ?? '',
+      excerpt: excerpt.length > 200 ? excerpt.slice(0, 200) + '...' : excerpt,
+      content: post.content?.rendered ?? '',
       date: post.date,
       url: post.link,
       imageUrl,
@@ -203,9 +158,6 @@ class WordPressApi {
     };
   }
 
-  /**
-   * Remove HTML tags de uma string
-   */
   private stripHtml(html: string): string {
     return html
       .replace(/<[^>]*>/g, '')
@@ -219,21 +171,3 @@ class WordPressApi {
 }
 
 export const wordpressApi = new WordPressApi();
-
-// Exemplo de uso:
-/*
-import { wordpressApi } from '@/services/wordpressApi';
-
-// Buscar posts
-const posts = await wordpressApi.getPosts(6);
-
-// Buscar por categoria
-const categories = await wordpressApi.getCategories();
-const categoryPosts = await wordpressApi.getPostsByCategory(categories[0].id);
-
-// Buscar um post específico
-const post = await wordpressApi.getPost('123');
-
-// Buscar posts
-const searchResults = await wordpressApi.searchPosts('react native');
-*/
