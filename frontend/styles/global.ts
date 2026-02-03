@@ -526,6 +526,22 @@ export const contactStyles = StyleSheet.create({
 });
 
 export const blogStyles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  iconHeader: {
+    marginRight: 16,
+    width: 60,
+    height: 60,
+    backgroundColor: '#0a192f',
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#64ffda',
+  },
   loadingContainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -545,6 +561,7 @@ export const blogStyles = StyleSheet.create({
     fontSize: 16,
     color: '#ff6b6b',
     textAlign: 'center',
+    marginTop: 16,
     marginBottom: 24,
   },
   retryButton: {
@@ -554,6 +571,8 @@ export const blogStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   retryButtonText: {
     color: '#64ffda',
@@ -579,13 +598,18 @@ export const blogStyles = StyleSheet.create({
   postContent: {
     padding: 20,
   },
+  categoryContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    gap: 6,
+  },
   postCategory: {
     fontSize: 12,
     color: '#64ffda',
     fontWeight: '600',
     textTransform: 'uppercase',
     letterSpacing: 1,
-    marginBottom: 12,
   },
   postTitle: {
     fontSize: 20,
@@ -599,10 +623,27 @@ export const blogStyles = StyleSheet.create({
     lineHeight: 22,
     marginBottom: 16,
   },
+  postFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 12,
+  },
   postDate: {
     fontSize: 12,
     color: '#8892b0',
     fontStyle: 'italic',
+  },
+  readMore: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 8,
+  },
+  readMoreText: {
+    fontSize: 14,
+    color: '#64ffda',
+    fontWeight: '600',
   },
   viewAllContainer: {
     marginTop: 48,
@@ -617,21 +658,31 @@ export const blogStyles = StyleSheet.create({
     borderRadius: 4,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
   },
   viewAllButtonText: {
     color: '#64ffda',
     fontSize: 16,
     fontWeight: '600',
   },
-  viewAllButtonArrow: {
-    color: '#64ffda',
-    fontSize: 20,
-    fontWeight: '600',
-  },
 });
 
 export const donateStyles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  iconHeader: {
+    marginRight: 16,
+    width: 60,
+    height: 60,
+    backgroundColor: '#0a192f',
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#64ffda',
+  },
   toggleContainer: {
     flexDirection: 'row',
     marginTop: 32,
@@ -644,7 +695,10 @@ export const donateStyles = StyleSheet.create({
   toggleButton: {
     flex: 1,
     paddingVertical: 12,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
     backgroundColor: '#112240',
   },
   toggleButtonActive: {
@@ -669,9 +723,16 @@ export const donateStyles = StyleSheet.create({
     padding: 32,
     alignItems: 'center',
   },
-  pixIcon: {
-    fontSize: 64,
+  pixIconContainer: {
+    width: 80,
+    height: 80,
+    backgroundColor: '#0a192f',
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 24,
+    borderWidth: 2,
+    borderColor: '#64ffda',
   },
   pixInfo: {
     width: '100%',
@@ -707,7 +768,9 @@ export const donateStyles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 24,
     borderRadius: 4,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   pixButtonSuccess: {
     backgroundColor: '#64ffda20',
@@ -731,43 +794,33 @@ export const donateStyles = StyleSheet.create({
     padding: 32,
     alignItems: 'center',
   },
+  qrTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 24,
+  },
   qrCodeTitle: {
     fontSize: 20,
     fontWeight: '600',
     color: '#ccd6f6',
-    marginBottom: 24,
   },
-  qrPlaceholder: {
-    width: 250,
-    height: 250,
+  qrWrapper: {
+    padding: 20,
     backgroundColor: 'white',
     borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
     marginBottom: 20,
   },
-  qrPlaceholderIcon: {
-    fontSize: 64,
-    marginBottom: 12,
-  },
-  qrPlaceholderText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#0a192f',
-    marginBottom: 12,
-  },
-  qrPlaceholderSubtext: {
-    fontSize: 12,
-    color: '#666',
-    textAlign: 'center',
-    paddingHorizontal: 20,
-    lineHeight: 18,
-  },
   qrInstruction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 16,
+  },
+  qrInstructionText: {
     fontSize: 14,
     color: '#8892b0',
     textAlign: 'center',
-    marginTop: 16,
   },
   suggestedAmountsContainer: {
     marginTop: 32,
@@ -777,12 +830,16 @@ export const donateStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#172a45',
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 16,
+  },
   suggestedAmountsTitle: {
     fontSize: 16,
     fontWeight: '600',
     color: '#ccd6f6',
-    marginBottom: 16,
-    textAlign: 'center',
   },
   suggestedAmountsGrid: {
     flexDirection: 'row',
@@ -805,11 +862,16 @@ export const donateStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  customAmountText: {
+  customAmount: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
     marginTop: 16,
+  },
+  customAmountText: {
     fontSize: 14,
     color: '#8892b0',
-    textAlign: 'center',
     fontStyle: 'italic',
   },
   benefitsContainer: {
@@ -824,7 +886,6 @@ export const donateStyles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: '#ccd6f6',
-    marginBottom: 20,
   },
   benefitsList: {
     gap: 16,
@@ -833,10 +894,6 @@ export const donateStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
-  },
-  benefitIcon: {
-    fontSize: 24,
-    marginTop: 2,
   },
   benefitText: {
     flex: 1,
@@ -854,6 +911,7 @@ export const donateStyles = StyleSheet.create({
     fontWeight: '600',
     color: '#ccd6f6',
     textAlign: 'center',
+    marginTop: 16,
     marginBottom: 12,
   },
   thankYouSubtext: {

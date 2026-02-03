@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TextInput, Pressable } from 'react-native';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import { analyticsApi } from '@/services/api';
 import { globalStyles, contactStyles } from '@/styles/global';
@@ -14,25 +15,29 @@ export default function ContactScreen() {
       label: 'Email',
       value: 'contato@apprendendo.blog',
       action: () => Linking.openURL('mailto:contato@apprendendo.blog'),
-      icon: '✉️'
+      IconComponent: MaterialIcons,
+      iconName: 'email',
     },
     {
       label: 'TikTok',
       value: '@apprendendo',
       action: () => Linking.openURL('https://tiktok.com/@apprendendo'),
-      icon: '📸'
+      IconComponent: FontAwesome,
+      iconName: 'tiktok',
     },
     {
       label: 'LinkedIn',
       value: 'Camila Leite',
       action: () => Linking.openURL('https://linkedin.com/in/clcmo'),
-      icon: '💼'
+      IconComponent: FontAwesome,
+      iconName: 'linkedin',
     },
     {
       label: 'GitHub',
       value: '@clcmo',
       action: () => Linking.openURL('https://github.com/clcmo'),
-      icon: '💻'
+      IconComponent: FontAwesome,
+      iconName: 'github',
     }
   ];
 
@@ -56,7 +61,7 @@ export default function ContactScreen() {
                 style={contactStyles.contactCard}
                 onPress={method.action}
               >
-                <Text style={contactStyles.contactIcon}>{method.icon}</Text>
+                <Text style={contactStyles.contactIcon}>{method.iconName}</Text>
                 <Text style={contactStyles.contactLabel}>{method.label}</Text>
                 <Text style={contactStyles.contactValue}>{method.value}</Text>
               </Pressable>

@@ -46,5 +46,11 @@
   "engines": {
     "node": ">=22.14.0",
     "npm": ">=10.0.0"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^15.0.3",
+    "react-native-qrcode-svg": "^6.3.21",
+    "react-native-svg": "15.12.1",
+    "react-native-vector-icons": "^10.3.0"
   }
 }
