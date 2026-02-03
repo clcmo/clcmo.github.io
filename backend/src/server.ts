@@ -28,6 +28,18 @@ app.use(express.json());
 app.use(compression());
 app.use(morgan('tiny'));
 
+app.get('/', (_req, res) => {
+  res.json({ 
+    message: 'Gitmilla Projects API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      projects: '/api/projects',
+      analytics: '/api/analytics'
+    }
+  });
+});
+
 app.get('/health', (_req, res) => res.json({ ok: true }));
 app.use('/api/projects', projectsRoutes);
 app.use('/api/analytics', analyticsRoutes); // ← ADICIONE ISSO
