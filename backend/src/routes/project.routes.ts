@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import env from '../config/env';
 
 const router = Router();
@@ -63,7 +63,7 @@ router.get('/', async (_req, res) => {
 
 /**
  * @route   GET /api/projects/:id
- * @desc    Get project by ID
+ * @desc    Get project by ID (MongoDB _id or githubId)
  * @access  Public
  */
 router.get('/:id', async (req, res) => {
@@ -76,7 +76,16 @@ router.get('/:id', async (req, res) => {
     const db = client.db();
     const collection = db.collection('Project');
     
-    const project = await collection.findOne({ _id: id });
+    // Tenta buscar por _id do MongoDB ou por githubId
+    let project;
+    
+    if (ObjectId.isValid(id)) {
+      // Se é um ObjectId válido, busca por _id
+      project = await collection.findOne({ _id: new ObjectId(id) });
+    } else {
+      // Senão, busca por githubId
+      project = await collection.findOne({ githubId: id });
+    }
 
     if (!project) {
       res.status(404).json({ error: 'Project not found' });
