@@ -42,6 +42,27 @@ router.get('/', async (_req, res) => {
   }
 });
 
+/**
+ * @route   POST /api/projects/sync
+ * @desc    Sync projects from GitHub
+ * @access  Public (ou Private se quiser proteger)
+ */
+router.post('/sync', async (_req, res) => {
+  try {
+    // Importar e executar seu script de sync
+    // const { syncProjects } = require('../scripts/syncGitHub');
+    // await syncProjects();
+    
+    res.json({ 
+      message: 'Sync started',
+      note: 'Implemente a lógica de sync aqui'
+    });
+  } catch (error) {
+    console.error('Error syncing projects:', error);
+    res.status(500).json({ error: 'Failed to sync projects' });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;

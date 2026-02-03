@@ -1,15 +1,20 @@
 import { PrismaClient } from '@prisma/client';
 import { Octokit } from '@octokit/rest';
+import env from '../config/env';
 
 const prisma = new PrismaClient();
-const octokit = new Octokit();
 
-async function syncGithubRepos() {
+export async function syncGitHubProjects() {
   try {
     console.log('🔄 Iniciando sincronização com GitHub...');
     
-    // Substitua pelo seu username do GitHub
-    const username = 'clcmo';
+    // Usa o username do .env
+    const username = env.GITHUB_USERNAME;
+    
+    // Cria instância do Octokit com token se disponível
+    const octokit = new Octokit({
+      auth: env.GITHUB_TOKEN || undefined
+    });
     
     // Busca todos os repositórios públicos
     const { data: repos } = await octokit.repos.listForUser({
@@ -30,7 +35,7 @@ async function syncGithubRepos() {
       }
 
       await prisma.project.upsert({
-        where: { githubId: repo.id },
+        where: { githubId: BigInt(repo.id) },
         update: {
           name: repo.name,
           fullName: repo.full_name,
@@ -50,7 +55,7 @@ async function syncGithubRepos() {
           syncedAt: new Date()
         },
         create: {
-          githubId: repo.id,
+          githubId: BigInt(repo.id),
           name: repo.name,
           fullName: repo.full_name,
           htmlUrl: repo.html_url,
@@ -84,6 +89,8 @@ async function syncGithubRepos() {
     });
 
     console.log(`✅ Sincronização concluída! ${count} repositórios salvos.`);
+    
+    return { count, status: 'success' };
   } catch (error) {
     console.error('❌ Erro na sincronização:', error);
     
@@ -95,9 +102,14 @@ async function syncGithubRepos() {
         message: error instanceof Error ? error.message : 'Erro desconhecido'
       }
     });
-  } finally {
-    await prisma.$disconnect();
+    
+    throw error;
   }
 }
 
-syncGithubRepos();
+// Se executar diretamente
+if (require.main === module) {
+  syncGitHubProjects()
+    .then(() => process.exit(0))
+    .catch(() => process.exit(1));
+}
