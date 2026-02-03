@@ -4,23 +4,23 @@ import env from '../config/env';
 
 export async function syncGitHubProjects() {
   let client: MongoClient | null = null;
-  
+
   try {
     console.log('🔄 Iniciando sincronização com GitHub...');
-    
+
     const username = env.GITHUB_USERNAME;
     console.log('👤 Username:', username);
-    
-    // Conecta ao MongoDB diretamente
+
+    // Conecta ao MongoDB
     client = new MongoClient(env.DATABASE_URL);
     await client.connect();
     const db = client.db();
     const collection = db.collection('Project');
-    
+
     const octokit = new Octokit({
       auth: env.GITHUB_TOKEN || undefined
     });
-    
+
     console.log('🔍 Buscando repositórios...');
     const { data: repos } = await octokit.repos.listForUser({
       username,
@@ -34,15 +34,17 @@ export async function syncGitHubProjects() {
 
     for (const repo of repos) {
       console.log(`📝 Processando: ${repo.name}`);
-      
+
       if (!repo.created_at || !repo.pushed_at || !repo.updated_at) {
         console.warn(`⚠️  Pulando ${repo.name} - datas inválidas`);
         continue;
       }
 
       try {
+        const githubId = repo.id.toString();
+
         const projectData = {
-          githubId: repo.id.toString(), // MongoDB usa string para IDs grandes
+          githubId, // MongoDB usa string para IDs grandes
           name: repo.name,
           fullName: repo.full_name,
           htmlUrl: repo.html_url,
@@ -61,13 +63,12 @@ export async function syncGitHubProjects() {
           syncedAt: new Date()
         };
 
-        // Usa updateOne com upsert (não requer replica set)
         await collection.updateOne(
-          { githubId: repo.id.toString() },
+          { githubId },
           { $set: projectData },
           { upsert: true }
         );
-        
+
         count++;
         console.log(`✓ ${repo.name} salvo com sucesso`);
       } catch (error) {
@@ -75,9 +76,23 @@ export async function syncGitHubProjects() {
       }
     }
 
+    // ✅ ESPELHO: remove do Mongo o que não existe mais no GitHub
+    const githubIds = repos.map(r => r.id.toString());
+
+    const deleteResult = await collection.deleteMany({
+      githubId: { $nin: githubIds }
+    });
+
+    console.log(`🧹 Removidos do banco: ${deleteResult.deletedCount ?? 0} projetos que não estão mais no GitHub`);
+
     console.log(`✅ Sincronização concluída! ${count} repositórios salvos.`);
-    
-    return { count, status: 'success', totalFound: repos.length };
+
+    return {
+      count,
+      deleted: deleteResult.deletedCount ?? 0,
+      status: 'success',
+      totalFound: repos.length
+    };
   } catch (error) {
     console.error('❌ Erro na sincronização:', error);
     throw error;
