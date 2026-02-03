@@ -16,7 +16,7 @@ Site pessoal e portfólio profissional desenvolvido com TypeScript, CSS moderno,
 
 - ⚛️ React 18 + TypeScript
 - 🎨 Modo claro/escuro (brevemente de volta)
-- 💰 Sistema de doação via PIX (brevemente de volta)
+- 💰 Sistema de doação via PIX
 - 🔄 Integração com GitHub API (via Railway e Prisma)
 - 🗄️ API própria com banco de dados
 - 📱 Responsive Design
