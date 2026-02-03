@@ -23,7 +23,6 @@ export async function syncGitHubProjects() {
     });
 
     console.log(`📦 Encontrados ${repos.length} repositórios`);
-    console.log('Primeiros repos:', repos.slice(0, 3).map(r => r.name));
 
     let count = 0;
 
@@ -36,46 +35,46 @@ export async function syncGitHubProjects() {
       }
 
       try {
-        await prisma.project.upsert({
-          where: { githubId: BigInt(repo.id) },
-          update: {
-            name: repo.name,
-            fullName: repo.full_name,
-            htmlUrl: repo.html_url,
-            description: repo.description || null,
-            homepage: repo.homepage || null,
-            language: repo.language || null,
-            topics: repo.topics || [],
-            stars: repo.stargazers_count ?? 0,
-            forks: repo.forks_count ?? 0,
-            visibility: repo.visibility || 'public',
-            archived: repo.archived,
-            license: repo.license?.name || null,
-            createdAt: new Date(repo.created_at),
-            pushedAt: new Date(repo.pushed_at),
-            updatedAt: new Date(repo.updated_at),
-            syncedAt: new Date()
-          },
-          create: {
-            githubId: BigInt(repo.id),
-            name: repo.name,
-            fullName: repo.full_name,
-            htmlUrl: repo.html_url,
-            description: repo.description || null,
-            homepage: repo.homepage || null,
-            language: repo.language || null,
-            topics: repo.topics || [],
-            stars: repo.stargazers_count ?? 0,
-            forks: repo.forks_count ?? 0,
-            visibility: repo.visibility || 'public',
-            archived: repo.archived,
-            license: repo.license?.name || null,
-            createdAt: new Date(repo.created_at),
-            pushedAt: new Date(repo.pushed_at),
-            updatedAt: new Date(repo.updated_at),
-            syncedAt: new Date()
-          }
+        // Procura se já existe
+        const existing = await prisma.project.findUnique({
+          where: { githubId: BigInt(repo.id) }
         });
+
+        const projectData = {
+          name: repo.name,
+          fullName: repo.full_name,
+          htmlUrl: repo.html_url,
+          description: repo.description || null,
+          homepage: repo.homepage || null,
+          language: repo.language || null,
+          topics: repo.topics || [],
+          stars: repo.stargazers_count ?? 0,
+          forks: repo.forks_count ?? 0,
+          visibility: repo.visibility || 'public',
+          archived: repo.archived,
+          license: repo.license?.name || null,
+          createdAt: new Date(repo.created_at),
+          pushedAt: new Date(repo.pushed_at),
+          updatedAt: new Date(repo.updated_at),
+          syncedAt: new Date()
+        };
+
+        if (existing) {
+          // Atualiza
+          await prisma.project.update({
+            where: { githubId: BigInt(repo.id) },
+            data: projectData
+          });
+        } else {
+          // Cria novo
+          await prisma.project.create({
+            data: {
+              githubId: BigInt(repo.id),
+              ...projectData
+            }
+          });
+        }
+        
         count++;
         console.log(`✓ ${repo.name} salvo com sucesso`);
       } catch (error) {
