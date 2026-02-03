@@ -19,29 +19,19 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Necessário para semantic-release
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
-      - name: Instalar dependências do root (se existir)
-        run: npm install --if-present
-        continue-on-error: true
-
-      - name: Instalar dependências do frontend
-        working-directory: ./frontend
-        run: npm ci
-
-      - name: Instalar dependências do backend
-        working-directory: ./backend
-        run: npm ci
+      - name: Instalar dependências do root
+        run: npm install
 
       - name: Executar Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
