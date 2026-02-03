@@ -34,11 +34,32 @@ export default function ContactScreen() {
       iconName: 'linkedin',
     },
     {
+      label: 'LinkedIn',
+      value: 'Apprendendo',
+      action: () => Linking.openURL('https://linkedin.com/company/apprendendo'),
+      IconComponent: FontAwesome5,
+      iconName: 'linkedin',
+    },
+    {
       label: 'GitHub',
       value: '@clcmo',
       action: () => Linking.openURL('https://github.com/clcmo'),
       IconComponent: FontAwesome5,
       iconName: 'github',
+    },
+    {
+      label: 'GitHub',
+      value: '@apprendendo',
+      action: () => Linking.openURL('https://github.com/apprendendo'),
+      IconComponent: FontAwesome5,
+      iconName: 'github',
+    },
+    {
+      label: 'YouTube',
+      value: '@apprendendo',
+      action: () => Linking.openURL('https://youtube.com/@apprendendo'),
+      IconComponent: FontAwesome5,
+      iconName: 'youtube',
     }
   ];
 
