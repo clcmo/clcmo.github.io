@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 export const typography = {
   size: {
     xs: 12,
@@ -6,8 +7,8 @@ export const typography = {
     lg: 20,
     xl: 24,
     xxl: 28,
-    heroName: 48,
-    heroTagline: 40,
+    heroName: Platform.OS === 'web' ? 64 : 40,
+    heroTagline: Platform.OS === 'web' ? 40 : 24,
   },
   weight: {
     regular: '400' as const,
@@ -19,5 +20,9 @@ export const typography = {
     lg: 28,
     md: 24,
     sm: 20,
+
+    hero: Platform.OS === 'web' ? 72 : 44,
+    heroTag: Platform.OS === 'web' ? 46 : 30,
+
   },
 };

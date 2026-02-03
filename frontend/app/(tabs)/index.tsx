@@ -23,10 +23,10 @@ const WEB_STARS =
 const heroBgStyle =
   Platform.OS === 'web'
     ? ({
-        backgroundImage: `url(${WEB_STARS})`,
-        backgroundRepeat: 'repeat',
-        backgroundSize: 'auto',
-      } as any)
+      backgroundImage: `url(${WEB_STARS})`,
+      backgroundRepeat: 'repeat',
+      backgroundSize: 'auto',
+    } as any)
     : undefined;
 
 export default function HomeScreen() {
@@ -105,12 +105,15 @@ export default function HomeScreen() {
                 Desenvolvedora Full Stack + Professora
               </Text>
 
-              <Text style={globalStyles.description}>
+              <Text style={globalStyles.heroDescription}>
                 Sou desenvolvedora apaixonada por criar soluções elegantes e funcionais.
                 Especializada em desenvolvimento web e mobile com foco em experiência do usuário.
               </Text>
 
-              <Pressable style={globalStyles.buttonOutline} onPress={goToAbout}>
+              <Pressable
+                style={[globalStyles.buttonOutline, globalStyles.heroCta]}
+                onPress={goToAbout}
+              >
                 <Text style={globalStyles.buttonOutlineText}>Conheça Mais</Text>
               </Pressable>
             </View>

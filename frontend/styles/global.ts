@@ -113,6 +113,7 @@ export const globalStyles = StyleSheet.create({
         fontSize: typography.size.heroName,
         color: colors.text,
         marginBottom: spacing.sm,
+        lineHeight: typography.lineHeight.hero ?? undefined, // opcional
     },
 
     heroTagline: {
@@ -120,6 +121,22 @@ export const globalStyles = StyleSheet.create({
         fontSize: typography.size.heroTagline,
         color: colors.textMuted,
         marginBottom: spacing.lg,
+        lineHeight: typography.lineHeight.heroTag ?? undefined, // opcional
+    },
+
+
+    heroCta: {
+        marginTop: spacing.lg,        // garante espaço acima do botão
+        alignSelf: 'flex-start',
+    },
+
+    heroDescription: {
+        fontFamily: 'Lexend_400Regular',
+        fontSize: typography.size.md,
+        color: colors.textMuted,
+        lineHeight: typography.lineHeight.md,
+        maxWidth: 650,
+        marginBottom: spacing.lg,     // ✅ menor que xxl pra não empurrar o botão
     },
 
     description: {
