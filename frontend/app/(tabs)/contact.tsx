@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 
 import { analyticsApi } from '@/services/api';
-import { globalStyles, contactStyles } from '@/styles/global';
+import { globalStyles } from '@/styles/global';
+import { contactStyles } from '@/styles/contact';
 
 export default function ContactScreen() {
   useEffect(() => {
@@ -22,21 +23,21 @@ export default function ContactScreen() {
       label: 'TikTok',
       value: '@apprendendo',
       action: () => Linking.openURL('https://tiktok.com/@apprendendo'),
-      IconComponent: FontAwesome,
+      IconComponent: FontAwesome5,
       iconName: 'tiktok',
     },
     {
       label: 'LinkedIn',
       value: 'Camila Leite',
       action: () => Linking.openURL('https://linkedin.com/in/clcmo'),
-      IconComponent: FontAwesome,
+      IconComponent: FontAwesome5,
       iconName: 'linkedin',
     },
     {
       label: 'GitHub',
       value: '@clcmo',
       action: () => Linking.openURL('https://github.com/clcmo'),
-      IconComponent: FontAwesome,
+      IconComponent: FontAwesome5,
       iconName: 'github',
     }
   ];

@@ -2,6 +2,9 @@ import React from 'react';
 import { Stack, router } from 'expo-router';
 import Head from "expo-router/head";
 import { Pressable, View, Text, SafeAreaView } from 'react-native';
+import { useFonts, Lexend_400Regular, Lexend_700Bold } from '@expo-google-fonts/lexend';
+import AppLoading from 'expo-app-loading';
+
 import { globalStyles } from '@/styles/global';
 import { SiteFooter } from '@/components/site-footer';
 
@@ -34,6 +37,14 @@ function TopNav() {
 }
 
 export default function Layout() {
+
+  const [fontsLoaded] = useFonts({
+    Lexend_400Regular,
+    Lexend_700Bold,
+  });
+
+  if (!fontsLoaded) return <AppLoading />;
+
   return (
     <>
       {/* ✅ HEAD GLOBAL (vale para todas as rotas) */}
@@ -49,6 +60,8 @@ export default function Layout() {
 
         {/* Favicons */}
         <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
         {/* Open Graph (Facebook, LinkedIn, WhatsApp, etc.) */}
@@ -81,7 +94,7 @@ export default function Layout() {
             screenOptions={{
               headerStyle: { backgroundColor: 'rgba(1, 14, 28, 0.5)' },
               headerTintColor: '#fff',
-              headerTitle: 'Camila L. Oliveira'.toLocaleUpperCase(),
+              headerTitle: '<CL />'.toLocaleUpperCase(),
               headerRight: () => (
                 <View style={globalStyles.headerRightContainer}>
                   <TopNav />

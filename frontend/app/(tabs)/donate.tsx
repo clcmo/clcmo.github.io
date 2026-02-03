@@ -4,7 +4,8 @@ import { MaterialIcons, FontAwesome5, MaterialCommunityIcons } from '@expo/vecto
 import QRCode from 'react-native-qrcode-svg';
 
 import { analyticsApi } from '@/services/api';
-import { globalStyles, donateStyles } from '@/styles/global';
+import { globalStyles } from '@/styles/global';
+import { donateStyles } from '@/styles/donate';
 
 export default function PixScreen() {
   const [copied, setCopied] = useState(false);

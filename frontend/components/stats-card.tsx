@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { statsCardStyles } from '@/styles/global';
+import { statsCardStyles } from '@/styles/stats-card';
 
 interface StatsCardProps {
   title: string;

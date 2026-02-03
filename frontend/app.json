@@ -4,21 +4,34 @@
     "slug": "portfolio",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./public/favicon.ico",
+    "scheme": "portfolio",
     "userInterfaceStyle": "light",
+
+    "icon": "./public/icon.png",
+
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./public/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      }
+    },
+
+    "ios": {
+      "supportsTablet": true
+    },
+
     "splash": {
       "image": "./public/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./public/icon.png"
+      "favicon": "./public/favicon.ico"
     },
-    "plugins": [
-      "expo-router"
-    ],
-    "scheme": "portfolio"
+
+    "plugins": ["expo-router"]
   }
 }

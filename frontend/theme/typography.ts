@@ -16,6 +16,7 @@ export const typography = {
     bold: '700' as const,
   },
   lineHeight: {
+    lg: 28,
     md: 24,
     sm: 20,
   },

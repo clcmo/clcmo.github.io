@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, Linking } from 'react-native';
+import { View, Text, Pressable, Linking } from 'react-native';
 import { Project } from '@/types';
-import { projectCardStyles } from '@/styles/global';
+import { projectCardStyles } from '@/styles/project-card';
 
 interface ProjectCardProps {
   project: Project;

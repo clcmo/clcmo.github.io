@@ -3,7 +3,8 @@ import { View, Text, FlatList, RefreshControl, ActivityIndicator } from 'react-n
 import { projectsApi, analyticsApi } from '@/services/api';
 import { Project } from '@/types';
 import ProjectCard from '@/components/project-card';
-import { globalStyles, projectCardStyles } from '@/styles/global';
+import { globalStyles } from '@/styles/global';
+import { projectCardStyles } from '@/styles/project-card';
 
 export default function ProjectsScreen() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -57,7 +58,7 @@ export default function ProjectsScreen() {
         data={projects}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <ProjectCard project={item} />}
-        contentContainerStyle={globalStyles.list}
+        contentContainerStyle={projectCardStyles.list}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
