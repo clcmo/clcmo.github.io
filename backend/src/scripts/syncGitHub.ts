@@ -9,11 +9,13 @@ export async function syncGitHubProjects() {
     console.log('🔄 Iniciando sincronização com GitHub...');
     
     const username = env.GITHUB_USERNAME;
+    console.log('👤 Username:', username);
     
     const octokit = new Octokit({
       auth: env.GITHUB_TOKEN || undefined
     });
     
+    console.log('🔍 Buscando repositórios...');
     const { data: repos } = await octokit.repos.listForUser({
       username,
       per_page: 100,
@@ -21,10 +23,13 @@ export async function syncGitHubProjects() {
     });
 
     console.log(`📦 Encontrados ${repos.length} repositórios`);
+    console.log('Primeiros repos:', repos.slice(0, 3).map(r => r.name));
 
     let count = 0;
 
     for (const repo of repos) {
+      console.log(`📝 Processando: ${repo.name}`);
+      
       if (!repo.created_at || !repo.pushed_at || !repo.updated_at) {
         console.warn(`⚠️  Pulando ${repo.name} - datas inválidas`);
         continue;
@@ -72,7 +77,7 @@ export async function syncGitHubProjects() {
           }
         });
         count++;
-        console.log(`✓ ${repo.name}`);
+        console.log(`✓ ${repo.name} salvo com sucesso`);
       } catch (error) {
         console.error(`❌ Erro ao salvar ${repo.name}:`, error);
       }
@@ -80,7 +85,7 @@ export async function syncGitHubProjects() {
 
     console.log(`✅ Sincronização concluída! ${count} repositórios salvos.`);
     
-    return { count, status: 'success' };
+    return { count, status: 'success', totalFound: repos.length };
   } catch (error) {
     console.error('❌ Erro na sincronização:', error);
     throw error;
