@@ -16,7 +16,7 @@ function TopNav() {
       <Pressable onPress={() => router.replace('/')}>
         <Text style={globalStyles.navLink}>Sobre</Text>
       </Pressable>
-      <Pressable onPress={() => router.replace('https://apprendendo.blog')}>
+      <Pressable onPress={() => router.replace('/blog')}>
         <Text style={globalStyles.navLink}>Blog</Text>
       </Pressable>
       <Pressable onPress={() => router.replace('/projects')}>

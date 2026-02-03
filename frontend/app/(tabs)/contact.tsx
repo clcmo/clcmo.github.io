@@ -2,31 +2,39 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TextInput, Pressable } from 'react-native';
 
 import { analyticsApi } from '@/services/api';
-import { globalStyles } from '@/styles/global';
+import { globalStyles, contactStyles } from '@/styles/global';
 
 export default function ContactScreen() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-
   useEffect(() => {
     analyticsApi.trackVisit('/contact').catch(console.error);
   }, []);
 
-  const handleSubmit = async () => {
-    if (!formData.name || !formData.email || !formData.message) {
-      alert('Por favor, preencha todos os campos');
-      return;
+  const contactMethods = [
+    {
+      label: 'Email',
+      value: 'contato@apprendendo.blog',
+      action: () => Linking.openURL('mailto:contato@apprendendo.blog'),
+      icon: '✉️'
+    },
+    {
+      label: 'TikTok',
+      value: '@apprendendo',
+      action: () => Linking.openURL('https://tiktok.com/@apprendendo'),
+      icon: '📸'
+    },
+    {
+      label: 'LinkedIn',
+      value: 'Camila Leite',
+      action: () => Linking.openURL('https://linkedin.com/in/clcmo'),
+      icon: '💼'
+    },
+    {
+      label: 'GitHub',
+      value: '@clcmo',
+      action: () => Linking.openURL('https://github.com/clcmo'),
+      icon: '💻'
     }
-
-    setFormStatus('sending');
-
-    // simulação de envio
-    setTimeout(() => {
-      setFormStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setFormStatus('idle'), 3000);
-    }, 1500);
-  };
+  ];
 
   return (
     <View style={globalStyles.screen}>
@@ -38,50 +46,30 @@ export default function ContactScreen() {
 
           <Text style={globalStyles.contactDescription}>
             Estou sempre aberta a novas oportunidades e colaborações.
-            Se você tem um projeto em mente ou apenas quer dizer olá, sinta-se à vontade para me enviar uma mensagem!
+            Se você tem um projeto em mente ou apenas quer dizer olá, escolha a melhor forma de me contatar!
           </Text>
 
-          <View style={globalStyles.form}>
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Nome"
-              placeholderTextColor="#8892b0"
-              value={formData.name}
-              onChangeText={(text) => setFormData({ ...formData, name: text })}
-            />
+          <View style={contactStyles.contactGrid}>
+            {contactMethods.map((method, index) => (
+              <Pressable
+                key={index}
+                style={contactStyles.contactCard}
+                onPress={method.action}
+              >
+                <Text style={contactStyles.contactIcon}>{method.icon}</Text>
+                <Text style={contactStyles.contactLabel}>{method.label}</Text>
+                <Text style={contactStyles.contactValue}>{method.value}</Text>
+              </Pressable>
+            ))}
+          </View>
 
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Email"
-              placeholderTextColor="#8892b0"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={formData.email}
-              onChangeText={(text) => setFormData({ ...formData, email: text })}
-            />
-
-            <TextInput
-              style={[globalStyles.input, globalStyles.textArea]}
-              placeholder="Mensagem"
-              placeholderTextColor="#8892b0"
-              multiline
-              numberOfLines={6}
-              value={formData.message}
-              onChangeText={(text) => setFormData({ ...formData, message: text })}
-            />
-
+          <View style={contactStyles.emailSection}>
+            <Text style={contactStyles.emailLabel}>Ou envie um email direto:</Text>
             <Pressable
-              style={[globalStyles.submitButton, formStatus === 'sending' && globalStyles.submitButtonDisabled]}
-              onPress={handleSubmit}
-              disabled={formStatus === 'sending'}
+              style={contactStyles.emailButton}
+              onPress={() => Linking.openURL('mailto:contato@apprendendo.blog')}
             >
-              <Text style={globalStyles.submitButtonText}>
-                {formStatus === 'sending'
-                  ? 'Enviando...'
-                  : formStatus === 'success'
-                    ? 'Enviado! ✓'
-                    : 'Enviar Mensagem'}
-              </Text>
+              <Text style={contactStyles.emailButtonText}>Enviar Email</Text>
             </Pressable>
           </View>
         </View>
