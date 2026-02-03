@@ -5,13 +5,11 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 permissions:
   contents: write
-
+  issues: write
+  pull-requests: write
 
 jobs:
   release:
@@ -19,18 +17,31 @@ jobs:
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v3
-
-      - name: Instalar Node.js
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
         with:
-          node-version: '24.10.0'
+          fetch-depth: 0  # Necessário para semantic-release
+          persist-credentials: false
 
-      - name: Instalar dependências
-        run: npm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências do root (se existir)
+        run: npm install --if-present
+        continue-on-error: true
+
+      - name: Instalar dependências do frontend
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Instalar dependências do backend
+        working-directory: ./backend
+        run: npm ci
 
       - name: Executar Semantic Release
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release

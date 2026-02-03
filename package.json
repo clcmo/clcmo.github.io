@@ -1,19 +1,39 @@
 {
   "name": "camiladev",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Portfolio e API de projetos GitHub",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
-    "test": "jest",
-    "type-check": "tsc --noEmit",
-    "build": "npm run type-check && rm -rf dist && mkdir -p dist && npx esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --platform=browser --target=es2017 --minify --sourcemap && cp -a src/index.html src/assets src/CNAME dist/ || true",
-    "dev": "npx esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --platform=browser --servedir=dist --sourcemap --watch",
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "type-check": "npm run type-check --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
     "semantic-release": "semantic-release"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "keywords": [
+    "portfolio",
+    "github",
+    "api",
+    "react",
+    "expo",
+    "typescript"
+  ],
+  "author": "Camila Oliveira <clcmo>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clcmo/clcmo.github.io.git"
+  },
+  "bugs": {
+    "url": "https://github.com/clcmo/clcmo.github.io/issues"
+  },
+  "homepage": "https://clcmo.github.io",
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
@@ -22,22 +42,12 @@
     "@semantic-release/github": "^11.0.6",
     "@semantic-release/npm": "^12.0.2",
     "@semantic-release/release-notes-generator": "^14.1.0",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.9.1",
-    "@types/qrcode": "^1.5.6",
-    "dotenv-cli": "^10.0.0",
-    "esbuild": "^0.25.11",
-    "jest": "^29.7.0",
+    "@types/node": "^20.11.0",
     "semantic-release": "^25.0.1",
-    "ts-jest": "^29.4.5",
-    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/clcmo/clcmo.github.io.git"
-  },
-  "dependencies": {
-    "qrcode": "^1.5.4"
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   }
 }

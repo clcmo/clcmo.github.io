@@ -4,6 +4,7 @@ run-name: ${{ github.actor }} está construindo e fazendo deploy para GitHub Pag
 on:
   push:
     branches: [main]
+  workflow_dispatch: 
 
 permissions:
   contents: read
@@ -36,12 +37,16 @@ jobs:
         working-directory: ./frontend
         run: npx expo export -p web
         env:
-          # ✅ URL da sua API (hospedada fora do Pages)
           EXPO_PUBLIC_API_URL: ${{ secrets.EXPO_PUBLIC_API_URL }}
           EXPO_PUBLIC_GITHUB_USERNAME: clcmo
+          NODE_ENV: production
 
       - name: Verificar conteúdo do dist
-        run: ls -la frontend/dist
+        run: |
+          echo "📦 Conteúdo do dist:"
+          ls -la frontend/dist
+          echo "📄 Arquivos principais:"
+          find frontend/dist -name "*.html" -o -name "*.js" | head -10
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v4
