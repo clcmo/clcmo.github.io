@@ -42,24 +42,32 @@ router.get('/', async (_req, res) => {
   }
 });
 
+
 /**
  * @route   POST /api/projects/sync
  * @desc    Sync projects from GitHub
- * @access  Public (ou Private se quiser proteger)
+ * @access  Public
  */
 router.post('/sync', async (_req, res) => {
   try {
-    // Importar e executar seu script de sync
-    // const { syncProjects } = require('../scripts/syncGitHub');
-    // await syncProjects();
+    // Importa a função de sync
+    const syncModule = await import('../scripts/syncGitHub');
+    const { syncGitHubProjects } = syncModule;
+    
+    console.log('🚀 Iniciando sincronização via API...');
+    const result = await syncGitHubProjects();
     
     res.json({ 
-      message: 'Sync started',
-      note: 'Implemente a lógica de sync aqui'
+      message: 'Sync completed successfully',
+      projectsSynced: result.count,
+      status: result.status
     });
   } catch (error) {
-    console.error('Error syncing projects:', error);
-    res.status(500).json({ error: 'Failed to sync projects' });
+    console.error('❌ Error syncing projects:', error);
+    res.status(500).json({ 
+      error: 'Failed to sync projects',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 });
 
