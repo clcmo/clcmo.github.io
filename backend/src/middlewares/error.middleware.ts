@@ -1,17 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 
-export const errorHandler = (
-  err: Error,
-  _req: Request,
-  res: Response,
-  _next: NextFunction
-) => {
-  console.error('Error:', err);
-
-  const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
-
-  res.status(statusCode).json({
-    error: err.message,
-    stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack
+export function errorHandler(err: any, _req: Request, res: Response, _next: NextFunction) {
+  console.error(err);
+  const status = err.status || 500;
+  res.status(status).json({
+    message: err.message || 'Erro interno',
+    ...(process.env.NODE_ENV !== 'production' ? { stack: err.stack } : {})
   });
-};
+}

@@ -12,8 +12,9 @@ import { errorHandler } from './middlewares/error.middleware';
 
 const app = express();
 
-// ✅ use array para o cors() (compatível)
-// ✅ use Set para checagem rápida no middleware manual
+// Para IP correto atrás do Railway/proxy
+app.set('trust proxy', 1);
+
 const allowedOriginsArray = [
   'http://localhost:8081',
   'http://localhost:19006',
@@ -25,8 +26,8 @@ const allowedOriginsArray = [
 const allowedOriginsSet = new Set(allowedOriginsArray);
 
 /**
- * ✅ Middleware "na marra" para garantir CORS no preflight
- * Coloque ANTES do helmet/cors para evitar interferências.
+ * Middleware "na marra" para garantir CORS no preflight
+ * (foi esse que fez aparecer o Access-Control-Allow-Origin)
  */
 app.use((req, res, next) => {
   const origin = req.headers.origin;
@@ -36,39 +37,39 @@ app.use((req, res, next) => {
     res.setHeader('Vary', 'Origin');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-
-    // ✅ Se você NÃO usa cookies, mantenha isso fora:
-    // res.setHeader('Access-Control-Allow-Credentials', 'true');
   }
 
-  // ✅ Responde preflight imediatamente
   if (req.method === 'OPTIONS') return res.sendStatus(204);
-
   next();
 });
 
-// ✅ Agora pode aplicar helmet
 app.use(helmet());
 
-// ✅ CORS normal (para as requisições "reais", não só OPTIONS)
 app.use(cors({
   origin: allowedOriginsArray,
-  credentials: false, // ✅ deixe false se você não usa cookies
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization'],
+  credentials: false, // ok se você não usa cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.options('*', cors({
   origin: allowedOriginsArray,
   credentials: false,
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(express.json());
-app.use(compression());
-app.use(morgan('tiny'));
 
+// Logs e compressão para todas as rotas
+app.use(morgan('tiny'));
+app.use(compression());
+
+// Rotas
+app.use('/api/projects', projectsRoutes);
+app.use('/api/analytics', analyticsRoutes);
+
+// Endpoints básicos
 app.get('/', (_req, res) => {
   res.json({
     message: 'Gitmilla Projects API',
@@ -76,19 +77,16 @@ app.get('/', (_req, res) => {
     endpoints: {
       health: '/health',
       projects: '/api/projects',
-      analytics: '/api/analytics'
-    }
+      analytics: '/api/analytics',
+    },
   });
 });
 
-// ✅ marcador de build (ótimo!)
 app.get('/health', (_req, res) =>
   res.json({ ok: true, build: 'cors-fix-2026-02-03-1519' })
 );
 
-app.use('/api/projects', projectsRoutes);
-app.use('/api/analytics', analyticsRoutes);
-
+// Handler de erro (sempre por último)
 app.use(errorHandler);
 
 app.listen(env.PORT, '0.0.0.0', () => {
