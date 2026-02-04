@@ -216,4 +216,36 @@ export const projectCardStyles = StyleSheet.create({
     lineHeight: typography.lineHeight.md,
     maxWidth: 520,
   },
+
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: spacing.xxxl || 60,
+  },
+  loadingText: {
+    marginTop: spacing.md || 16,
+    fontSize: 16,
+    color: colors.textMuted,
+    fontFamily: 'Lexend_400Regular',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: spacing.xxxl || 60,
+  },
+  
+  errorText: {
+    marginTop: spacing.md || 16,
+    fontSize: 16,
+    color: '#ff6b6b',
+    textAlign: 'center',
+    fontFamily: 'Lexend_400Regular',
+    paddingHorizontal: spacing.lg || 20,
+  },
+  projectsContainer: {
+    marginTop: spacing.lg || 24,
+    gap: spacing.lg || 24,
+  },
 });

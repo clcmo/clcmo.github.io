@@ -15,7 +15,7 @@ export default function PixScreen() {
     analyticsApi.trackVisit('/pix').catch(console.error);
   }, []);
 
-  // Substitua pelos seus dados reais
+  // Dados do Pix
   const pixKey = 'camila.leite.oliveira@gmail.com';
   const pixName = 'Camila Leite Oliveira';
   const pixCity = 'Sao Paulo';
@@ -96,23 +96,23 @@ export default function PixScreen() {
 
   return (
     <View style={globalStyles.screen}>
-      <ScrollView style={globalStyles.scroll} contentContainerStyle={globalStyles.content}>
+      <ScrollView 
+        style={globalStyles.scroll} 
+        contentContainerStyle={globalStyles.content}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={globalStyles.section}>
-          <View style={donateStyles.headerContainer}>
-            <View style={donateStyles.iconHeader}>
-              <FontAwesome5 name="hand-holding-usd" size={28} color="#64ffda" />
-            </View>
-            <Text style={globalStyles.sectionTitle}>
-              <Text style={globalStyles.numberPrefix}>04. </Text>Apoie Meu Trabalho
-            </Text>
-          </View>
+          {/* Cabeçalho */}
+          <Text style={globalStyles.sectionTitle}>
+            <Text style={globalStyles.numberPrefix}>04. </Text>Apoie Meu Trabalho
+          </Text>
 
           <Text style={globalStyles.contactDescription}>
             Se você gosta do conteúdo que produzo e quer apoiar meu trabalho,
             pode fazer uma contribuição via Pix. Sua ajuda é muito apreciada! 💚
           </Text>
 
-          {/* Opção de visualização */}
+          {/* Toggle Chave/QR Code */}
           <View style={donateStyles.toggleContainer}>
             <Pressable
               style={[donateStyles.toggleButton, !showQRCode && donateStyles.toggleButtonActive]}
@@ -206,7 +206,7 @@ export default function PixScreen() {
             </View>
           )}
 
-          {/* Valores sugeridos */}
+          {/* Valores Sugeridos */}
           <View style={donateStyles.suggestedAmountsContainer}>
             <View style={donateStyles.sectionHeader}>
               <MaterialCommunityIcons name="cash-multiple" size={24} color="#64ffda" />
@@ -265,7 +265,7 @@ export default function PixScreen() {
             </View>
           </View>
 
-          {/* Mensagem de agradecimento */}
+          {/* Mensagem de Agradecimento */}
           <View style={donateStyles.thankYouContainer}>
             <MaterialIcons name="favorite" size={32} color="#ff6b9d" />
             <Text style={donateStyles.thankYouText}>

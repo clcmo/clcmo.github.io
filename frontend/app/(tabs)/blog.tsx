@@ -1,4 +1,3 @@
-// BlogScreen.tsx
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, Pressable, Linking, ActivityIndicator, Image } from 'react-native';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -8,7 +7,6 @@ import { analyticsApi } from '@/services/api';
 import { wordpressApi } from '@/services/wpApi';
 import { globalStyles } from '@/styles/global';
 import { blogStyles } from '@/styles/blog';
-
 
 // (Opcional) decodifica entidades HTML simples que às vezes vêm do WP
 const decodeHtml = (text: string) =>
@@ -36,11 +34,8 @@ export default function BlogScreen() {
   const fetchBlogPosts = async () => {
     try {
       setLoading(true);
-
-      // ✅ Pega posts direto do WordPress REST API (/wp-json/wp/v2/posts?per_page=...&_embed)
       const wpPosts = await wordpressApi.getPosts(6, 1);
 
-      // Normaliza para o formato usado na tela
       const transformed: BlogPost[] = wpPosts.map((p) => ({
         id: p.id,
         title: decodeHtml(p.title),
@@ -66,29 +61,30 @@ export default function BlogScreen() {
 
   return (
     <View style={globalStyles.screen}>
-      <ScrollView style={globalStyles.scroll} contentContainerStyle={globalStyles.content}>
+      <ScrollView 
+        style={globalStyles.scroll} 
+        contentContainerStyle={globalStyles.content}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={globalStyles.section}>
-          <View style={blogStyles.headerContainer}>
-            <View style={blogStyles.iconHeader}>
-              <FontAwesome5 name="rss" size={32} color="#64ffda" />
-            </View>
-
-            <Text style={globalStyles.sectionTitle}>
-              <Text style={globalStyles.numberPrefix}>01. </Text>Blog
-            </Text>
-          </View>
+          {/* Cabeçalho */}
+          <Text style={globalStyles.sectionTitle}>
+            <Text style={globalStyles.numberPrefix}>01. </Text>Blog
+          </Text>
 
           <Text style={globalStyles.contactDescription}>
             Compartilho conhecimento sobre desenvolvimento, tecnologia e aprendizado contínuo.
             Confira os últimos artigos do apprendendo.blog!
           </Text>
 
+          {/* Estado de Loading */}
           {loading ? (
             <View style={blogStyles.loadingContainer}>
               <ActivityIndicator size="large" color="#64ffda" />
               <Text style={blogStyles.loadingText}>Carregando posts...</Text>
             </View>
           ) : error ? (
+            /* Estado de Erro */
             <View style={blogStyles.errorContainer}>
               <MaterialIcons name="error-outline" size={48} color="#ff6b6b" />
               <Text style={blogStyles.errorText}>{error}</Text>
@@ -100,11 +96,20 @@ export default function BlogScreen() {
             </View>
           ) : (
             <>
+              {/* Lista de Posts */}
               <View style={blogStyles.postsContainer}>
                 {posts.map((post) => (
-                  <Pressable key={post.id} style={blogStyles.postCard} onPress={() => openPost(post.url)}>
+                  <Pressable 
+                    key={post.id} 
+                    style={blogStyles.postCard} 
+                    onPress={() => openPost(post.url)}
+                  >
                     {!!post.imageUrl && (
-                      <Image source={{ uri: post.imageUrl }} style={blogStyles.postImage} resizeMode="cover" />
+                      <Image 
+                        source={{ uri: post.imageUrl }} 
+                        style={blogStyles.postImage} 
+                        resizeMode="cover" 
+                      />
                     )}
 
                     <View style={blogStyles.postContent}>
@@ -138,6 +143,7 @@ export default function BlogScreen() {
                 ))}
               </View>
 
+              {/* Botão Ver Todos */}
               <View style={blogStyles.viewAllContainer}>
                 <Pressable style={blogStyles.viewAllButton} onPress={openBlog}>
                   <FontAwesome5 name="wordpress" size={20} color="#64ffda" style={{ marginRight: 12 }} />

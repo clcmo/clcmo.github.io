@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, ActivityIndicator, StyleSheet } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
+
 import { projectsApi, analyticsApi } from '@/services/api';
 import { Project } from '@/types';
 import ProjectCard from '@/components/project-card';
 import { globalStyles } from '@/styles/global';
 import { projectCardStyles } from '@/styles/project-card';
+import { colors } from '@/theme';
 
 export default function ProjectsScreen() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -12,13 +15,18 @@ export default function ProjectsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    analyticsApi.trackVisit('/projects').catch(console.error);
+    loadProjects();
+  }, []);
+
   const loadProjects = async () => {
     try {
       setError(null);
       const data = await projectsApi.getAll();
       setProjects(data.sort((a, b) => b.stars - a.stars));
     } catch (err) {
-      setError('Erro ao carregar projetos');
+      setError('Não foi possível carregar os projetos.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -26,51 +34,61 @@ export default function ProjectsScreen() {
     }
   };
 
-  useEffect(() => {
-    loadProjects();
-    analyticsApi.trackVisit('/projects').catch(console.error);
-  }, []);
-
   const onRefresh = () => {
     setRefreshing(true);
     loadProjects();
   };
 
-  if (loading) {
-    return (
-      <View style={globalStyles.center}>
-        <ActivityIndicator size="large" color="#0366d6" />
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={globalStyles.center}>
-        <Text style={globalStyles.errorText}>{error}</Text>
-      </View>
-    );
-  }
-
   return (
-    <View style={globalStyles.container}>
-      <FlatList
-        data={projects}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <ProjectCard project={item} />}
-        contentContainerStyle={projectCardStyles.list}
+    <View style={globalStyles.screen}>
+      <ScrollView
+        style={globalStyles.scroll}
+        contentContainerStyle={globalStyles.content}
+        showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl 
+            refreshing={refreshing} 
+            onRefresh={onRefresh}
+            tintColor={colors.primary}
+            colors={[colors.primary]}
+          />
         }
-        ListHeaderComponent={
-          <View style={projectCardStyles.headerRow}>
-            <Text style={globalStyles.sectionTitle}>
-              <Text style={globalStyles.numberPrefix}>02. </Text>Projetos
-            </Text>
-            <Text style={globalStyles.contactDescription}>São {projects.length} repositórios disponíveis, para conhecer os projetos e ideias realizadas</Text>
-          </View>
-        }
-      />
+      >
+        <View style={globalStyles.section}>
+          {/* Cabeçalho */}
+          <Text style={globalStyles.sectionTitle}>
+            <Text style={globalStyles.numberPrefix}>02. </Text>Projetos
+          </Text>
+
+          <Text style={globalStyles.contactDescription}>
+            {loading 
+              ? 'Carregando projetos...' 
+              : `${projects.length} repositórios disponíveis para conhecer os projetos e ideias realizadas.`
+            }
+          </Text>
+
+          {/* Estado de Loading */}
+          {loading ? (
+            <View style={projectCardStyles.loadingContainer}>
+              <ActivityIndicator size="large" color={colors.primary} />
+              <Text style={projectCardStyles.loadingText}>Carregando projetos...</Text>
+            </View>
+          ) : error ? (
+            /* Estado de Erro */
+            <View style={projectCardStyles.errorContainer}>
+              <MaterialIcons name="error-outline" size={48} color="#ff6b6b" />
+              <Text style={projectCardStyles.errorText}>{error}</Text>
+            </View>
+          ) : (
+            /* Lista de Projetos */
+            <View style={projectCardStyles.projectsContainer}>
+              {projects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 }

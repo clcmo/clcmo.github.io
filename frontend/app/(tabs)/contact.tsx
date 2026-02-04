@@ -56,7 +56,11 @@ export default function ContactScreen() {
 
   return (
     <View style={globalStyles.screen}>
-      <ScrollView style={globalStyles.scroll} contentContainerStyle={globalStyles.content}>
+      <ScrollView 
+        style={globalStyles.scroll} 
+        contentContainerStyle={globalStyles.content}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={globalStyles.section}>
           {/* Cabeçalho */}
           <Text style={globalStyles.sectionTitle}>
@@ -77,7 +81,7 @@ export default function ContactScreen() {
           {/* Seção Profissional */}
           {renderContactSection('Profissional', professionalContacts, false)}
 
-          {/* CTA de Email (mantido do original) */}
+          {/* CTA de Email */}
           {emailContacts.length > 0 && (
             <View style={contactStyles.emailSection}>
               <Text style={contactStyles.emailLabel}>Ou envie um email direto:</Text>
