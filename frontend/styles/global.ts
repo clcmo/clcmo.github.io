@@ -1,6 +1,7 @@
 // '@/styles/global.ts'
 import { Platform, StyleSheet } from 'react-native';
 import { colors, spacing, typography } from '@/theme';
+import { Fonts } from '@/constants/theme';
 
 /**
  * GLOBAL STYLES (Design System)
@@ -283,4 +284,17 @@ export const globalStyles = StyleSheet.create({
         flex: 1,
     },
 
+});
+
+export const menuStyles = StyleSheet.create({
+    headerStyle: {
+        backgroundColor: 'rgba(10, 25, 47, 0.7)',
+    },
+    headerTintColor: { color: colors.white },
+    headerTitleStyle: {
+        fontFamily: 'Lexend_700Bold',
+        fontWeight: '700',
+        fontSize: typography.size.lg,
+        color: colors.white
+    },
 });

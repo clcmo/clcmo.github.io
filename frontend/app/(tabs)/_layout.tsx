@@ -1,11 +1,12 @@
 import React from 'react';
 import { Stack, router } from 'expo-router';
 import Head from "expo-router/head";
-import { Pressable, View, Text, SafeAreaView } from 'react-native';
+import { Pressable, View, Text } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Lexend_400Regular, Lexend_700Bold } from '@expo-google-fonts/lexend';
 import AppLoading from 'expo-app-loading';
 
-import { globalStyles } from '@/styles/global';
+import { globalStyles, menuStyles } from '@/styles/global';
 import { SiteFooter } from '@/components/site-footer';
 
 const SITE_URL = 'https://dev.camilaloliveira.me';
@@ -46,7 +47,7 @@ export default function Layout() {
   if (!fontsLoaded) return <AppLoading />;
 
   return (
-    <>
+    <SafeAreaProvider>
       {/* ✅ HEAD GLOBAL (vale para todas as rotas) */}
       <Head>
         {/* Básico */}
@@ -74,6 +75,7 @@ export default function Layout() {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Portfólio de Camila L. Oliveira" />
+        <meta property="og:type" content="website"></meta>
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -82,24 +84,26 @@ export default function Layout() {
         <meta name="twitter:image" content={OG_IMAGE} />
 
         {/* Opcional: se você tiver @ no Twitter/X */}
-        {/* <meta name="twitter:site" content="@seuuser" /> */}
-        {/* <meta name="twitter:creator" content="@seuuser" /> */}
+        <meta name="twitter:site" content="@millaloliveira" />
+        <meta name="twitter:creator" content="@millaloliveira" />
       </Head>
 
       {/* Seu Stack */}
-      <SafeAreaView style={globalStyles.shell}>
+      <SafeAreaView style={globalStyles.shell} edges={['top', 'left', 'right']}>
         <View style={globalStyles.shellContent}>
           {/* Header/Stack */}
           <Stack
             screenOptions={{
-              headerStyle: { backgroundColor: 'rgba(1, 14, 28, 0.5)' },
-              headerTintColor: '#fff',
-              headerTitle: '<CL />'.toLocaleUpperCase(),
+              headerStyle: menuStyles.headerStyle,
+              headerTitleStyle: menuStyles.headerTitleStyle,
+              headerTitle: '<CL />',
               headerRight: () => (
                 <View style={globalStyles.headerRightContainer}>
                   <TopNav />
                 </View>
               ),
+              headerTransparent: true,
+              headerBlurEffect: 'dark',
             }}
           />
 
@@ -107,6 +111,6 @@ export default function Layout() {
           <SiteFooter />
         </View>
       </SafeAreaView>
-    </>
+    </SafeAreaProvider>
   );
 }
