@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/clcmo/clcmo.github.io/compare/v2.2.2...v2.3.0) (2026-02-04)
+
+
+### Features
+
+* Create Interfaces for blog and contact ([4c01bdc](https://github.com/clcmo/clcmo.github.io/commit/4c01bdc9abf1472914caa608b991345083c541d7))
+
 ## [2.2.2](https://github.com/clcmo/clcmo.github.io/compare/v2.2.1...v2.2.2) (2026-02-03)
 
 ## [2.2.1](https://github.com/clcmo/clcmo.github.io/compare/v2.2.0...v2.2.1) (2026-02-03)
