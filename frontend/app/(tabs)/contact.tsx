@@ -68,7 +68,7 @@ export default function ContactScreen() {
       <ScrollView style={globalStyles.scroll} contentContainerStyle={globalStyles.content}>
         <View style={globalStyles.section}>
           <Text style={globalStyles.sectionTitle}>
-            <Text style={globalStyles.numberPrefix}>01. </Text>Entre em Contato
+            <Text style={globalStyles.numberPrefix}>03. </Text>Entre em Contato
           </Text>
 
           <Text style={globalStyles.contactDescription}>

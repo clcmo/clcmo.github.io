@@ -67,7 +67,7 @@ export default function ProjectsScreen() {
             <Text style={globalStyles.sectionTitle}>
                   <Text style={globalStyles.numberPrefix}>02. </Text>Projetos
                 </Text>
-            <Text style={globalStyles.contactDescription}>São {projects.length} repositórios</Text>
+            <Text style={globalStyles.contactDescription}>São {projects.length} repositórios disponíveis, para conhecer os projetos e ideias realizadas</Text>
           </View>
         }
       />

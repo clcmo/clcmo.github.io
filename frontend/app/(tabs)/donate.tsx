@@ -103,7 +103,7 @@ export default function PixScreen() {
               <FontAwesome5 name="hand-holding-usd" size={28} color="#64ffda" />
             </View>
             <Text style={globalStyles.sectionTitle}>
-              <Text style={globalStyles.numberPrefix}>03. </Text>Apoie Meu Trabalho
+              <Text style={globalStyles.numberPrefix}>04. </Text>Apoie Meu Trabalho
             </Text>
           </View>
 
