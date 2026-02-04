@@ -3,20 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, Pressable, Linking, ActivityIndicator, Image } from 'react-native';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
+import { BlogPost } from '@/interface/blog';
 import { analyticsApi } from '@/services/api';
 import { wordpressApi } from '@/services/wpApi';
 import { globalStyles } from '@/styles/global';
 import { blogStyles } from '@/styles/blog';
 
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  url: string;
-  imageUrl?: string;
-  category?: string;
-}
 
 // (Opcional) decodifica entidades HTML simples que às vezes vêm do WP
 const decodeHtml = (text: string) =>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
-import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { View, Text, ScrollView, Pressable } from 'react-native';
 
+import { contactMethods, getContactsByType } from '@/interface/contact';
 import { analyticsApi } from '@/services/api';
 import { globalStyles } from '@/styles/global';
 import { contactStyles } from '@/styles/contact';
@@ -11,62 +11,54 @@ export default function ContactScreen() {
     analyticsApi.trackVisit('/contact').catch(console.error);
   }, []);
 
-  const contactMethods = [
-    {
-      label: 'Email',
-      value: 'contato@apprendendo.blog',
-      action: () => Linking.openURL('mailto:contato@apprendendo.blog'),
-      IconComponent: MaterialIcons,
-      iconName: 'email',
-    },
-    {
-      label: 'TikTok',
-      value: '@apprendendo',
-      action: () => Linking.openURL('https://tiktok.com/@apprendendo'),
-      IconComponent: FontAwesome5,
-      iconName: 'tiktok',
-    },
-    {
-      label: 'LinkedIn',
-      value: 'Camila Leite',
-      action: () => Linking.openURL('https://linkedin.com/in/clcmo'),
-      IconComponent: FontAwesome5,
-      iconName: 'linkedin',
-    },
-    {
-      label: 'LinkedIn',
-      value: 'Apprendendo',
-      action: () => Linking.openURL('https://linkedin.com/company/apprendendo'),
-      IconComponent: FontAwesome5,
-      iconName: 'linkedin',
-    },
-    {
-      label: 'GitHub',
-      value: '@clcmo',
-      action: () => Linking.openURL('https://github.com/clcmo'),
-      IconComponent: FontAwesome5,
-      iconName: 'github',
-    },
-    {
-      label: 'GitHub',
-      value: '@apprendendo',
-      action: () => Linking.openURL('https://github.com/apprendendo'),
-      IconComponent: FontAwesome5,
-      iconName: 'github',
-    },
-    {
-      label: 'YouTube',
-      value: '@apprendendo',
-      action: () => Linking.openURL('https://youtube.com/@apprendendo'),
-      IconComponent: FontAwesome5,
-      iconName: 'youtube',
-    }
-  ];
+  // Agrupa os contatos por tipo
+  const emailContacts = getContactsByType('email');
+  const socialContacts = getContactsByType('social');
+  const professionalContacts = getContactsByType('professional');
+
+  // Renderiza um card de contato
+  const renderContactCard = (method: typeof contactMethods[0], index: number) => {
+    const { IconComponent, iconName } = method;
+    
+    return (
+      <Pressable
+        key={`${method.type}-${method.value}-${index}`}
+        style={contactStyles.contactCard}
+        onPress={method.action}
+      >
+        <View style={contactStyles.iconContainer}>
+          <IconComponent name={iconName} size={40} color="#64ffda" />
+        </View>
+        <Text style={contactStyles.contactLabel}>{method.label}</Text>
+        <Text style={contactStyles.contactValue}>{method.value}</Text>
+      </Pressable>
+    );
+  };
+
+  // Renderiza uma seção de contatos
+  const renderContactSection = (
+    title: string,
+    contacts: typeof contactMethods,
+    showDivider: boolean = true
+  ) => {
+    if (contacts.length === 0) return null;
+
+    return (
+      <View style={contactStyles.contactSection}>
+        <Text style={contactStyles.subsectionTitle}>{title}</Text>
+        <View style={contactStyles.contactGrid}>
+          {contacts.map(renderContactCard)}
+        </View>
+        {showDivider && <View style={contactStyles.sectionDivider} />}
+      </View>
+    );
+  };
 
   return (
     <View style={globalStyles.screen}>
       <ScrollView style={globalStyles.scroll} contentContainerStyle={globalStyles.content}>
         <View style={globalStyles.section}>
+          {/* Cabeçalho */}
           <Text style={globalStyles.sectionTitle}>
             <Text style={globalStyles.numberPrefix}>03. </Text>Entre em Contato
           </Text>
@@ -76,34 +68,27 @@ export default function ContactScreen() {
             Se você tem um projeto em mente ou apenas quer dizer olá, escolha a melhor forma de me contatar!
           </Text>
 
-          <View style={contactStyles.contactGrid}>
-            {contactMethods.map((method, index) => {
-              const { IconComponent, iconName } = method;
-              return (
-                <Pressable
-                  key={index}
-                  style={contactStyles.contactCard}
-                  onPress={method.action}
-                >
-                  <View style={contactStyles.iconContainer}>
-                    <IconComponent name={iconName} size={40} color="#64ffda" />
-                  </View>
-                  <Text style={contactStyles.contactLabel}>{method.label}</Text>
-                  <Text style={contactStyles.contactValue}>{method.value}</Text>
-                </Pressable>
-              );
-            })}
-          </View>
+          {/* Seção Email */}
+          {renderContactSection('Email', emailContacts, true)}
 
-          <View style={contactStyles.emailSection}>
-            <Text style={contactStyles.emailLabel}>Ou envie um email direto:</Text>
-            <Pressable
-              style={contactStyles.emailButton}
-              onPress={() => Linking.openURL('mailto:contato@apprendendo.blog')}
-            >
-              <Text style={contactStyles.emailButtonText}>Enviar Email</Text>
-            </Pressable>
-          </View>
+          {/* Seção Redes Sociais */}
+          {renderContactSection('Redes Sociais', socialContacts, true)}
+
+          {/* Seção Profissional */}
+          {renderContactSection('Profissional', professionalContacts, false)}
+
+          {/* CTA de Email (mantido do original) */}
+          {emailContacts.length > 0 && (
+            <View style={contactStyles.emailSection}>
+              <Text style={contactStyles.emailLabel}>Ou envie um email direto:</Text>
+              <Pressable
+                style={contactStyles.emailButton}
+                onPress={emailContacts[0].action}
+              >
+                <Text style={contactStyles.emailButtonText}>Enviar Email</Text>
+              </Pressable>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>

@@ -2,76 +2,129 @@ import { StyleSheet } from 'react-native';
 import { colors, spacing, typography } from '@/theme';
 
 export const contactStyles = StyleSheet.create({
-    contactGrid: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: spacing.md,
-        marginTop: spacing.xl,
-    },
+  // Seção de contatos
+  contactSection: {
+    marginBottom: spacing.xxl,
+  },
 
-    contactCard: {
-        flex: 1,
-        minWidth: 150,
-        backgroundColor: colors.surface,
-        padding: spacing.lg,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: colors.border,
-        alignItems: 'center',
-    },
+  // Título de subseção
+  subsectionTitle: {
+    fontSize: typography.size.lg,
+    fontWeight: typography.weight.bold,
+    color: colors.primary,
+    marginBottom: spacing.md,
+    fontFamily: 'Lexend_700Bold',
+    letterSpacing: 0.5,
+  },
 
-    iconContainer: {
-        width: 64,
-        height: 64,
-        backgroundColor: colors.bg,
-        borderRadius: 32,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: spacing.md,
-        borderWidth: 2,
-        borderColor: colors.primary,
-    },
+  // Divisor entre seções
+  sectionDivider: {
+    height: 1,
+    backgroundColor: `${colors.primary}1A`, // primary com ~10% de opacidade
+    marginTop: spacing.xxl,
+  },
 
-    contactLabel: {
-        fontFamily: 'Lexend_700Bold',
-        fontSize: typography.size.md,
-        color: colors.primary,
-        marginBottom: spacing.xs,
-    },
+  // Grid de cards de contato
+  contactGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.md,
+    marginVertical: spacing.sm,
+  },
 
-    contactValue: {
-        fontFamily: 'Lexend_400Regular',
-        fontSize: typography.size.sm,
-        color: colors.textMuted,
-        textAlign: 'center',
-    },
+  // Card individual de contato
+  contactCard: {
+    flex: 1,
+    minWidth: 150,
+    maxWidth: '48%', // 2 colunas no mobile
+    backgroundColor: `${colors.primary}0D`, // primary com ~5% de opacidade
+    borderWidth: 1,
+    borderColor: `${colors.primary}1A`, // primary com ~10% de opacidade
+    borderRadius: 12,
+    padding: spacing.lg,
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
 
-    emailSection: {
-        marginTop: spacing.xxl,
-        alignItems: 'center',
-    },
+  // Estado pressed do card
+  contactCardPressed: {
+    backgroundColor: `${colors.primary}1A`, // primary com ~10% de opacidade
+    transform: [{ scale: 0.98 }],
+  },
 
-    emailLabel: {
-        fontFamily: 'Lexend_400Regular',
-        fontSize: typography.size.md,
-        color: colors.textMuted,
-        marginBottom: spacing.md,
-    },
+  // Container do ícone
+  iconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: `${colors.primary}1A`, // primary com ~10% de opacidade
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.xs,
+  },
 
-    emailButton: {
-        backgroundColor: 'transparent',
-        borderWidth: 1,
-        borderColor: colors.primary,
-        paddingVertical: spacing.md,
-        paddingHorizontal: spacing.xl,
-        borderRadius: 4,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
+  // Label do contato (ex: "Email", "GitHub")
+  contactLabel: {
+    fontSize: typography.size.sm,
+    fontWeight: typography.weight.bold,
+    color: colors.text,
+    fontFamily: 'Lexend_700Bold',
+    textAlign: 'center',
+  },
 
-    emailButtonText: {
-        fontFamily: 'Lexend_700Bold',
-        fontSize: typography.size.md,
-        color: colors.primary,
-    },
+  // Valor do contato (ex: email, @username)
+  contactValue: {
+    fontSize: typography.size.xs,
+    color: colors.textMuted,
+    fontFamily: 'Lexend_400Regular',
+    textAlign: 'center',
+  },
+
+  // Seção de email (CTA no final)
+  emailSection: {
+    marginTop: spacing.xxxl,
+    alignItems: 'center',
+    paddingVertical: spacing.xxl,
+    paddingHorizontal: spacing.lg,
+    backgroundColor: `${colors.primary}08`, // primary com ~3% de opacidade
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: `${colors.primary}1A`, // primary com ~10% de opacidade
+  },
+
+  // Label da seção de email
+  emailLabel: {
+    fontSize: typography.size.md,
+    color: colors.textMuted,
+    marginBottom: spacing.md,
+    fontFamily: 'Lexend_400Regular',
+    textAlign: 'center',
+  },
+
+  // Botão de email
+  emailButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: colors.primary,
+    borderRadius: 8,
+    paddingVertical: spacing.sm + spacing.xs, // 14px
+    paddingHorizontal: spacing.xxl,
+    minWidth: 200,
+  },
+
+  // Estado pressed do botão
+  emailButtonPressed: {
+    backgroundColor: `${colors.primary}1A`, // primary com ~10% de opacidade
+    transform: [{ scale: 0.98 }],
+  },
+
+  // Texto do botão de email
+  emailButtonText: {
+    fontSize: typography.size.md,
+    fontWeight: typography.weight.bold,
+    color: colors.primary,
+    fontFamily: 'Lexend_700Bold',
+    textAlign: 'center',
+    letterSpacing: 0.5,
+  },
 });
