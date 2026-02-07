@@ -1,8 +1,8 @@
 import { Project } from '@/types';
-import { LanguageStats } from '@/interface/language';
+import { LanguageData } from '@/interface/language';
 
 export class LanguageController {
-  static getLanguageStats(projects: Project[]): LanguageStats[] {
+  static getLanguageStats(projects: Project[]): LanguageData[] {
     const languageCounts: { [key: string]: number } = {};
     let total = 0;
 

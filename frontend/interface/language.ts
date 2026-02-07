@@ -1,6 +1,6 @@
-interface LanguageData {
-  name: string;
-  count: number;
+export interface LanguageData {
+  language: string;
+  percentage: number;
 }
 
 export interface LanguageChartProps {
@@ -8,12 +8,5 @@ export interface LanguageChartProps {
 }
 
 export interface LanguageStatsProps {
-    languageData: { 
-        language: string; 
-        percentage: number }[];
-}
-
-export interface LanguageStats {
-  language: string;
-  percentage: number;
+  languageData: LanguageData[];
 }
