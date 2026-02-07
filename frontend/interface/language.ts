@@ -1,6 +1,7 @@
 export interface LanguageData {
-  language: string;
-  percentage: number;
+  name: string;        
+  count: number;       
+  percentage: number;  
 }
 
 export interface LanguageChartProps {

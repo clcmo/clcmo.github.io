@@ -10,20 +10,20 @@ export default function LanguageChart({ data }: LanguageChartProps) {
   return (
     <View style={globalStyles.container}>
       {data.map((item, index) => (
-        <View key={item.language} style={languageStyles.barContainer}>
-          <Text style={languageStyles.label}>{item.language}</Text>
+        <View key={item.name} style={languageStyles.barContainer}>
+          <Text style={languageStyles.label}>{item.name}</Text>
           <View style={languageStyles.barWrapper}>
             <View 
               style={[
                 languageStyles.bar, 
                 { 
-                  width: `${(item.percentage)}%`,
+                  width: `${item.percentage}%`,
                   backgroundColor: statsColors[index % statsColors.length]
                 }
               ]} 
             />
           </View>
-          <Text style={languageStyles.count}>{item.percentage}</Text>
+          <Text style={languageStyles.count}>{item.count} ({item.percentage}%)</Text>
         </View>
       ))}
     </View>

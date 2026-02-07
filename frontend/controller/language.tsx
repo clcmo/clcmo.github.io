@@ -14,12 +14,13 @@ export class LanguageController {
       }
     });
 
-    // Converte para o formato esperado com percentual
+    // Converte para o formato esperado com nome, count e percentual
     return Object.entries(languageCounts)
-      .map(([language, count]) => ({
-        language,
+      .map(([name, count]) => ({
+        name,
+        count,
         percentage: Math.round((count / total) * 100),
       }))
-      .sort((a, b) => b.percentage - a.percentage);
+      .sort((a, b) => b.count - a.count);
   }
 }
