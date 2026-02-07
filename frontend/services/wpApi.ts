@@ -1,5 +1,3 @@
-// services/wordpressApi.ts
-
 export interface WordPressPost {
   id: number;
   date: string;

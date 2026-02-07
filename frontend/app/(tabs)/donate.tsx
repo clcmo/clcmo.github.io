@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Pressable, Alert, Share, Clipboard } from 'react-native';
+import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
 import { MaterialIcons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
+
+import { pixData } from '@/controller/pix';
+import { PixController } from '@/controller/pix';
 
 import { analyticsApi } from '@/services/api';
 import { globalStyles } from '@/styles/global';
@@ -15,84 +18,7 @@ export default function PixScreen() {
     analyticsApi.trackVisit('/pix').catch(console.error);
   }, []);
 
-  // Dados do Pix
-  const pixKey = 'camila.leite.oliveira@gmail.com';
-  const pixName = 'Camila Leite Oliveira';
-  const pixCity = 'Sao Paulo';
-
-  const copyPixKey = async () => {
-    try {
-      await Clipboard.setString(pixKey);
-      setCopied(true);
-      Alert.alert('Copiado!', 'Chave Pix copiada para a área de transferência.');
-      
-      setTimeout(() => {
-        setCopied(false);
-      }, 3000);
-    } catch (error) {
-      Alert.alert('Erro', 'Não foi possível copiar a chave Pix.');
-    }
-  };
-
-  const sharePixKey = async () => {
-    try {
-      await Share.share({
-        message: `Apoie meu trabalho via Pix!\n\nChave: ${pixKey}\nNome: ${pixName}`,
-      });
-    } catch (error) {
-      console.error('Erro ao compartilhar:', error);
-    }
-  };
-
-  // Gerar payload do Pix para QR Code
-  const generatePixPayload = (): string => {
-    const createEMVField = (id: string, value: string): string => {
-      const length = value.length.toString().padStart(2, '0');
-      return `${id}${length}${value}`;
-    };
-
-    let payload = '';
-    payload += createEMVField('00', '01');
-    
-    let merchantAccount = '';
-    merchantAccount += createEMVField('00', 'BR.GOV.BCB.PIX');
-    merchantAccount += createEMVField('01', pixKey);
-    payload += createEMVField('26', merchantAccount);
-    
-    payload += createEMVField('52', '0000');
-    payload += createEMVField('53', '986');
-    payload += createEMVField('58', 'BR');
-    payload += createEMVField('59', pixName.substring(0, 25));
-    payload += createEMVField('60', pixCity.substring(0, 15));
-    
-    payload += '6304';
-    
-    const crc = calculateCRC16(payload);
-    payload += crc;
-    
-    return payload;
-  };
-
-  const calculateCRC16 = (payload: string): string => {
-    let crc = 0xFFFF;
-    
-    for (let i = 0; i < payload.length; i++) {
-      crc ^= payload.charCodeAt(i) << 8;
-      
-      for (let j = 0; j < 8; j++) {
-        if ((crc & 0x8000) !== 0) {
-          crc = (crc << 1) ^ 0x1021;
-        } else {
-          crc = crc << 1;
-        }
-      }
-    }
-    
-    crc = crc & 0xFFFF;
-    return crc.toString(16).toUpperCase().padStart(4, '0');
-  };
-
-  const pixPayload = generatePixPayload();
+  const pixPayload = PixController.generatePixPayload();
 
   return (
     <View style={globalStyles.screen}>
@@ -144,18 +70,18 @@ export default function PixScreen() {
                 
                 <View style={donateStyles.pixInfo}>
                   <Text style={donateStyles.pixLabel}>Chave Pix:</Text>
-                  <Text style={donateStyles.pixKey}>{pixKey}</Text>
+                  <Text style={donateStyles.pixKey}>{pixData.key}</Text>
                 </View>
 
                 <View style={donateStyles.pixInfo}>
                   <Text style={donateStyles.pixLabel}>Nome:</Text>
-                  <Text style={donateStyles.pixValue}>{pixName}</Text>
+                  <Text style={donateStyles.pixValue}>{pixData.name}</Text>
                 </View>
 
                 <View style={donateStyles.buttonGroup}>
                   <Pressable
                     style={[donateStyles.pixButton, copied && donateStyles.pixButtonSuccess]}
-                    onPress={copyPixKey}
+                    onPress={() => PixController.copyPixKey(setCopied)}
                   >
                     <MaterialIcons 
                       name={copied ? "check-circle" : "content-copy"} 
@@ -170,7 +96,7 @@ export default function PixScreen() {
 
                   <Pressable
                     style={[donateStyles.pixButton, donateStyles.pixButtonSecondary]}
-                    onPress={sharePixKey}
+                    onPress={PixController.sharePixKey}
                   >
                     <MaterialIcons name="share" size={20} color="#8892b0" style={{ marginRight: 8 }} />
                     <Text style={[donateStyles.pixButtonText, { color: '#8892b0' }]}>Compartilhar</Text>

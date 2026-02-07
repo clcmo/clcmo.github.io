@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, RefreshControl, ActivityIndicator, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { projectsApi, analyticsApi } from '@/services/api';
+import { ProjectsController } from '@/controller/projects';
+import { analyticsApi } from '@/services/api';
 import { Project } from '@/types';
-import ProjectCard from '@/components/project-card';
+import ProjectCard from '@/components/cards/project';
 import { globalStyles } from '@/styles/global';
 import { projectCardStyles } from '@/styles/project-card';
 import { colors } from '@/theme';
@@ -17,26 +18,11 @@ export default function ProjectsScreen() {
 
   useEffect(() => {
     analyticsApi.trackVisit('/projects').catch(console.error);
-    loadProjects();
+    ProjectsController.loadProjects(setProjects, setLoading);
   }, []);
 
-  const loadProjects = async () => {
-    try {
-      setError(null);
-      const data = await projectsApi.getAll();
-      setProjects(data.sort((a, b) => b.stars - a.stars));
-    } catch (err) {
-      setError('Não foi possível carregar os projetos.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
   const onRefresh = () => {
-    setRefreshing(true);
-    loadProjects();
+    ProjectsController.onRefresh(setRefreshing, setProjects, setLoading);
   };
 
   return (

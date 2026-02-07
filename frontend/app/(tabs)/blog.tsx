@@ -4,22 +4,9 @@ import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import { BlogPost } from '@/interface/blog';
 import { analyticsApi } from '@/services/api';
-import { wordpressApi } from '@/services/wpApi';
 import { globalStyles } from '@/styles/global';
 import { blogStyles } from '@/styles/blog';
-
-// (Opcional) decodifica entidades HTML simples que às vezes vêm do WP
-const decodeHtml = (text: string) =>
-  text
-    .replace(/&#8217;/g, '’')
-    .replace(/&#8220;/g, '“')
-    .replace(/&#8221;/g, '”')
-    .replace(/&#8211;/g, '–')
-    .replace(/&#8230;/g, '…')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"');
+import { BlogController } from '@/controller/blog';
 
 export default function BlogScreen() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -28,41 +15,13 @@ export default function BlogScreen() {
 
   useEffect(() => {
     analyticsApi.trackVisit('/blog').catch(console.error);
-    fetchBlogPosts();
+    BlogController.fetchBlogPosts(setLoading, setPosts, setError);
   }, []);
-
-  const fetchBlogPosts = async () => {
-    try {
-      setLoading(true);
-      const wpPosts = await wordpressApi.getPosts(6, 1);
-
-      const transformed: BlogPost[] = wpPosts.map((p) => ({
-        id: p.id,
-        title: decodeHtml(p.title),
-        excerpt: decodeHtml(p.excerpt),
-        date: p.date,
-        url: p.url,
-        imageUrl: p.imageUrl,
-        category: p.category ?? 'Geral',
-      }));
-
-      setPosts(transformed);
-      setError(null);
-    } catch (err) {
-      console.error('Erro ao carregar posts:', err);
-      setError('Não foi possível carregar os posts do blog.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const openPost = (url: string) => Linking.openURL(url);
-  const openBlog = () => Linking.openURL('https://apprendendo.blog');
 
   return (
     <View style={globalStyles.screen}>
-      <ScrollView 
-        style={globalStyles.scroll} 
+      <ScrollView
+        style={globalStyles.scroll}
         contentContainerStyle={globalStyles.content}
         showsVerticalScrollIndicator={false}
       >
@@ -89,7 +48,7 @@ export default function BlogScreen() {
               <MaterialIcons name="error-outline" size={48} color="#ff6b6b" />
               <Text style={blogStyles.errorText}>{error}</Text>
 
-              <Pressable style={blogStyles.retryButton} onPress={fetchBlogPosts}>
+              <Pressable style={blogStyles.retryButton} onPress={() => BlogController.fetchBlogPosts(setLoading, setPosts, setError)}>
                 <MaterialIcons name="refresh" size={20} color="#64ffda" style={{ marginRight: 8 }} />
                 <Text style={blogStyles.retryButtonText}>Tentar Novamente</Text>
               </Pressable>
@@ -99,16 +58,16 @@ export default function BlogScreen() {
               {/* Lista de Posts */}
               <View style={blogStyles.postsContainer}>
                 {posts.map((post) => (
-                  <Pressable 
-                    key={post.id} 
-                    style={blogStyles.postCard} 
-                    onPress={() => openPost(post.url)}
+                  <Pressable
+                    key={post.id}
+                    style={blogStyles.postCard}
+                    onPress={() => BlogController.openPost(post.url)}
                   >
                     {!!post.imageUrl && (
-                      <Image 
-                        source={{ uri: post.imageUrl }} 
-                        style={blogStyles.postImage} 
-                        resizeMode="cover" 
+                      <Image
+                        source={{ uri: post.imageUrl }}
+                        style={blogStyles.postImage}
+                        resizeMode="cover"
                       />
                     )}
 
@@ -145,7 +104,7 @@ export default function BlogScreen() {
 
               {/* Botão Ver Todos */}
               <View style={blogStyles.viewAllContainer}>
-                <Pressable style={blogStyles.viewAllButton} onPress={openBlog}>
+                <Pressable style={blogStyles.viewAllButton} onPress={BlogController.openBlog}>
                   <FontAwesome5 name="wordpress" size={20} color="#64ffda" style={{ marginRight: 12 }} />
                   <Text style={blogStyles.viewAllButtonText}>Ver Todos os Posts</Text>
                   <MaterialIcons name="arrow-forward" size={20} color="#64ffda" style={{ marginLeft: 8 }} />
