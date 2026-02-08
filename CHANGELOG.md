@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/clcmo/clcmo.github.io/compare/v2.3.1...v2.4.0) (2026-02-08)
+
+
+### Features
+
+* new domain ([d2f5596](https://github.com/clcmo/clcmo.github.io/commit/d2f55969321526711af793043b4d645ae02e8c84))
+
 ## [2.3.1](https://github.com/clcmo/clcmo.github.io/compare/v2.3.0...v2.3.1) (2026-02-07)
 
 # [2.3.0](https://github.com/clcmo/clcmo.github.io/compare/v2.2.2...v2.3.0) (2026-02-04)
