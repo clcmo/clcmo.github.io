@@ -1,17 +1,7 @@
 {
-  "compilerOptions": {
-    //Diretorios de entrada e saida
-    "rootDir": "./src",
-    "outDir": "./dist",
-    //Configurações gerais
-    "target": "ES2017",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": ["src/**/*", "ui"],
-  "exclude": ["node_modules", "tests", "**/*.test.ts"]
+  "files": [],
+  "references": [
+    { "path": "./frontend" },
+    { "path": "./backend" }
+  ]
 }
