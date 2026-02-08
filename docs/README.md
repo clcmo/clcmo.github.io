@@ -17,7 +17,7 @@ Site pessoal e portfólio profissional desenvolvido com TypeScript, CSS moderno,
 - ⚛️ React 18 + TypeScript
 - 🎨 Modo claro/escuro (brevemente de volta)
 - 💰 Sistema de doação via PIX
-- 🔄 Integração com GitHub API (via Railway e Prisma)
+- 🔄 Integração com GitHub API (via Railway, MongoDB e Prisma)
 - 🗄️ API própria com banco de dados
 - 📱 Responsive Design
 - 🎯 Arquitetura MVC
@@ -77,7 +77,7 @@ clcmo/
 - Express
 - TypeScript
 - Prisma ORM
-- PostgreSQL / SQLite
+- MongoDB / PostgreSQL / SQLite
 - JWT (autenticação)
 - Cors
 - Dotenv
@@ -88,7 +88,7 @@ clcmo/
 
 - Node.js >= 18.x
 - npm ou yarn
-- PostgreSQL (ou SQLite para desenvolvimento)
+- MongoDB (ou Postgres ou SQLite para desenvolvimento)
 
 ### Setup Frontend
 
@@ -109,10 +109,10 @@ npm run dev
 
 ## 🎨 Tema e Estilo
 
-O projeto mantém:
+O projeto busca manter:
 
-- ✅ Sistema de tema claro/escuro do projeto clcmo.github.io
-- ✅ Estilo visual do projeto "old"
+- [ ] Sistema de tema claro/escuro do projeto clcmo.github.io
+- [ ] Estilo visual do projeto "old"
 - ✅ Funcionalidade PIX
 - ✅ Design responsivo
 
@@ -140,19 +140,33 @@ POST   /api/github/sync           # Sincroniza com GitHub
 ### Frontend (.env)
 
 ```env
-REACT_APP_API_URL=http://localhost:3001/api
-REACT_APP_GITHUB_USERNAME=clcmo
-REACT_APP_PIX_KEY=seu-pix-key
+EXPO_PUBLIC_API_URL=http://localhost:3001/api
+GITHUB_TOKEN=
 ```
 
 ### Backend (.env)
 
 ```env
-PORT=3001
-DATABASE_URL="postgresql://user:password@localhost:5432/portfolio"
-GITHUB_TOKEN=seu_github_token
-JWT_SECRET=seu_secret_aqui
+# Servidor
+PORT=5555
 NODE_ENV=development
+
+# GitHub (obrigatório o username, token é opcional)
+GITHUB_USERNAME=
+# Crie um token "fine-grained" ou "classic" apenas para leitura pública, se quiser mais cota
+GITHUB_TOKEN=
+
+# Cache (em segundos)
+CACHE_TTL_SECONDS=300
+
+# Paginação da API do GitHub
+GITHUB_PER_PAGE=100
+GITHUB_MAX_PAGES=2
+
+# Banco (Railway preenche DATABASE_URL automaticamente ao provisionar MongoDB)
+DATABASE_URL=
+# Habilitar sincronização opcional no banco (true/false)
+ENABLE_DB_SYNC=false
 ```
 
 ## 🚀 Deploy
@@ -180,11 +194,9 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
 
-## 👩‍💻 Autora
+## 👩🏻‍🦰👩‍💻 Autora: Camila L. Oliveira
 
-**Camila L. Oliveira**
-
-- Website: [dev.camilaloliveira.me](https://dev.camilaloliveira.me)
+- Website: [dev.camilaloliveira.com](https://dev.camilaloliveira.com)
 - GitHub: [@clcmo](https://github.com/clcmo)
 - Blog: [apprendendo.blog](https://apprendendo.blog)
 
