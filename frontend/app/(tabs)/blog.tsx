@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Pressable, Linking, ActivityIndicator, Image } from 'react-native';
+import { View, Text, ScrollView, Pressable, ActivityIndicator, Image } from 'react-native';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import { BlogPost } from '@/interface/blog';

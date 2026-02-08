@@ -3,9 +3,7 @@ import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
 import { MaterialIcons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
 
-import { pixData } from '@/controller/pix';
-import { PixController } from '@/controller/pix';
-
+import { pixData, PixController } from '@/controller/pix';
 import { analyticsApi } from '@/services/api';
 import { globalStyles } from '@/styles/global';
 import { donateStyles } from '@/styles/donate';
