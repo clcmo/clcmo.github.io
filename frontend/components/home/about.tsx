@@ -37,7 +37,7 @@ export default function About({ onLayout }: AboutProps) {
           entusiasmo por inovação.
           {'\n\n'}
           Sou pós-graduada em Inteligência Artificial pelo TIDD da PUC-SP, onde desenvolvi o artigo
-          "Consumismo, Moralidade e Excessos da Sociedade Digitalizada". Como pesquisadora, estudo
+          &quot;Consumismo, Moralidade e Excessos da Sociedade Digitalizada&quot;. Como pesquisadora, estudo
           desde 2021 o impacto da tecnologia no futuro da sociedade, especialmente a relação entre
           IoT, algoritmos e inteligência artificial — estudos que pretendo aprofundar em um mestrado.
           {'\n\n'}
