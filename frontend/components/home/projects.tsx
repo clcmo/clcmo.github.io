@@ -2,31 +2,35 @@ import { Pressable, Text, View } from 'react-native';
 import { router } from 'expo-router';
 
 import { globalStyles } from '@/styles/global';
+import { projetos as styles } from '@/styles/projetos';
 import { Project } from '@/types';
-import ProjectCard from '@/components/cards/project';
+import ProjectGrid from '@/components/cards/project-grid';
 
 interface ProjectsSectionProps {
-    recentProjects: Project[];
+  recentProjects: Project[];
+  error?: string | null;
 }
 
-export default function ProjectsSection({ recentProjects }: ProjectsSectionProps) {
-    return (
-        <View style={globalStyles.section}>
-            <Text style={globalStyles.sectionTitle}>
-                <Text style={globalStyles.numberPrefix}>02. </Text>
-                Projetos Recentes
-            </Text>
+export default function ProjectsSection({ recentProjects, error }: ProjectsSectionProps) {
+  return (
+    <View style={globalStyles.section}>
+      <Text style={globalStyles.sectionTitle}>Projetos recentes</Text>
 
-            {recentProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-            ))}
-
-            <Pressable
-                style={globalStyles.viewMoreButton}
-                onPress={() => router.replace('/projects')}
-            >
-                <Text style={globalStyles.viewMoreText}>Ver Todos os Projetos →</Text>
-            </Pressable>
+      {error ? (
+        <View style={styles.estado}>
+          <Text style={styles.estadoTexto}>{error}</Text>
         </View>
-    );
+      ) : (
+        <ProjectGrid projects={recentProjects} />
+      )}
+
+      <Pressable
+        accessibilityRole="link"
+        style={globalStyles.viewMoreButton}
+        onPress={() => router.replace('/projects')}
+      >
+        <Text style={globalStyles.viewMoreText}>Ver todos os projetos →</Text>
+      </Pressable>
+    </View>
+  );
 }

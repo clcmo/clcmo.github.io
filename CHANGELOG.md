@@ -1,3 +1,13 @@
+# [2.5.0](https://github.com/clcmo/clcmo.github.io/compare/v2.4.2...v2.5.0) (2026-11-02)
+
+
+### Features
+
+* add admin rate limit middleware and update routes; enhance GitHub sync error handling and tests ([49746c4](https://github.com/clcmo/clcmo.github.io/commit/49746c40148be90a213a1f3b5faf84b1c10e2aa1))
+* add layout and project components with routing ([929f585](https://github.com/clcmo/clcmo.github.io/commit/929f5856f2d58d20ea23c12c7a5840a2c511c542))
+* update Node.js version requirement and MongoDB setup in README ([b9b3f1a](https://github.com/clcmo/clcmo.github.io/commit/b9b3f1a0a9cdf06379a66fb7965cbb6b58f51538))
+* update server port to 5556 in backend and frontend environment files ([4af90ac](https://github.com/clcmo/clcmo.github.io/commit/4af90ac6daef9e53682f88d20576129bfa499e6b))
+
 ## [2.4.2](https://github.com/clcmo/clcmo.github.io/compare/v2.4.1...v2.4.2) (2026-03-05)
 
 ## [2.4.1](https://github.com/clcmo/clcmo.github.io/compare/v2.4.0...v2.4.1) (2026-02-12)

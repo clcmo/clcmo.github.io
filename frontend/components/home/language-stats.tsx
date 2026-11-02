@@ -8,7 +8,6 @@ export default function LanguageStats({ languageData }: LanguageStatsProps) {
     return (
         <View style={globalStyles.section}>
             <Text style={globalStyles.sectionTitle}>
-                <Text style={globalStyles.numberPrefix}>03. </Text>
                 Linguagens Mais Utilizadas
             </Text>
             <LanguageChart data={languageData} />
