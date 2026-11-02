@@ -13,17 +13,19 @@ export default function LanguageChart({ data }: LanguageChartProps) {
         <View key={item.name} style={languageStyles.barContainer}>
           <Text style={languageStyles.label}>{item.name}</Text>
           <View style={languageStyles.barWrapper}>
-            <View 
+            <View
               style={[
-                languageStyles.bar, 
-                { 
+                languageStyles.bar,
+                {
                   width: `${item.percentage}%`,
-                  backgroundColor: statsColors[index % statsColors.length]
-                }
-              ]} 
+                  backgroundColor: statsColors[index % statsColors.length],
+                },
+              ]}
             />
           </View>
-          <Text style={languageStyles.count}>{item.count} ({item.percentage}%)</Text>
+          <Text style={languageStyles.count}>
+            {item.count} ({item.percentage}%)
+          </Text>
         </View>
       ))}
     </View>

@@ -15,7 +15,6 @@ export default function About({ onLayout }: AboutProps) {
       onLayout={onLayout}
     >
       <Text style={globalStyles.sectionTitle}>
-        <Text style={globalStyles.numberPrefix}>01. </Text>
         Sobre Mim
       </Text>
 

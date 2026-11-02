@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
 import { MaterialIcons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
@@ -7,10 +7,14 @@ import { pixData, PixController } from '@/controller/pix';
 import { analyticsApi } from '@/services/api';
 import { globalStyles } from '@/styles/global';
 import { donateStyles } from '@/styles/donate';
+import { SiteFooter } from '@/components/layout/footer';
 
+import { colors } from '@/theme';
 export default function PixScreen() {
   const [copied, setCopied] = useState(false);
   const [showQRCode, setShowQRCode] = useState(false);
+
+  const scrollRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     analyticsApi.trackVisit('/pix').catch(console.error);
@@ -20,15 +24,15 @@ export default function PixScreen() {
 
   return (
     <View style={globalStyles.screen}>
-      <ScrollView 
-        style={globalStyles.scroll} 
-        contentContainerStyle={globalStyles.content}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={globalStyles.section}>
+      <ScrollView
+        ref={scrollRef}
+        style={globalStyles.scroll}
+        contentContainerStyle={globalStyles.page}>
+          
+        <View style={globalStyles.content}>
           {/* Cabeçalho */}
           <Text style={globalStyles.sectionTitle}>
-            <Text style={globalStyles.numberPrefix}>04. </Text>Apoie Meu Trabalho
+Apoie Meu Trabalho
           </Text>
 
           <Text style={globalStyles.contactDescription}>
@@ -42,7 +46,7 @@ export default function PixScreen() {
               style={[donateStyles.toggleButton, !showQRCode && donateStyles.toggleButtonActive]}
               onPress={() => setShowQRCode(false)}
             >
-              <MaterialIcons name="vpn-key" size={20} color={!showQRCode ? '#64ffda' : '#8892b0'} />
+              <MaterialIcons name="vpn-key" size={20} color={!showQRCode ? colors.primary : colors.textMuted} />
               <Text style={[donateStyles.toggleButtonText, !showQRCode && donateStyles.toggleButtonTextActive]}>
                 Chave Pix
               </Text>
@@ -51,7 +55,7 @@ export default function PixScreen() {
               style={[donateStyles.toggleButton, showQRCode && donateStyles.toggleButtonActive]}
               onPress={() => setShowQRCode(true)}
             >
-              <MaterialIcons name="qr-code" size={20} color={showQRCode ? '#64ffda' : '#8892b0'} />
+              <MaterialIcons name="qr-code" size={20} color={showQRCode ? colors.primary : colors.textMuted} />
               <Text style={[donateStyles.toggleButtonText, showQRCode && donateStyles.toggleButtonTextActive]}>
                 QR Code
               </Text>
@@ -63,7 +67,7 @@ export default function PixScreen() {
             <View style={donateStyles.pixContainer}>
               <View style={donateStyles.pixCard}>
                 <View style={donateStyles.pixIconContainer}>
-                  <MaterialCommunityIcons name="cash" size={48} color="#64ffda" />
+                  <MaterialCommunityIcons name="cash" size={48} color={colors.primary} />
                 </View>
                 
                 <View style={donateStyles.pixInfo}>
@@ -84,7 +88,7 @@ export default function PixScreen() {
                     <MaterialIcons 
                       name={copied ? "check-circle" : "content-copy"} 
                       size={20} 
-                      color="#64ffda" 
+                      color={colors.primary} 
                       style={{ marginRight: 8 }}
                     />
                     <Text style={donateStyles.pixButtonText}>
@@ -96,8 +100,8 @@ export default function PixScreen() {
                     style={[donateStyles.pixButton, donateStyles.pixButtonSecondary]}
                     onPress={PixController.sharePixKey}
                   >
-                    <MaterialIcons name="share" size={20} color="#8892b0" style={{ marginRight: 8 }} />
-                    <Text style={[donateStyles.pixButtonText, { color: '#8892b0' }]}>Compartilhar</Text>
+                    <MaterialIcons name="share" size={20} color={colors.textMuted} style={{ marginRight: 8 }} />
+                    <Text style={[donateStyles.pixButtonText, { color: colors.textMuted }]}>Compartilhar</Text>
                   </Pressable>
                 </View>
               </View>
@@ -107,7 +111,7 @@ export default function PixScreen() {
             <View style={donateStyles.qrCodeContainer}>
               <View style={donateStyles.qrCodeCard}>
                 <View style={donateStyles.qrTitleContainer}>
-                  <MaterialIcons name="qr-code-scanner" size={32} color="#64ffda" />
+                  <MaterialIcons name="qr-code-scanner" size={32} color={colors.primary} />
                   <Text style={donateStyles.qrCodeTitle}>Escaneie o QR Code</Text>
                 </View>
                 
@@ -121,7 +125,7 @@ export default function PixScreen() {
                 </View>
 
                 <View style={donateStyles.qrInstruction}>
-                  <MaterialIcons name="smartphone" size={20} color="#8892b0" />
+                  <MaterialIcons name="smartphone" size={20} color={colors.textMuted} />
                   <Text style={donateStyles.qrInstructionText}>
                     Abra o app do seu banco e escaneie o código
                   </Text>
@@ -133,7 +137,7 @@ export default function PixScreen() {
           {/* Valores Sugeridos */}
           <View style={donateStyles.suggestedAmountsContainer}>
             <View style={donateStyles.sectionHeader}>
-              <MaterialCommunityIcons name="cash-multiple" size={24} color="#64ffda" />
+              <MaterialCommunityIcons name="cash-multiple" size={24} color={colors.primary} />
               <Text style={donateStyles.suggestedAmountsTitle}>Valores sugeridos:</Text>
             </View>
             <View style={donateStyles.suggestedAmountsGrid}>
@@ -148,7 +152,7 @@ export default function PixScreen() {
               ))}
             </View>
             <View style={donateStyles.customAmount}>
-              <MaterialIcons name="favorite" size={16} color="#ff6b9d" />
+              <MaterialIcons name="favorite" size={16} color={colors.pink} />
               <Text style={donateStyles.customAmountText}>
                 ou qualquer valor que desejar
               </Text>
@@ -158,30 +162,30 @@ export default function PixScreen() {
           {/* Benefícios */}
           <View style={donateStyles.benefitsContainer}>
             <View style={donateStyles.sectionHeader}>
-              <MaterialIcons name="lightbulb" size={24} color="#64ffda" />
+              <MaterialIcons name="lightbulb" size={24} color={colors.primary} />
               <Text style={donateStyles.benefitsTitle}>Como você me ajuda:</Text>
             </View>
             <View style={donateStyles.benefitsList}>
               <View style={donateStyles.benefitItem}>
-                <MaterialIcons name="edit" size={24} color="#64ffda" />
+                <MaterialIcons name="edit" size={24} color={colors.primary} />
                 <Text style={donateStyles.benefitText}>
                   Criar mais conteúdo de qualidade no blog
                 </Text>
               </View>
               <View style={donateStyles.benefitItem}>
-                <MaterialIcons name="school" size={24} color="#64ffda" />
+                <MaterialIcons name="school" size={24} color={colors.primary} />
                 <Text style={donateStyles.benefitText}>
                   Investir em cursos e aprendizado contínuo
                 </Text>
               </View>
               <View style={donateStyles.benefitItem}>
-                <FontAwesome5 name="code" size={24} color="#64ffda" />
+                <FontAwesome5 name="code" size={24} color={colors.primary} />
                 <Text style={donateStyles.benefitText}>
                   Desenvolver projetos open source
                 </Text>
               </View>
               <View style={donateStyles.benefitItem}>
-                <MaterialCommunityIcons name="coffee" size={24} color="#64ffda" />
+                <MaterialCommunityIcons name="coffee" size={24} color={colors.primary} />
                 <Text style={donateStyles.benefitText}>
                   Manter-me energizada com muito café!
                 </Text>
@@ -191,7 +195,7 @@ export default function PixScreen() {
 
           {/* Mensagem de Agradecimento */}
           <View style={donateStyles.thankYouContainer}>
-            <MaterialIcons name="favorite" size={32} color="#ff6b9d" />
+            <MaterialIcons name="favorite" size={32} color={colors.pink} />
             <Text style={donateStyles.thankYouText}>
               Muito obrigada pelo seu apoio!
             </Text>
@@ -201,6 +205,7 @@ export default function PixScreen() {
             </Text>
           </View>
         </View>
+        <SiteFooter />
       </ScrollView>
     </View>
   );

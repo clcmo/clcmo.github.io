@@ -8,24 +8,30 @@ datasource db {
 }
 
 model Project {
-  id         String    @id @map("_id") @default(cuid())
-  githubId   BigInt    @unique
-  name       String
-  fullName   String
-  htmlUrl    String
-  description String? 
-  homepage   String?
-  language   String?
-  topics     String[]
-  stars      Int
-  forks      Int
-  visibility String
-  archived   Boolean   @default(false)
-  license    String?
-  createdAt  DateTime
-  pushedAt   DateTime
-  updatedAt  DateTime
-  syncedAt   DateTime  @default(now())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  githubId    String    @unique
+  slug        String?
+  name        String
+  fullName    String
+  htmlUrl     String
+  description String?
+  homepage    String?
+  language    String?
+  topics      String[]
+  stars       Int
+  forks       Int
+  visibility  String
+  archived    Boolean   @default(false)
+  isFork      Boolean?
+  hidden      Boolean?
+  featured    Boolean?
+  coverUrl    String?
+  category    String?
+  license     String?
+  createdAt   DateTime
+  pushedAt    DateTime?
+  updatedAt   DateTime
+  syncedAt    DateTime  @default(now())
 
   @@index([name])
 }
@@ -33,7 +39,7 @@ model Project {
 
 model Visitor {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  ip        String
+  ipHash    String
   userAgent String
   path      String
   createdAt DateTime @default(now())

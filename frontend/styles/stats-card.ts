@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing, typography } from '@/theme';
+import { colors, spacing, typography, fonts } from '@/theme';
 
 export const statsCardStyles = StyleSheet.create({
     card: {
         backgroundColor: colors.white,
-        borderRadius: 12,
+        borderRadius: 0,
         padding: spacing.xl,
         alignItems: 'center',
         shadowColor: '#000',
@@ -23,14 +23,14 @@ export const statsCardStyles = StyleSheet.create({
     },
 
     value: {
-        fontFamily: 'Lexend_700Bold',
+        fontFamily: fonts.sansBold,
         fontSize: typography.size.xxl,
         color: colors.blue,
         marginBottom: spacing.xs,
     },
 
     title: {
-        fontFamily: 'Lexend_400Regular',
+        fontFamily: fonts.sans,
         fontSize: typography.size.sm,
         color: colors.textMuted,
         textAlign: 'center',
