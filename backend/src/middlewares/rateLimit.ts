@@ -8,6 +8,14 @@ export const syncRateLimit = rateLimit({
   message: { error: 'Limite de sincronizações atingido; tente novamente mais tarde' },
 });
 
+export const adminRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Limite de chamadas administrativas atingido' },
+});
+
 export const analyticsRateLimit = rateLimit({
   windowMs: 60 * 1000,
   limit: 30,

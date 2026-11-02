@@ -7,19 +7,19 @@ type GitHubRepo = {
   name: string;
   full_name: string;
   html_url: string;
-  description: string | null;
-  homepage: string | null;
-  language: string | null;
+  description?: string | null;
+  homepage?: string | null;
+  language?: string | null;
   topics?: string[];
   stargazers_count?: number;
   forks_count?: number;
-  private: boolean;
-  archived: boolean;
-  fork: boolean;
+  private?: boolean;
+  archived?: boolean;
+  fork?: boolean;
   license?: { spdx_id?: string | null; key?: string | null } | null;
-  created_at: string | null;
-  pushed_at: string | null;
-  updated_at: string | null;
+  created_at?: string | null;
+  pushed_at?: string | null;
+  updated_at?: string | null;
 };
 
 type GitHubFields = {
@@ -114,7 +114,7 @@ export async function syncRepos({ listRepositories, store = prismaStore }: SyncO
       throw new Error('O GitHub não retornou repositórios; sincronização cancelada para preservar os dados');
     }
 
-    const publicRepos = repos.filter((repo) => !repo.private);
+    const publicRepos = repos.filter((repo) => repo.private === false);
     for (const repo of publicRepos) {
       if (!repo.created_at || !repo.updated_at) {
         throw new Error(`Datas ausentes no repositório ${repo.full_name}`);
@@ -124,15 +124,15 @@ export async function syncRepos({ listRepositories, store = prismaStore }: SyncO
         name: repo.name,
         fullName: repo.full_name,
         htmlUrl: repo.html_url,
-        description: repo.description,
-        homepage: repo.homepage,
-        language: repo.language,
+        description: repo.description ?? null,
+        homepage: repo.homepage ?? null,
+        language: repo.language ?? null,
         topics: repo.topics ?? [],
         stars: repo.stargazers_count ?? 0,
         forks: repo.forks_count ?? 0,
         visibility: 'public',
-        archived: repo.archived,
-        isFork: repo.fork,
+        archived: repo.archived ?? false,
+        isFork: repo.fork ?? false,
         license: repo.license?.spdx_id ?? repo.license?.key ?? null,
         createdAt: new Date(repo.created_at),
         pushedAt: repo.pushed_at ? new Date(repo.pushed_at) : null,

@@ -6,6 +6,7 @@
     "dev": "ts-node src/server.ts",
     "build": "tsc",
     "db:push": "prisma db push",
+    "test": "npm run build && node --test test/*.test.js",
     "deploy": "prisma generate && npm run build && npm start"
   },
   "dependencies": {

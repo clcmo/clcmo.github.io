@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { prisma } from '../config/prisma';
 import env from '../config/env';
 import { requireSecret } from '../middlewares/requireSecret';
-import { analyticsRateLimit } from '../middlewares/rateLimit';
+import { adminRateLimit, analyticsRateLimit } from '../middlewares/rateLimit';
 
 const router = Router();
 
@@ -31,7 +31,7 @@ router.post('/visit', analyticsRateLimit, async (req, res, next) => {
   }
 });
 
-router.get('/stats', requireSecret, async (_req, res, next) => {
+router.get('/stats', adminRateLimit, requireSecret, async (_req, res, next) => {
   try {
     const last30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     const [totalVisits, recentVisits, aggregate] = await Promise.all([

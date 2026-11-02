@@ -2,6 +2,7 @@ import type { Prisma } from '@prisma/client';
 import type { NextFunction, Request, Response } from 'express';
 import { Router } from 'express';
 import { prisma } from '../config/prisma';
+import { adminRateLimit } from '../middlewares/rateLimit';
 import { requireSecret } from '../middlewares/requireSecret';
 
 export const projectsRouter = Router();
@@ -52,6 +53,7 @@ projectsRouter.get(
 
 projectsRouter.put(
   '/projects/:slug',
+  adminRateLimit,
   requireSecret,
   async (req: Request, res: Response, next: NextFunction) => {
     try {

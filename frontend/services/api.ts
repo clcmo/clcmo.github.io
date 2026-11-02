@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { Platform } from 'react-native';
 import type { Project } from '../types';
 
@@ -34,7 +34,7 @@ export const projectsApi = {
       const { data } = await api.get<Project[]>('/api/projects');
       return data;
     } catch (apiError) {
-      const status = axios.isAxiosError(apiError) ? apiError.response?.status : undefined;
+      const status = isAxiosError(apiError) ? apiError.response?.status : undefined;
       if (Platform.OS !== 'web' || (status !== undefined && status < 500)) {
         throw apiError;
       }
