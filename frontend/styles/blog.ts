@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing, typography } from '@/theme';
+import { colors, spacing, typography, fonts } from '@/theme';
 
 export const blogStyles = StyleSheet.create({
     headerContainer: {
@@ -13,7 +13,7 @@ export const blogStyles = StyleSheet.create({
         width: 60,
         height: 60,
         backgroundColor: colors.bg,
-        borderRadius: 30,
+        borderRadius: 0,
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 2,
@@ -27,7 +27,7 @@ export const blogStyles = StyleSheet.create({
     },
 
     loadingText: {
-        fontFamily: 'Lexend_400Regular',
+        fontFamily: fonts.sans,
         marginTop: spacing.md,
         fontSize: typography.size.md,
         color: colors.textMuted,
@@ -40,7 +40,7 @@ export const blogStyles = StyleSheet.create({
     },
 
     errorText: {
-        fontFamily: 'Lexend_400Regular',
+        fontFamily: fonts.sans,
         fontSize: typography.size.md,
         color: colors.danger,
         textAlign: 'center',
@@ -54,15 +54,45 @@ export const blogStyles = StyleSheet.create({
         borderColor: colors.primary,
         paddingVertical: spacing.sm,
         paddingHorizontal: spacing.lg,
-        borderRadius: 4,
+        borderRadius: 0,
         flexDirection: 'row',
         alignItems: 'center',
     },
 
     retryButtonText: {
-        fontFamily: 'Lexend_700Bold',
+        fontFamily: fonts.sansBold,
         color: colors.primary,
         fontSize: typography.size.sm,
+    },
+
+    sourceFilters: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: spacing.sm,
+        marginTop: spacing.lg,
+    },
+
+    sourceFilter: {
+        minHeight: 40,
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: colors.fio,
+        paddingVertical: spacing.sm,
+        paddingHorizontal: spacing.md,
+    },
+
+    sourceFilterSelected: {
+        backgroundColor: colors.preto,
+    },
+
+    sourceFilterText: {
+        fontFamily: fonts.sans,
+        fontSize: typography.size.sm,
+        color: colors.text,
+    },
+
+    sourceFilterTextSelected: {
+        color: colors.white,
     },
 
     postsContainer: {
@@ -71,17 +101,17 @@ export const blogStyles = StyleSheet.create({
     },
 
     postCard: {
-        backgroundColor: '#112240',
-        borderRadius: 8,
+        backgroundColor: colors.surface,
+        borderRadius: 0,
         borderWidth: 1,
-        borderColor: '#233554',
+        borderColor: colors.border,
         overflow: 'hidden',
     },
 
     postImage: {
         width: '100%',
         height: 200,
-        backgroundColor: '#1d2d50',
+        backgroundColor: colors.surface,
     },
 
     postContent: {
@@ -96,22 +126,30 @@ export const blogStyles = StyleSheet.create({
     },
 
     postCategory: {
-        fontFamily: 'Lexend_700Bold',
+        fontFamily: fonts.sansBold,
         fontSize: typography.size.xs,
         color: colors.primary,
         textTransform: 'uppercase',
         letterSpacing: 1,
     },
 
+    postSource: {
+        fontFamily: fonts.sansBold,
+        fontSize: typography.size.xs,
+        color: colors.marca,
+        textTransform: 'uppercase',
+        letterSpacing: 0.6,
+    },
+
     postTitle: {
-        fontFamily: 'Lexend_700Bold',
+        fontFamily: fonts.sansBold,
         fontSize: typography.size.lg,
         color: colors.text,
         marginBottom: spacing.sm,
     },
 
     postExcerpt: {
-        fontFamily: 'Lexend_400Regular',
+        fontFamily: fonts.serif,
         fontSize: typography.size.sm,
         lineHeight: typography.lineHeight.md,
         color: colors.textMuted,
@@ -126,7 +164,7 @@ export const blogStyles = StyleSheet.create({
     },
 
     postDate: {
-        fontFamily: 'Lexend_400Regular',
+        fontFamily: fonts.sans,
         fontSize: typography.size.xs,
         color: colors.textMuted,
         fontStyle: 'italic',
@@ -140,7 +178,7 @@ export const blogStyles = StyleSheet.create({
     },
 
     readMoreText: {
-        fontFamily: 'Lexend_700Bold',
+        fontFamily: fonts.sansBold,
         fontSize: typography.size.sm,
         color: colors.primary,
     },
@@ -148,6 +186,7 @@ export const blogStyles = StyleSheet.create({
     viewAllContainer: {
         marginTop: spacing.xxl,
         alignItems: 'center',
+        gap: spacing.md,
     },
 
     viewAllButton: {
@@ -156,13 +195,13 @@ export const blogStyles = StyleSheet.create({
         borderColor: colors.primary,
         paddingVertical: spacing.lg,
         paddingHorizontal: spacing.xl,
-        borderRadius: 4,
+        borderRadius: 0,
         flexDirection: 'row',
         alignItems: 'center',
     },
 
     viewAllButtonText: {
-        fontFamily: 'Lexend_700Bold',
+        fontFamily: fonts.sansBold,
         fontSize: typography.size.md,
         color: colors.primary,
     },
