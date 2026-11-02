@@ -33,7 +33,7 @@ jobs:
         working-directory: ./frontend
         run: npx expo export -p web
         env:
-          EXPO_PUBLIC_API_URL: ${{ secrets.EXPO_PUBLIC_API_URL || 'https://localhost:5555' }}
+          EXPO_PUBLIC_API_URL: ${{ secrets.API_URL || 'http://localhost:5555' }}
           EXPO_PUBLIC_GITHUB_USERNAME: clcmo
           NODE_ENV: production
 

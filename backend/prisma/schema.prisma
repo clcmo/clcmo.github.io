@@ -8,9 +8,9 @@ datasource db {
 }
 
 model Project {
-  id          String    @id @map("_id") @default(cuid())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   githubId    String    @unique
-  slug        String?   @unique
+  slug        String?
   name        String
   fullName    String
   htmlUrl     String
@@ -39,7 +39,7 @@ model Project {
 
 model Visitor {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  ip        String
+  ipHash    String
   userAgent String
   path      String
   createdAt DateTime @default(now())

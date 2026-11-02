@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { prisma } from '../config/prisma';
 import { requireSecret } from '../middlewares/requireSecret';
+import { syncRateLimit } from '../middlewares/rateLimit';
 import { syncRepos } from '../services/githubSync';
 
 const router = Router();
@@ -21,7 +22,7 @@ router.get('/repos', async (_req, res, next) => {
   }
 });
 
-router.post('/sync', requireSecret, async (_req, res, next) => {
+router.post('/sync', syncRateLimit, requireSecret, async (_req, res, next) => {
   try {
     res.json(await syncRepos());
   } catch (error) {

@@ -23,12 +23,3 @@ export interface Project {
   pushedAt: string | null;
   updatedAt: string;
 }
-
-export interface Analytics {
-  totalVisits: number;
-  recentVisits: number;
-  topPages: {
-    path: string;
-    visits: number;
-  }[];
-}

@@ -65,8 +65,14 @@ projectsRouter.put(
         return res.status(400).json({ error: 'Nenhum campo editorial válido' });
       }
 
-      const project = await prisma.project.update({
+      const existing = await prisma.project.findFirst({
         where: { slug: req.params.slug },
+        select: { id: true },
+      });
+      if (!existing) return res.status(404).json({ error: 'Projeto não encontrado' });
+
+      const project = await prisma.project.update({
+        where: { id: existing.id },
         data,
       });
       return res.json(project);
