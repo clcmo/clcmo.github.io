@@ -1,0 +1,151 @@
+/* ==========================================================================
+   Projetos — mesma linguagem da loja do tema (tokens de theme.css).
+   Importar depois de theme.css e home.css.
+   ========================================================================== */
+
+.projetos {
+  width: min(var(--larga), 100% - 2 * var(--respiro));
+  margin: clamp(2.5rem, 6vw, 4.5rem) auto 0;
+}
+.projetos .titulo-pagina { margin-bottom: 2rem; }
+
+.projetos__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 2rem;
+}
+.projetos__resultado {
+  margin: 0;
+  color: #4a453f;
+  font: 500 0.85rem/1.4 var(--sans);
+}
+.projetos__estado {
+  padding: 0.8rem 1rem;
+  border-left: 3px solid var(--preto);
+  background: var(--linho);
+  font: 400 0.95rem/1.5 var(--sans);
+}
+.projetos__estado[role="alert"] { border-color: #9b2c2c; }
+
+.projetos__lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: 2.5rem 1.75rem;
+  align-items: start;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.projetos__rodape { margin-top: 3rem; }
+
+/* ---------- Card ---------- */
+.projeto { min-width: 0; }
+.projeto__capa {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background: var(--linho);
+}
+.projeto__capa img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+.projeto__capa:hover img { transform: scale(1.03); }
+
+/* Sem imagem de capa: o nome do repositório ocupa o quadrado. */
+.projeto__capa--texto {
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  color: var(--marca);
+  font: 700 1.15rem/1.2 var(--sans);
+  text-align: center;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.projeto__nome {
+  font: 700 1rem/1.25 var(--sans);
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.projeto__nome a { text-decoration: underline; text-underline-offset: 0.22em; }
+.projeto__meta {
+  margin-top: 0.3rem;
+  color: #4a453f;
+  font-size: 0.98rem;
+}
+.projeto__descricao {
+  margin-top: 0.6rem;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.projeto__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+.projeto__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.6rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--preto);
+  background: var(--preto);
+  color: #fff;
+  font: 600 0.82rem/1.2 var(--sans);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.projeto__cta:hover { background: var(--marca); border-color: var(--marca); }
+.projeto__cta--contorno { background: transparent; color: var(--texto); }
+.projeto__cta--contorno:hover { background: var(--preto); border-color: var(--preto); color: #fff; }
+.projeto__cta:focus-visible { outline: 2px solid var(--preto); outline-offset: 3px; }
+
+/* ---------- Filtros (botões; mesmo visual de .loja-filtro) ---------- */
+.projeto-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--sans);
+}
+.projeto-filtros__rotulo {
+  margin-right: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.projeto-filtro {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--fio);
+  border-radius: 0;
+  background: transparent;
+  color: var(--texto);
+  font: 400 0.82rem/1.2 var(--sans);
+  cursor: pointer;
+}
+.projeto-filtro:hover,
+.projeto-filtro[aria-pressed="true"] {
+  background: var(--preto);
+  color: #fff;
+}
+.projeto-filtro:focus-visible { outline: 2px solid var(--preto); outline-offset: 3px; }

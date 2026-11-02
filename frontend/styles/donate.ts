@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing, typography } from '@/theme';
+import { colors, spacing, typography, fonts } from '@/theme';
 
 export const donateStyles = StyleSheet.create({
   // ===== Header da seção =====
@@ -14,7 +14,7 @@ export const donateStyles = StyleSheet.create({
     width: 60,
     height: 60,
     backgroundColor: colors.bg,
-    borderRadius: 30,
+    borderRadius: 0,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
@@ -26,9 +26,9 @@ export const donateStyles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: spacing.xl,
     marginBottom: spacing.lg,
-    borderRadius: 8,
+    borderRadius: 0,
     borderWidth: 1,
-    borderColor: '#233554',
+    borderColor: colors.border,
     overflow: 'hidden',
   },
 
@@ -39,21 +39,21 @@ export const donateStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.xs,
-    backgroundColor: '#112240',
+    backgroundColor: colors.surface,
   },
 
   toggleButtonActive: {
-    backgroundColor: '#64ffda20',
+    backgroundColor: `${colors.primary}14`,
   },
 
   toggleButtonText: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
     fontSize: typography.size.sm,
     color: colors.textMuted,
   },
 
   toggleButtonTextActive: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.sm,
     color: colors.primary,
   },
@@ -64,10 +64,10 @@ export const donateStyles = StyleSheet.create({
   },
 
   pixCard: {
-    backgroundColor: '#112240',
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: 0,
     borderWidth: 1,
-    borderColor: '#233554',
+    borderColor: colors.border,
     padding: spacing.xxl,
     alignItems: 'center',
   },
@@ -76,7 +76,7 @@ export const donateStyles = StyleSheet.create({
     width: 80,
     height: 80,
     backgroundColor: colors.bg,
-    borderRadius: 40,
+    borderRadius: 0,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.xl,
@@ -91,21 +91,21 @@ export const donateStyles = StyleSheet.create({
   },
 
   pixLabel: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
     fontSize: typography.size.sm,
     color: colors.textMuted,
     marginBottom: spacing.xs,
   },
 
   pixKey: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.lg,
     color: colors.primary,
     textAlign: 'center',
   },
 
   pixValue: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.lg,
     color: colors.text,
     textAlign: 'center',
@@ -124,14 +124,14 @@ export const donateStyles = StyleSheet.create({
     borderColor: colors.primary,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
-    borderRadius: 4,
+    borderRadius: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   pixButtonSuccess: {
-    backgroundColor: '#64ffda20',
+    backgroundColor: `${colors.primary}14`,
   },
 
   pixButtonSecondary: {
@@ -139,7 +139,7 @@ export const donateStyles = StyleSheet.create({
   },
 
   pixButtonText: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.md,
     color: colors.primary,
   },
@@ -150,10 +150,10 @@ export const donateStyles = StyleSheet.create({
   },
 
   qrCodeCard: {
-    backgroundColor: '#112240',
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: 0,
     borderWidth: 1,
-    borderColor: '#233554',
+    borderColor: colors.border,
     padding: spacing.xxl,
     alignItems: 'center',
   },
@@ -166,7 +166,7 @@ export const donateStyles = StyleSheet.create({
   },
 
   qrCodeTitle: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.lg,
     color: colors.text,
   },
@@ -175,7 +175,7 @@ export const donateStyles = StyleSheet.create({
   qrWrapper: {
     padding: spacing.lg,
     backgroundColor: colors.white,
-    borderRadius: 12,
+    borderRadius: 0,
     marginBottom: spacing.lg,
   },
 
@@ -188,7 +188,7 @@ export const donateStyles = StyleSheet.create({
   },
 
   qrInstructionText: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.serif,
     fontSize: typography.size.sm,
     color: colors.textMuted,
     textAlign: 'center',
@@ -208,13 +208,13 @@ export const donateStyles = StyleSheet.create({
     marginTop: spacing.xl,
     padding: spacing.xl,
     backgroundColor: colors.bg,
-    borderRadius: 8,
+    borderRadius: 0,
     borderWidth: 1,
-    borderColor: '#172a45',
+    borderColor: colors.border,
   },
 
   suggestedAmountsTitle: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.md,
     color: colors.text,
   },
@@ -228,18 +228,18 @@ export const donateStyles = StyleSheet.create({
   },
 
   amountButton: {
-    backgroundColor: '#112240',
+    backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: colors.primary,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
-    borderRadius: 6,
+    borderRadius: 0,
     minWidth: 90,
     alignItems: 'center',
   },
 
   amountButtonText: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.md,
     color: colors.primary,
   },
@@ -254,7 +254,7 @@ export const donateStyles = StyleSheet.create({
   },
 
   customAmountText: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
     fontSize: typography.size.sm,
     color: colors.textMuted,
     fontStyle: 'italic',
@@ -264,14 +264,14 @@ export const donateStyles = StyleSheet.create({
   benefitsContainer: {
     marginTop: spacing.xl,
     backgroundColor: colors.bg,
-    borderRadius: 8,
+    borderRadius: 0,
     padding: spacing.xl,
     borderWidth: 1,
-    borderColor: '#172a45',
+    borderColor: colors.border,
   },
 
   benefitsTitle: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.lg,
     color: colors.text,
   },
@@ -289,7 +289,7 @@ export const donateStyles = StyleSheet.create({
   },
 
   benefitText: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.serif,
     flex: 1,
     fontSize: typography.size.md,
     color: colors.textMuted,
@@ -305,7 +305,7 @@ export const donateStyles = StyleSheet.create({
   },
 
   thankYouText: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.xl,
     color: colors.text,
     textAlign: 'center',
@@ -314,7 +314,7 @@ export const donateStyles = StyleSheet.create({
   },
 
   thankYouSubtext: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.serif,
     fontSize: typography.size.sm,
     color: colors.textMuted,
     textAlign: 'center',

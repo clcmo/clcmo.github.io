@@ -1,3 +1,5 @@
+import type { BlogSource } from '@/interface/blog';
+
 export interface WordPressPost {
   id: number;
   date: string;
@@ -36,15 +38,24 @@ export interface BlogPost {
   content: string;
   date: string;
   url: string;
+  source: BlogSource;
   imageUrl?: string;
   category?: string;
   tags?: string[];
 }
 
 class WordPressApi {
-  // ✅ base correto (sem /posts)
-  private site = 'apprendendo.blog';
-  private baseUrl = `https://public-api.wordpress.com/wp/v2/sites/${this.site}`;
+  private readonly baseUrl: string;
+
+  constructor(
+    site: string,
+    private readonly source: BlogSource,
+  ) {
+    this.baseUrl =
+      source === 'apprendendo'
+        ? `https://public-api.wordpress.com/wp/v2/sites/${site}`
+        : `https://${site}/wp-json/wp/v2`;
+  }
 
   private async request<T>(path: string): Promise<T> {
     const url = `${this.baseUrl}${path}`;
@@ -150,6 +161,7 @@ class WordPressApi {
       content: post.content?.rendered ?? '',
       date: post.date,
       url: post.link,
+      source: this.source,
       imageUrl,
       category,
       tags,
@@ -168,4 +180,5 @@ class WordPressApi {
   }
 }
 
-export const wordpressApi = new WordPressApi();
+export const wordpressApi = new WordPressApi('apprendendo.blog', 'apprendendo');
+export const camilaWordPressApi = new WordPressApi('camilaloliveira.com', 'camila');

@@ -1,94 +1,106 @@
 import 'dotenv/config';
-import env from './config/env';
+import compression from 'compression';
+import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
-import cors from 'cors';
-import compression from 'compression';
 import morgan from 'morgan';
-
-import projectsRoutes from './routes/project.routes';
-import analyticsRoutes from './routes/analytics.routes';
+import env from './config/env';
+import { prisma } from './config/prisma';
 import { errorHandler } from './middlewares/error.middleware';
+import analyticsRouter from './routes/analytics.routes';
+import { projectsRouter } from './routes/projects';
+import githubRoutes from './routes/github.routes';
 
 const app = express();
-
-// Para IP correto atrás do Railway/proxy
 app.set('trust proxy', 1);
-
-const allowedOriginsArray = [
-  'http://localhost:8081',
-  'http://localhost:19006',
-  'http://localhost:19000',
-  'https://clcmo.github.io',
-  'https://dev.camilaloliveira.me',
-];
-
-const allowedOriginsSet = new Set(allowedOriginsArray);
-
-/**
- * Middleware "na marra" para garantir CORS no preflight
- * (foi esse que fez aparecer o Access-Control-Allow-Origin)
- */
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-
-  if (typeof origin === 'string' && allowedOriginsSet.has(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Vary', 'Origin');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  }
-
-  if (req.method === 'OPTIONS') return res.sendStatus(204);
-  next();
-});
-
 app.use(helmet());
 
-app.use(cors({
-  origin: allowedOriginsArray,
-  credentials: false, // ok se você não usa cookies
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+const allowedOrigins = new Set([
+  'https://clcmo.github.io',
+  'https://dev.camilaloliveira.com',
+  'https://camilaloliveira.com',
+  ...env.CORS_ORIGINS,
+]);
 
-app.options('*', cors({
-  origin: allowedOriginsArray,
-  credentials: false,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
-
-app.use(express.json());
-
-// Logs e compressão para todas as rotas
+app.use(
+  cors({
+    origin(origin, callback) {
+      const localOrigin =
+        env.NODE_ENV !== 'production' &&
+        typeof origin === 'string' &&
+        /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+      if (!origin || allowedOrigins.has(origin) || localOrigin) {
+        return callback(null, true);
+      }
+      return callback(new Error('Origem não permitida pelo CORS'));
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-admin-secret'],
+  }),
+);
+app.use(express.json({ limit: '32kb' }));
 app.use(morgan('tiny'));
 app.use(compression());
 
-// Rotas
-app.use('/api/projects', projectsRoutes);
-app.use('/api/analytics', analyticsRoutes);
+app.use('/api', projectsRouter);
+app.use('/api/github', githubRoutes);
+app.use('/api/analytics', analyticsRouter);
 
-// Endpoints básicos
 app.get('/', (_req, res) => {
   res.json({
     message: 'Gitmilla Projects API',
     version: '1.0.0',
     endpoints: {
       health: '/health',
+      ready: '/ready',
       projects: '/api/projects',
+      sync: '/api/github/sync',
       analytics: '/api/analytics',
     },
   });
 });
 
-app.get('/health', (_req, res) =>
-  res.json({ ok: true, build: 'cors-fix-2026-02-03-1519' })
-);
+app.get('/health', (_req, res) => res.json({ ok: true }));
 
-// Handler de erro (sempre por último)
+app.get('/ready', async (_req, res) => {
+  try {
+    await prisma.$runCommandRaw({ ping: 1 });
+    return res.json({ ready: true });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'erro desconhecido';
+    console.error(`[readiness] MongoDB indisponível: ${message}`);
+    return res.status(503).json({ ready: false, error: 'Banco de dados indisponível' });
+  }
+});
+
 app.use(errorHandler);
 
-app.listen(env.PORT, '0.0.0.0', () => {
+const server = app.listen(env.PORT, '0.0.0.0', () => {
   console.log(`API rodando na porta ${env.PORT} (env: ${env.NODE_ENV})`);
 });
+
+let shuttingDown = false;
+const shutdown = (signal: string) => {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  console.log(`Recebido ${signal}; encerrando a API...`);
+  server.close(async (error) => {
+    if (error) {
+      console.error('Erro ao encerrar o servidor HTTP:', error.message);
+      process.exitCode = 1;
+    }
+    try {
+      await prisma.$disconnect();
+    } catch (disconnectError) {
+      const message =
+        disconnectError instanceof Error ? disconnectError.message : 'erro desconhecido';
+      console.error(`Erro ao encerrar Prisma: ${message}`);
+      process.exitCode = 1;
+    }
+  });
+};
+
+process.once('SIGTERM', () => shutdown('SIGTERM'));
+process.once('SIGINT', () => shutdown('SIGINT'));
+
+export { app, server };
