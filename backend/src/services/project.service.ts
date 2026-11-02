@@ -30,15 +30,15 @@ export async function getProjects({ refresh = false } = {}) {
     await Promise.allSettled(
       repos.map((r: any) =>
         prisma.project.upsert({
-          where: { githubId: BigInt(r.githubId) },
+          where: { githubId: String(r.githubId) },
           create: {
             ...r,
-            githubId: BigInt(r.githubId),
+            githubId: String(r.githubId),
             syncedAt: new Date()
           },
           update: {
             ...r,
-            githubId: BigInt(r.githubId),
+            githubId: String(r.githubId),
             syncedAt: new Date()
           }
         })

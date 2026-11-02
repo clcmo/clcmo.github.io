@@ -1,55 +1,40 @@
 import { Router } from 'express';
-import { listUserPublicRepos } from '../services/github.service';
+import { prisma } from '../config/prisma';
+import { requireSecret } from '../middlewares/requireSecret';
+import { syncRepos } from '../services/githubSync';
 
 const router = Router();
 
-/**
- * @route   GET /api/github/repos
- * @desc    Get GitHub repositories
- * @access  Public
- */
-router.get('/repos', async (_req, res) => {
+router.get('/repos', async (_req, res, next) => {
   try {
-    const repos = await listUserPublicRepos(process.env.GITHUB_USERNAME || '');
-    res.json(repos);
-  } catch (error) {
-    res.status(500).json({ 
-      error: 'Failed to fetch GitHub repositories',
-      message: error instanceof Error ? error.message : 'Unknown error'
+    const projects = await prisma.project.findMany({
+      where: {
+        visibility: 'public',
+        archived: false,
+        OR: [{ hidden: false }, { hidden: null }],
+      },
+      orderBy: { pushedAt: 'desc' },
     });
+    res.json(projects);
+  } catch (error) {
+    next(error);
   }
 });
 
-/**
- * @route   POST /api/github/sync
- * @desc    Sync projects with GitHub repositories
- * @access  Private (TODO: Add authentication)
- */
-router.post('/sync', async (_req, res) => {
+router.post('/sync', requireSecret, async (_req, res, next) => {
   try {
-    const repos = await listUserPublicRepos(process.env.GITHUB_USERNAME || '');
-    res.json({ success: true, synced: repos.length });
+    res.json(await syncRepos());
   } catch (error) {
-    res.status(500).json({ 
-      error: 'Failed to sync with GitHub',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    });
+    next(error);
   }
 });
 
-/**
- * @route   GET /api/github/last-sync
- * @desc    Get last GitHub sync info
- * @access  Public
- */
-router.get('/last-sync', async (_req, res) => {
+router.get('/last-sync', async (_req, res, next) => {
   try {
-    res.json({ lastSync: new Date().toISOString(), status: 'ok' });
+    const lastSync = await prisma.gitHubSync.findFirst({ orderBy: { lastSync: 'desc' } });
+    res.json(lastSync ?? { status: 'not-synced', lastSync: null });
   } catch (error) {
-    res.status(500).json({ 
-      error: 'Failed to fetch last sync info',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    });
+    next(error);
   }
 });
 

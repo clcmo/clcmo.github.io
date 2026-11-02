@@ -1,0 +1,29 @@
+name: Sincronizar projetos
+
+on:
+  schedule: [{ cron: '0 */6 * * *' }]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sincronizar GitHub -> banco
+        run: |
+          curl -fsS -X POST "${{ secrets.API_URL }}/github/sync" \
+            -H "x-admin-secret: ${{ secrets.ADMIN_SECRET }}"
+
+      - name: Gerar snapshot estático (plano B do front)
+        run: curl -fsS "${{ secrets.API_URL }}/projects" -o frontend/public/projects.json
+
+      - name: Commitar se mudou
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frontend/public/projects.json
+          git diff --cached --quiet || (git commit -m "chore: atualiza snapshot de projetos" && git push)
