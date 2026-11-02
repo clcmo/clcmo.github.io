@@ -1,5 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
-import { colors, spacing, typography } from '@/theme';
+import { colors, spacing, typography, fonts } from '@/theme';
 
 /**
  * Project Card Styles
@@ -22,14 +22,14 @@ export const projectCardStyles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.xxl,
     color: colors.text,
     marginBottom: spacing.xs,
   },
 
   subtitle: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
     fontSize: typography.size.sm,
     color: colors.textMuted,
   },
@@ -37,7 +37,7 @@ export const projectCardStyles = StyleSheet.create({
   // ====== Card Base ======
   card: {
     backgroundColor: colors.surface,
-    borderRadius: 8,
+    borderRadius: 0,
     borderWidth: 1,
     borderColor: colors.border,
     padding: spacing.xl,
@@ -90,28 +90,28 @@ export const projectCardStyles = StyleSheet.create({
   languagePill: {
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 999,
+    borderRadius: 0,
     paddingVertical: spacing.xs,
     paddingHorizontal: spacing.sm,
     backgroundColor: 'transparent',
   },
 
   languageText: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
     fontSize: typography.size.xs,
     color: colors.textMuted,
   },
 
   // ====== Conteúdo do Card ======
   name: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.lg,
     color: colors.text,
     marginBottom: spacing.sm,
   },
 
   description: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.serif,
     fontSize: typography.size.sm,
     color: colors.textMuted,
     lineHeight: typography.lineHeight.md,
@@ -128,7 +128,7 @@ export const projectCardStyles = StyleSheet.create({
   },
 
   metaText: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
     fontSize: typography.size.xs,
     color: colors.textMuted,
   },
@@ -148,7 +148,7 @@ export const projectCardStyles = StyleSheet.create({
 
   // Duas opções: topic simples (texto) OU chip
   topic: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
     fontSize: typography.size.xs,
     color: colors.primary,
   },
@@ -156,14 +156,14 @@ export const projectCardStyles = StyleSheet.create({
   topicChip: {
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 999,
+    borderRadius: 0,
     paddingVertical: spacing.xs,
     paddingHorizontal: spacing.sm,
     backgroundColor: 'transparent',
   },
 
   topicChipText: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
     fontSize: typography.size.xs,
     color: colors.primary,
   },
@@ -188,7 +188,7 @@ export const projectCardStyles = StyleSheet.create({
   },
 
   stat: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
     fontSize: typography.size.xs,
     color: colors.textMuted,
   },
@@ -201,7 +201,7 @@ export const projectCardStyles = StyleSheet.create({
   },
 
   emptyTitle: {
-    fontFamily: 'Lexend_700Bold',
+    fontFamily: fonts.sansBold,
     fontSize: typography.size.lg,
     color: colors.text,
     marginBottom: spacing.sm,
@@ -209,7 +209,7 @@ export const projectCardStyles = StyleSheet.create({
   },
 
   emptyText: {
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.serif,
     fontSize: typography.size.sm,
     color: colors.textMuted,
     textAlign: 'center',
@@ -227,7 +227,7 @@ export const projectCardStyles = StyleSheet.create({
     marginTop: spacing.md || 16,
     fontSize: 16,
     color: colors.textMuted,
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
   },
   errorContainer: {
     flex: 1,
@@ -239,9 +239,9 @@ export const projectCardStyles = StyleSheet.create({
   errorText: {
     marginTop: spacing.md || 16,
     fontSize: 16,
-    color: '#ff6b6b',
+    color: colors.danger,
     textAlign: 'center',
-    fontFamily: 'Lexend_400Regular',
+    fontFamily: fonts.sans,
     paddingHorizontal: spacing.lg || 20,
   },
   projectsContainer: {
