@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { colors } from '@/theme/colors';
+import { fonts } from '@/theme/typography';
 
 export const languageStyles = StyleSheet.create({
   container: {
@@ -11,23 +12,25 @@ export const languageStyles = StyleSheet.create({
     gap: 12,
   },
   label: {
-    color: '#ccd6f6',
+    fontFamily: fonts.sans,
+    color: colors.text,
     fontSize: 14,
     width: 100,
   },
   barWrapper: {
     flex: 1,
     height: 24,
-    backgroundColor: '#112240',
-    borderRadius: 4,
+    backgroundColor: colors.surface,
+    borderRadius: 0,
     overflow: 'hidden',
   },
   bar: {
     height: '100%',
-    borderRadius: 4,
+    borderRadius: 0,
   },
   count: {
-    color: '#8892b0',
+    fontFamily: fonts.sans,
+    color: colors.textMuted,
     fontSize: 14,
     width: 40,
     textAlign: 'right',
