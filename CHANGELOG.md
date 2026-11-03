@@ -1,3 +1,19 @@
+## [2.5.9](https://github.com/clcmo/clcmo.github.io/compare/v2.5.8...v2.5.9) (2026-11-03)
+
+## [2.5.8](https://github.com/clcmo/clcmo.github.io/compare/v2.5.7...v2.5.8) (2026-11-03)
+
+## [2.5.7](https://github.com/clcmo/clcmo.github.io/compare/v2.5.6...v2.5.7) (2026-11-03)
+
+## [2.5.6](https://github.com/clcmo/clcmo.github.io/compare/v2.5.5...v2.5.6) (2026-11-03)
+
+## [2.5.5](https://github.com/clcmo/clcmo.github.io/compare/v2.5.4...v2.5.5) (2026-11-02)
+
+## [2.5.4](https://github.com/clcmo/clcmo.github.io/compare/v2.5.3...v2.5.4) (2026-11-02)
+
+## [2.5.3](https://github.com/clcmo/clcmo.github.io/compare/v2.5.2...v2.5.3) (2026-11-02)
+
+## [2.5.2](https://github.com/clcmo/clcmo.github.io/compare/v2.5.1...v2.5.2) (2026-11-02)
+
 ## [2.5.1](https://github.com/clcmo/clcmo.github.io/compare/v2.5.0...v2.5.1) (2026-11-02)
 
 # [2.5.0](https://github.com/clcmo/clcmo.github.io/compare/v2.4.2...v2.5.0) (2026-11-02)
