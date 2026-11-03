@@ -1,6 +1,6 @@
 {
   "name": "camiladev",
-  "version": "2.5.10",
+  "version": "2.5.11",
   "description": "Portfolio e API de projetos GitHub",
   "private": true,
   "workspaces": [
