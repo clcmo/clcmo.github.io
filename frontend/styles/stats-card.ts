@@ -3,7 +3,7 @@ import { colors, spacing, typography, fonts } from '@/theme';
 
 export const statsCardStyles = StyleSheet.create({
     card: {
-        backgroundColor: colors.white,
+        backgroundColor: colors.surface,
         borderRadius: 0,
         padding: spacing.xl,
         alignItems: 'center',
