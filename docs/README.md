@@ -17,8 +17,8 @@ Site pessoal e portfólio profissional desenvolvido com TypeScript, CSS moderno,
 - ⚛️ React 18 + TypeScript
 - 🎨 Modo claro/escuro (brevemente de volta)
 - 💰 Sistema de doação via PIX
-- 🔄 Integração com GitHub API (via Railway, MongoDB e Prisma)
-- 🗄️ API própria com banco de dados
+- 🔄 Projetos públicos obtidos pela GitHub API e publicados como snapshot estático
+- 🗄️ API opcional para recursos que precisam de backend
 - 📱 Responsive Design
 - 🎯 Arquitetura MVC
 - 🚀 Deploy automático via GitHub Actions
@@ -143,7 +143,7 @@ GET    /api/analytics/stats       # Estatísticas (x-admin-secret)
 ### Frontend (.env)
 
 ```env
-EXPO_PUBLIC_API_URL=http://localhost:5555
+EXPO_PUBLIC_API_URL=http://localhost:5556
 ```
 
 ### Backend (.env)
@@ -162,7 +162,15 @@ CORS_ORIGINS=
 
 ### Frontend (GitHub Pages)
 
-O workflow `publish.yaml` requer o secret `API_URL`, com a URL base da API sem `/api`. Durante o deploy, a API é consultada para gerar `frontend/public/projects.json`; se a API ou o secret estiverem indisponíveis, o deploy falha. O frontend usa `EXPO_PUBLIC_API_URL` em tempo real e, na web, usa o snapshot quando a API não responde.
+O workflow `publish.yaml` consulta os repositórios públicos do GitHub, combina os dados com `frontend/data/project-curation.json`, gera `frontend/public/projects.json` e publica o site. Ele roda a cada seis horas, em pushes para `main` ou manualmente. Não requer `API_URL`, MongoDB ou serviço de backend para exibir os projetos no site.
+
+Para gerar o snapshot localmente, use `GITHUB_TOKEN` opcional para aumentar a cota da API:
+
+```bash
+GITHUB_USERNAME=clcmo node scripts/generate-projects-snapshot.mjs
+```
+
+Edite `frontend/data/project-curation.json` para ocultar projetos ou configurar `featured`, `coverUrl` e `category`. As chaves são os nomes completos no GitHub (`usuario/repositorio`). O frontend web lê o snapshot estático; builds nativos continuam usando `EXPO_PUBLIC_API_URL`.
 
 ### Backend (Heroku/Vercel/Railway)
 
@@ -174,7 +182,7 @@ No Railway, configure:
 - **Healthcheck:** `/ready`
 - **Variáveis:** `DATABASE_URL` (incluindo o nome do banco), `GITHUB_USERNAME` e `ADMIN_SECRET` (mínimo 16 caracteres).
 
-No GitHub, configure os secrets `API_URL` (URL base, sem `/api`) e `ADMIN_SECRET` (o mesmo valor usado pela API). O workflow `sync-projects.yml` acorda a API, chama `POST /api/github/sync` e dispara uma nova publicação do GitHub Pages. O sync usa Prisma, preserva campos editoriais e despublica projetos indisponíveis sem removê-los do banco.
+O backend continua podendo ser usado por funcionalidades nativas e analytics. A publicação do GitHub Pages e a atualização dos cards web não dependem de secrets `API_URL` ou `ADMIN_SECRET`. Sem uma API configurada no build, o registro de analytics fica desativado na web.
 
 ## 📝 Licença
 
