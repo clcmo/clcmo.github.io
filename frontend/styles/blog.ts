@@ -92,7 +92,7 @@ export const blogStyles = StyleSheet.create({
     },
 
     sourceFilterTextSelected: {
-        color: colors.white,
+        color: colors.bg,
     },
 
     postsContainer: {
