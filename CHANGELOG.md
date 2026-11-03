@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/clcmo/clcmo.github.io/compare/v2.6.0...v2.7.0) (2026-11-03)
+
+
+### Features
+
+* implement pagination for projects and update theme colors across components ([1468e32](https://github.com/clcmo/clcmo.github.io/commit/1468e327772fa2caec06caf4483ff01cb7bb8090))
+
 # [2.6.0](https://github.com/clcmo/clcmo.github.io/compare/v2.5.11...v2.6.0) (2026-11-03)
 
 
