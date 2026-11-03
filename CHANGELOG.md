@@ -1,3 +1,5 @@
+## [2.7.6](https://github.com/clcmo/clcmo.github.io/compare/v2.7.5...v2.7.6) (2026-11-03)
+
 ## [2.7.5](https://github.com/clcmo/clcmo.github.io/compare/v2.7.4...v2.7.5) (2026-11-03)
 
 ## [2.7.4](https://github.com/clcmo/clcmo.github.io/compare/v2.7.3...v2.7.4) (2026-11-03)
