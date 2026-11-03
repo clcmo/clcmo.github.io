@@ -3,3 +3,4 @@ node_modules/
 dist/
 dump/
 .env
+frontend/public/projects.json

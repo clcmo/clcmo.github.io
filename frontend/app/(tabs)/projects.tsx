@@ -19,12 +19,14 @@ import { projetos as s } from "@/styles/projetos";
 import { colors } from "@/theme";
 
 const GITHUB_URL = "https://github.com/clcmo";
+const PROJECTS_PER_PAGE = 10;
 
 export default function ProjectsScreen() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [language, setLanguage] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
 
   const scrollRef = useRef<ScrollView>(null);
@@ -54,6 +56,23 @@ export default function ProjectsScreen() {
     [projects, language],
   );
   const total = visible.length;
+  const pageCount = Math.ceil(total / PROJECTS_PER_PAGE);
+  const currentPage = Math.min(page, Math.max(pageCount, 1));
+  const pageProjects = useMemo(
+    () =>
+      visible.slice(
+        (currentPage - 1) * PROJECTS_PER_PAGE,
+        currentPage * PROJECTS_PER_PAGE,
+      ),
+    [visible, currentPage],
+  );
+  const firstProject = total === 0 ? 0 : (currentPage - 1) * PROJECTS_PER_PAGE + 1;
+  const lastProject = Math.min(currentPage * PROJECTS_PER_PAGE, total);
+
+  const goToPage = (nextPage: number) => {
+    setPage(nextPage);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
 
   return (
     <View style={globalStyles.screen}>
@@ -80,7 +99,7 @@ export default function ProjectsScreen() {
             <Text style={s.resultado}>
               {loading
                 ? " "
-                : `${total} ${total === 1 ? "projeto" : "projetos"}`}
+                : `${firstProject}–${lastProject} de ${total} ${total === 1 ? "projeto" : "projetos"}`}
             </Text>
 
             {languages.length > 1 && (
@@ -93,7 +112,10 @@ export default function ProjectsScreen() {
                       key={l ?? "todos"}
                       accessibilityRole="button"
                       accessibilityState={{ selected: ativo }}
-                      onPress={() => setLanguage(l)}
+                      onPress={() => {
+                        setLanguage(l);
+                        setPage(1);
+                      }}
                       style={[s.filtro, ativo && s.filtroAtivo]}
                     >
                       <Text
@@ -117,7 +139,50 @@ export default function ProjectsScreen() {
               <Text style={s.estadoTexto}>{error ?? 'Nenhum projeto para mostrar agora.'}</Text>
             </View>
           ) : (
-            <ProjectGrid projects={visible} />
+            <>
+              <ProjectGrid projects={pageProjects} />
+              {pageCount > 1 && (
+                <View style={s.paginacao} accessibilityRole="toolbar" accessibilityLabel="Paginação dos projetos">
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel="Página anterior"
+                    accessibilityState={{ disabled: currentPage === 1 }}
+                    disabled={currentPage === 1}
+                    onPress={() => goToPage(currentPage - 1)}
+                    style={[s.paginacaoBotao, currentPage === 1 && s.paginacaoBotaoDesabilitado]}
+                  >
+                    <Text style={s.paginacaoTexto}>Anterior</Text>
+                  </Pressable>
+                  {Array.from({ length: pageCount }, (_, index) => index + 1).map((pageNumber) => {
+                    const selected = pageNumber === currentPage;
+                    return (
+                      <Pressable
+                        key={pageNumber}
+                        accessibilityRole="button"
+                        accessibilityLabel={`Página ${pageNumber}`}
+                        accessibilityState={{ selected }}
+                        onPress={() => goToPage(pageNumber)}
+                        style={[s.paginacaoBotao, selected && s.paginacaoBotaoAtivo]}
+                      >
+                        <Text style={[s.paginacaoTexto, selected && s.paginacaoTextoAtivo]}>
+                          {pageNumber}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel="Próxima página"
+                    accessibilityState={{ disabled: currentPage === pageCount }}
+                    disabled={currentPage === pageCount}
+                    onPress={() => goToPage(currentPage + 1)}
+                    style={[s.paginacaoBotao, currentPage === pageCount && s.paginacaoBotaoDesabilitado]}
+                  >
+                    <Text style={s.paginacaoTexto}>Próxima</Text>
+                  </Pressable>
+                </View>
+              )}
+            </>
           )}
 
           <Pressable

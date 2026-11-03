@@ -1,3 +1,19 @@
+# [2.7.0](https://github.com/clcmo/clcmo.github.io/compare/v2.6.0...v2.7.0) (2026-11-03)
+
+
+### Features
+
+* implement pagination for projects and update theme colors across components ([1468e32](https://github.com/clcmo/clcmo.github.io/commit/1468e327772fa2caec06caf4483ff01cb7bb8090))
+
+# [2.6.0](https://github.com/clcmo/clcmo.github.io/compare/v2.5.11...v2.6.0) (2026-11-03)
+
+
+### Features
+
+* update GitHub Actions workflows and add project snapshot generation ([1c65350](https://github.com/clcmo/clcmo.github.io/commit/1c653500c3b4cd18490dc3c72bdbf8a37ac8698c))
+
+## [2.5.11](https://github.com/clcmo/clcmo.github.io/compare/v2.5.10...v2.5.11) (2026-11-03)
+
 ## [2.5.10](https://github.com/clcmo/clcmo.github.io/compare/v2.5.9...v2.5.10) (2026-11-03)
 
 ## [2.5.9](https://github.com/clcmo/clcmo.github.io/compare/v2.5.8...v2.5.9) (2026-11-03)
