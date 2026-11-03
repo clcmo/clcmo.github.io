@@ -10,7 +10,7 @@
 
 Site pessoal e portfólio profissional desenvolvido com TypeScript, CSS moderno, arquitetura MVC e API própria e deployed no GitHub Pages. Este projeto apresenta meus trabalhos, habilidades e experiência como desenvolvedora Android e Full Stack disponíveis no GitHub.
 
-🌐 **[Acesse o site ao vivo](https://dev.camilaloliveira.me/)**
+🌐 **[Acesse o site ao vivo](https://dev.camilaloliveira.com/)**
 
 ### ✨ Características
 
