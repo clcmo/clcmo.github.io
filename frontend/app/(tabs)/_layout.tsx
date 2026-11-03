@@ -9,6 +9,7 @@ import AppLoading from 'expo-app-loading';
 import { globalStyles } from '@/styles/global';
 import { Header } from '@/components/layout/header';
 import { TopBar } from '@/components/layout/nav';
+import { colors } from '@/theme';
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -29,7 +30,7 @@ export default function Layout() {
           {/* Cabeçalho do tema: monograma + menu em tela cheia */}
           <TopBar />
 
-          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#ffffff' } }} />
+          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

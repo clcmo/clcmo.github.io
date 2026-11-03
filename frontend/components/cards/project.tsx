@@ -20,7 +20,7 @@ function Cta({ label, url, outline = false }: { label: string; url: string; outl
   const [hover, setHover] = useState(false);
   const bg = outline ? (hover ? colors.preto : 'transparent') : hover ? colors.marca : colors.preto;
   const border = outline ? colors.preto : bg;
-  const color = outline && !hover ? colors.text : '#ffffff';
+  const color = outline && !hover ? colors.text : colors.bg;
   return (
     <Pressable
       accessibilityRole="link"
