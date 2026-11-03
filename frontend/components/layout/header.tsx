@@ -16,7 +16,7 @@ export function Header() {
         <title>{SITE_DATA.title}</title>
         <meta name="description" content={SITE_DATA.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#0a192f" />
+        <meta name="theme-color" content="#ffffff" />
 
         {/* Canonical */}
         <link rel="canonical" href={SITE_DATA.url} />

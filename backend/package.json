@@ -5,6 +5,8 @@
     "start": "node dist/server.js",
     "dev": "ts-node src/server.ts",
     "build": "tsc",
+    "db:push": "prisma db push",
+    "test": "npm run build && node --test test/*.test.js",
     "deploy": "prisma generate && npm run build && npm start"
   },
   "dependencies": {
@@ -14,9 +16,9 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-rate-limit": "^8.2.1",
     "express-validator": "^7.0.1",
     "helmet": "^7.1.0",
-    "mongodb": "^6.21.0",
     "morgan": "^1.10.0",
     "zod": "^3.22.4"
   },
@@ -28,6 +30,6 @@
     "@types/node": "^20.10.0",
     "prisma": "^5.x.x",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.9.3"
   }
 }
