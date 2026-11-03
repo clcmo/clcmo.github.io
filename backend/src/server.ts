@@ -18,6 +18,7 @@ app.use(helmet());
 const allowedOrigins = new Set([
   'https://clcmo.github.io',
   'https://dev.camilaloliveira.com',
+  'https://dev.camilaloliveira.me',
   'https://camilaloliveira.com',
   ...env.CORS_ORIGINS,
 ]);
