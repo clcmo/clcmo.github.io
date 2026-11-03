@@ -4,6 +4,8 @@ run-name: ${{ github.actor }} está construindo e fazendo deploy para GitHub Pag
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 permissions:
@@ -29,34 +31,22 @@ jobs:
           cache: "npm"
           cache-dependency-path: package-lock.json
 
+      - name: Gerar snapshot dos projetos públicos do GitHub
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_USERNAME: clcmo
+        run: node scripts/generate-projects-snapshot.mjs
+
       - name: Instalar dependências
         run: npm ci
 
-      - name: Gerar snapshot dos projetos para o fallback web
-        env:
-          API_URL: ${{ secrets.API_URL }}
-        run: |
-          if [ -z "$API_URL" ]; then
-            echo "::error::Configure o secret API_URL com a URL base da API, sem /api."
-            exit 1
-          fi
-          case "$API_URL" in
-            */api|*/api/)
-              echo "::error::API_URL deve conter somente a URL base, sem /api."
-              exit 1
-              ;;
-          esac
-          API_BASE_URL="${API_URL%/}"
-          curl --retry 5 --retry-connrefused --retry-delay 2 -fsS \
-            "$API_BASE_URL/api/projects" \
-            -o frontend/public/projects.json
-          node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('frontend/public/projects.json','utf8')); if(!Array.isArray(data)) process.exit(1);"
+      - name: Preservar domínio personalizado do Pages
+        run: cp CNAME frontend/public/CNAME
 
       - name: Export Web (Expo Router)
         working-directory: ./frontend
         run: npx expo export -p web
         env:
-          EXPO_PUBLIC_API_URL: ${{ secrets.API_URL }}
           EXPO_PUBLIC_GITHUB_USERNAME: clcmo
           NODE_ENV: production
 

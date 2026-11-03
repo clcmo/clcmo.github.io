@@ -1,4 +1,5 @@
 import Head from "expo-router/head";
+import { colors } from "@/theme";
 
 const SITE_DATA = {
     url: 'https://dev.camilaloliveira.me',
@@ -16,7 +17,7 @@ export function Header() {
         <title>{SITE_DATA.title}</title>
         <meta name="description" content={SITE_DATA.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content={colors.bg} />
 
         {/* Canonical */}
         <link rel="canonical" href={SITE_DATA.url} />
