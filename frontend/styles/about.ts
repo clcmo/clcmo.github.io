@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing, typography } from '@/theme';
+import { colors, spacing, typography, fonts } from '@/theme';
 
 export const aboutStyles = StyleSheet.create({
     container: {
@@ -10,7 +10,7 @@ export const aboutStyles = StyleSheet.create({
     },
 
     text: {
-        fontFamily: 'Lexend_400Regular',
+        fontFamily: fonts.serif,
         fontSize: typography.size.md,
         lineHeight: typography.lineHeight.md,
         color: colors.textMuted,
@@ -25,7 +25,7 @@ export const aboutStyles = StyleSheet.create({
     },
 
     techItem: {
-        fontFamily: 'Lexend_400Regular',
+        fontFamily: fonts.sans,
         fontSize: typography.size.sm,
         color: colors.textMuted,
         width: '45%',

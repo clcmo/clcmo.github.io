@@ -7,7 +7,6 @@ export default function CTA() {
     return (
         <View style={globalStyles.section}>
             <Text style={globalStyles.sectionTitle}>
-                <Text style={globalStyles.numberPrefix}>04. </Text>
                 Vamos conversar?
             </Text>
 
