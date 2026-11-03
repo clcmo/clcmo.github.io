@@ -86,9 +86,9 @@ clcmo/
 
 ### Pré-requisitos
 
-- Node.js >= 18.x
+- Node.js >= 22.14
 - npm ou yarn
-- MongoDB (ou Postgres ou SQLite para desenvolvimento)
+- MongoDB Atlas (replica set)
 
 ### Setup Frontend
 
@@ -103,7 +103,7 @@ npm start
 ```bash
 cd backend
 npm install
-npm run prisma:migrate
+npm run db:push
 npm run dev
 ```
 
@@ -123,16 +123,19 @@ O projeto busca manter:
 ```txt
 GET    /api/projects              # Lista todos os projetos
 GET    /api/projects/:slug        # Busca projeto específico
-POST   /api/projects              # Cria novo projeto
-PUT    /api/projects/:slug        # Atualiza projeto
-DELETE /api/projects/:slug        # Remove projeto
+PUT    /api/projects/:slug        # Atualiza campos editoriais (x-admin-secret)
 ```
 
 ### GitHub Integration
 
 ```txt
-GET    /api/github/repos          # Busca repositórios do GitHub
-POST   /api/github/sync           # Sincroniza com GitHub
+GET    /api/github/repos          # Lista projetos públicos do MongoDB
+GET    /api/github/last-sync      # Última sincronização
+POST   /api/github/sync           # Sincroniza GitHub -> MongoDB via Prisma
+GET    /health                    # Healthcheck do processo
+GET    /ready                     # Readiness com ping no MongoDB
+POST   /api/analytics/visit       # Registra visita com IP pseudonimizado
+GET    /api/analytics/stats       # Estatísticas (x-admin-secret)
 ```
 
 ## 🔧 Configuração
@@ -140,51 +143,38 @@ POST   /api/github/sync           # Sincroniza com GitHub
 ### Frontend (.env)
 
 ```env
-EXPO_PUBLIC_API_URL=http://localhost:3001/api
-GITHUB_TOKEN=
+EXPO_PUBLIC_API_URL=http://localhost:5555
 ```
 
 ### Backend (.env)
 
 ```env
-# Servidor
 PORT=5555
 NODE_ENV=development
-
-# GitHub (obrigatório o username, token é opcional)
+ADMIN_SECRET=use-um-segredo-aleatorio-com-ao-menos-16-caracteres
 GITHUB_USERNAME=
-# Crie um token "fine-grained" ou "classic" apenas para leitura pública, se quiser mais cota
 GITHUB_TOKEN=
-
-# Cache (em segundos)
-CACHE_TTL_SECONDS=300
-
-# Paginação da API do GitHub
-GITHUB_PER_PAGE=100
-GITHUB_MAX_PAGES=2
-
-# Banco (Railway preenche DATABASE_URL automaticamente ao provisionar MongoDB)
 DATABASE_URL=
-# Habilitar sincronização opcional no banco (true/false)
-ENABLE_DB_SYNC=false
+CORS_ORIGINS=
 ```
 
 ## 🚀 Deploy
 
 ### Frontend (GitHub Pages)
 
-```bash
-cd frontend
-npm run build
-npm run deploy
-```
+O workflow `publish.yaml` requer o secret `API_URL`, com a URL base da API sem `/api`. Durante o deploy, a API é consultada para gerar `frontend/public/projects.json`; se a API ou o secret estiverem indisponíveis, o deploy falha. O frontend usa `EXPO_PUBLIC_API_URL` em tempo real e, na web, usa o snapshot quando a API não responde.
 
 ### Backend (Heroku/Vercel/Railway)
 
-```bash
-cd backend
-# Seguir instruções específicas da plataforma
-```
+No Railway, configure:
+
+- **Build:** `npm ci && npm run build --workspace=backend`
+- **Pre-deploy:** `npm run db:push --workspace=backend`
+- **Start:** `npm run start --workspace=backend`
+- **Healthcheck:** `/ready`
+- **Variáveis:** `DATABASE_URL` (incluindo o nome do banco), `GITHUB_USERNAME` e `ADMIN_SECRET` (mínimo 16 caracteres).
+
+No GitHub, configure os secrets `API_URL` (URL base, sem `/api`) e `ADMIN_SECRET` (o mesmo valor usado pela API). O workflow `sync-projects.yml` acorda a API, chama `POST /api/github/sync` e dispara uma nova publicação do GitHub Pages. O sync usa Prisma, preserva campos editoriais e despublica projetos indisponíveis sem removê-los do banco.
 
 ## 📝 Licença
 

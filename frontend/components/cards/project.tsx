@@ -1,52 +1,70 @@
-import React from 'react';
-import { View, Text, Pressable, Linking } from 'react-native';
+import React, { useState } from 'react';
+import { Linking, Pressable, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+
 import { Project } from '@/types';
-import { projectCardStyles } from '@/styles/project-card';
+import { colors } from '@/theme';
+import { projetos as s } from '@/styles/projetos';
+
+// Campos que o backend já devolve; declarados aqui para não depender do tipo global.
+type Extra = { coverUrl?: string | null };
 
 interface ProjectCardProps {
   project: Project;
+  width?: number;
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
-  const openUrl = (url: string) => {
-    Linking.openURL(url);
-  };
+const open = (url: string) => Linking.openURL(url);
+
+function Cta({ label, url, outline = false }: { label: string; url: string; outline?: boolean }) {
+  const [hover, setHover] = useState(false);
+  const bg = outline ? (hover ? colors.preto : 'transparent') : hover ? colors.marca : colors.preto;
+  const border = outline ? colors.preto : bg;
+  const color = outline && !hover ? colors.text : '#ffffff';
+  return (
+    <Pressable
+      accessibilityRole="link"
+      onPress={() => open(url)}
+      onHoverIn={() => setHover(true)}
+      onHoverOut={() => setHover(false)}
+      style={[s.cta, { backgroundColor: bg, borderColor: border }]}
+    >
+      <Text style={[s.ctaTexto, { color }]}>{label}</Text>
+    </Pressable>
+  );
+}
+
+export default function ProjectCard({ project, width }: ProjectCardProps) {
+  const p = project as Project & Extra;
+  const href = p.homepage || p.htmlUrl;
+  const year = p.pushedAt ? new Date(p.pushedAt).getFullYear() : null;
+  const meta = [p.language, year].filter(Boolean).join(', ');
 
   return (
-    <Pressable 
-      style={projectCardStyles.card}
-      onPress={() => openUrl(project.htmlUrl)}
-    >
-      <View style={projectCardStyles.header}>
-        <Text style={projectCardStyles.folder}>📁</Text>
-        <Pressable onPress={() => openUrl(project.htmlUrl)}>
-          <Text style={projectCardStyles.link}>↗</Text>
-        </Pressable>
-      </View>
+    <View style={width ? { width } : { width: '100%' }}>
+      <Pressable accessible={false} onPress={() => open(href)} style={s.capa}>
+        {p.coverUrl ? (
+          <Image source={{ uri: p.coverUrl }} style={s.capaImagem} contentFit="cover" />
+        ) : (
+          <Text style={s.capaTexto}>{p.name}</Text>
+        )}
+      </Pressable>
 
-      <Text style={projectCardStyles.name}>{project.name}</Text>
+      <Pressable accessibilityRole="link" onPress={() => open(href)}>
+        <Text style={s.nome}>{p.name}</Text>
+      </Pressable>
 
-      {project.description && (
-        <Text style={projectCardStyles.description} numberOfLines={3}>
-          {project.description}
+      {meta !== '' && <Text style={s.meta}>{meta}</Text>}
+      {p.description ? (
+        <Text style={s.descricao} numberOfLines={3}>
+          {p.description}
         </Text>
-      )}
+      ) : null}
 
-      <View style={projectCardStyles.footer}>
-        <View style={projectCardStyles.topics}>
-          {project.topics.slice(0, 2).map((topic) => (
-            <Text key={topic} style={projectCardStyles.topic}>
-              {topic}
-            </Text>
-          ))}
-        </View>
-        <View style={projectCardStyles.stats}>
-          <Text style={projectCardStyles.stat}>⭐ {project.stars}</Text>
-          {project.language && (
-            <Text style={projectCardStyles.stat}>• {project.language}</Text>
-          )}
-        </View>
+      <View style={s.links}>
+        <Cta label="Código" url={p.htmlUrl} />
+        {p.homepage ? <Cta label="Ver ao vivo" url={p.homepage} outline /> : null}
       </View>
-    </Pressable>
+    </View>
   );
 }

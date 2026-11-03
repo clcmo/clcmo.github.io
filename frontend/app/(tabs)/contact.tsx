@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 
 import { contactMethods, getContactsByType } from '@/interface/contact';
 import { analyticsApi } from '@/services/api';
 import { globalStyles } from '@/styles/global';
 import { contactStyles } from '@/styles/contact';
+import { SiteFooter } from '@/components/layout/footer';
 
+import { colors } from '@/theme';
 export default function ContactScreen() {
   useEffect(() => {
     analyticsApi.trackVisit('/contact').catch(console.error);
@@ -15,6 +17,8 @@ export default function ContactScreen() {
   const emailContacts = getContactsByType('email');
   const socialContacts = getContactsByType('social');
   const professionalContacts = getContactsByType('professional');
+
+  const scrollRef = useRef<ScrollView>(null);
 
   // Renderiza um card de contato
   const renderContactCard = (method: typeof contactMethods[0], index: number) => {
@@ -27,7 +31,7 @@ export default function ContactScreen() {
         onPress={method.action}
       >
         <View style={contactStyles.iconContainer}>
-          <IconComponent name={iconName} size={40} color="#64ffda" />
+          <IconComponent name={iconName} size={40} color={colors.primary} />
         </View>
         <Text style={contactStyles.contactLabel}>{method.label}</Text>
         <Text style={contactStyles.contactValue}>{method.value}</Text>
@@ -56,15 +60,14 @@ export default function ContactScreen() {
 
   return (
     <View style={globalStyles.screen}>
-      <ScrollView 
-        style={globalStyles.scroll} 
-        contentContainerStyle={globalStyles.content}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={globalStyles.section}>
+          <ScrollView
+            ref={scrollRef}
+            style={globalStyles.scroll}
+            contentContainerStyle={globalStyles.page}>
+        <View style={globalStyles.content}>
           {/* Cabeçalho */}
           <Text style={globalStyles.sectionTitle}>
-            <Text style={globalStyles.numberPrefix}>03. </Text>Entre em Contato
+Entre em Contato
           </Text>
 
           <Text style={globalStyles.contactDescription}>
@@ -94,6 +97,7 @@ export default function ContactScreen() {
             </View>
           )}
         </View>
+        <SiteFooter />
       </ScrollView>
     </View>
   );

@@ -1,45 +1,16 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing, typography } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 export const footerStyles = StyleSheet.create({
-    container: {
-        marginTop: spacing.lg,
-        paddingVertical: spacing.lg,
-        alignItems: 'center',
-        gap: spacing.lg,
-    },
-
-    socialLinks: {
-        flexDirection: 'row',
-        gap: spacing.xl,
-    },
-
-    socialIcon: {
-        fontSize: typography.size.lg,
-        color: colors.textMuted,
-    },
-
-    footerTitle: {
-        fontFamily: 'Lexend_700Bold',
-        fontSize: typography.size.lg,
-        color: colors.primary,
-    },
-
-    footerText: {
-        fontFamily: 'Lexend_400Regular',
-        fontSize: typography.size.xs,
-        color: colors.textMuted,
-        textAlign: 'center',
-        lineHeight: typography.lineHeight.sm,
-        maxWidth: 500,
-    },
-
-    credits: {
-        fontFamily: 'Lexend_400Regular',
-        fontSize: typography.size.xs,
-        color: colors.textMuted,
-        opacity: 0.8,
-        marginTop: spacing.sm,
-        textAlign: 'center',
-    },
+  container: {
+    backgroundColor: colors.surface,
+    width: '100%',
+    marginTop: 32,
+    paddingVertical: 24,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    gap: 6,
+  },
+  marca: { width: 176, height: 60 },
+  copy: { fontFamily: fonts.serif, fontSize: 13.6, lineHeight: 20, color: colors.text, textAlign: 'center' },
 });

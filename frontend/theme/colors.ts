@@ -1,33 +1,53 @@
+// Tokens do tema camilaloliveira.com (espelham :root do theme.css).
+const papel = '#ffffff';
+const linho = '#f1e7db';
+const texto = '#1d1b19';
+const preto = '#000000';
+const marca = '#5b5348';
+const brilho = '#c9a97a';
+const fio = '#1d1b19';
+const campo = '#fcfcfc';
+const campoBorda = '#dcdcdc';
+
 export const colors = {
-  // Base (seu tema escuro)
-  bg: '#0a192f',
-  surface: '#112240',
-  border: '#233554',
+  // --- tokens do tema ---
+  papel,
+  linho,
+  texto,
+  preto,
+  marca,
+  brilho,
+  fio,
+  campo,
+  campoBorda,
 
-  // Texto
-  text: '#ccd6f6',
-  textMuted: '#8892b0',
+  // --- nomes usados pelo restante do app (apontam para os tokens acima) ---
+  bg: papel,
+  surface: linho,
+  border: campoBorda, // linhas sutis; use `fio` para linhas pretas
+  text: texto,
+  textMuted: '#4a453f',
+  primary: preto, // sempre #rrggbb: alguns estilos fazem `${colors.primary}1A`
 
-  // Marca e Linguagens de Programação
-  primary: '#64ffda',
-  blue: '#0366d6',
-  blueMoon: '#5a67d8',
-  orange: '#ed8936',
-  green: '#48bb78',
-  pink: '#ed64a6',
-  cyan: '#4299e1',
+  // --- apoio / gráficos (tons terrosos, combinam com o tema) ---
+  blue: '#4f6d7a',
+  blueMoon: '#6d5b7a',
+  orange: '#b5651d',
+  green: '#6b7f5e',
+  pink: '#a05a6c',
+  cyan: '#4f7f8a',
 
-  // Neutros (caso precise)
   white: '#ffffff',
-  danger: '#d73a49',
+  danger: '#9b2c2c',
 };
 
 export const statsColors = [
-  colors.primary,
+  colors.marca,
+  colors.brilho,
   colors.blue,
-  colors.blueMoon,
   colors.orange,
   colors.green,
   colors.pink,
+  colors.blueMoon,
   colors.cyan,
 ];
